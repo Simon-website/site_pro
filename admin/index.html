@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WebCraft Admin — Connexion</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="stylesheet" href="css/admin.css" />
+</head>
+<body class="login-page">
+
+  <!-- Orbs décoratifs -->
+  <div class="login-orb login-orb-1"></div>
+  <div class="login-orb login-orb-2"></div>
+
+  <div class="login-card">
+
+    <!-- Logo + titre -->
+    <div class="login-logo">
+      <img src="../assets/images/logo.png" alt="WebCraft" />
+      <h1>Panneau d'administration</h1>
+      <p>Accès réservé aux administrateurs WebCraft</p>
+    </div>
+
+    <!-- Badge sécurité -->
+    <div style="display:flex;justify-content:center;">
+      <div class="login-security-badge">
+        <span class="login-security-dot"></span>
+        Connexion chiffrée SHA-256
+      </div>
+    </div>
+
+    <div class="login-divider"></div>
+
+    <!-- Formulaire -->
+    <form id="login-form" novalidate>
+      <label class="login-label" for="pwd">Mot de passe administrateur</label>
+      <div class="login-input-wrap">
+        <input
+          type="password"
+          id="pwd"
+          class="login-input"
+          placeholder="••••••••"
+          autocomplete="current-password"
+          required
+        />
+        <button type="button" id="eye-btn" class="login-eye" aria-label="Afficher le mot de passe">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+            <circle cx="12" cy="12" r="3"/>
+          </svg>
+        </button>
+      </div>
+
+      <button type="submit" id="login-btn" class="login-btn">
+        Accéder au panneau →
+      </button>
+
+      <!-- Erreur -->
+      <div id="login-error" class="login-error">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+        </svg>
+        Mot de passe incorrect.
+      </div>
+
+      <p id="attempts-left" class="login-attempts"></p>
+    </form>
+
+    <div class="login-footer">
+      <p>Session sécurisée · Expiration automatique après 2h</p>
+      <p style="margin-top:0.35rem;">En cas d'oubli, contactez l'administrateur système.</p>
+    </div>
+  </div>
+
+  <script src="js/admin.js"></script>
+</body>
+</html>

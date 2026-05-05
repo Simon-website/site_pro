@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portfolio — WebCraft</title>
+  <meta name="description" content="Découvrez les réalisations WebCraft : sites vitrine et e-commerce pour artisans et indépendants." />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+  <style>
+    /* ─── Styles spécifiques portfolio ────────────────────────────── */
+    .portfolio-hero {
+      padding: 10rem 0 4.5rem;
+      text-align: center;
+    }
+    .portfolio-hero .section-subtitle { margin-inline: auto; }
+
+    /* Filtres */
+    .portfolio-filters {
+      display: flex;
+      justify-content: center;
+      gap: 0.6rem;
+      margin: 2.75rem 0 3rem;
+      flex-wrap: wrap;
+    }
+    .filter-btn {
+      padding: 0.5rem 1.3rem;
+      border-radius: 100px;
+      font-size: 0.87rem;
+      font-weight: 500;
+      border: 1.5px solid var(--border);
+      color: var(--text-muted);
+      background: var(--surface);
+      transition: var(--transition);
+    }
+    .filter-btn:hover { border-color: var(--blue); color: var(--text); }
+    .filter-btn.active {
+      background: var(--grad-main);
+      border-color: transparent;
+      color: #fff;
+    }
+
+    /* Grille */
+    .portfolio-full-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-bottom: 5rem;
+    }
+    .pf-card {
+      border-radius: var(--radius);
+      overflow: hidden;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-sm);
+      transition: transform var(--transition), box-shadow var(--transition);
+    }
+    .pf-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-md);
+    }
+    .pf-thumb {
+      aspect-ratio: 4/3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3.5rem;
+      background: var(--surface-2);
+      overflow: hidden;
+      position: relative;
+    }
+    .pf-thumb img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform 0.35s ease;
+    }
+    .pf-card:hover .pf-thumb img { transform: scale(1.05); }
+    .pf-info { padding: 1.5rem; }
+    .pf-tags {
+      display: flex;
+      gap: 0.45rem;
+      flex-wrap: wrap;
+      margin-bottom: 0.7rem;
+    }
+    .pf-tag {
+      display: inline-block;
+      padding: 0.2rem 0.55rem;
+      border-radius: 5px;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .pf-tag.vitrine   { background: rgba(127,179,255,0.15); color: #5b9ee1; }
+    .pf-tag.ecommerce { background: rgba(168,230,207,0.25); color: #2e9e6e; }
+    .pf-info h3 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 0.35rem;
+    }
+    .pf-info p {
+      font-size: 0.86rem;
+      color: var(--text-muted);
+      font-weight: 300;
+      line-height: 1.55;
+    }
+    .pf-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      margin-top: 1rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      background: var(--grad-main);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      transition: gap var(--transition);
+    }
+    .pf-link:hover { gap: 0.55rem; }
+
+    /* CTA */
+    .portfolio-cta {
+      text-align: center;
+      padding: 5rem 0 7rem;
+      border-top: 1px solid var(--border);
+    }
+    .portfolio-cta h2 { margin-bottom: 0.9rem; }
+    .portfolio-cta p {
+      color: var(--text-muted);
+      font-weight: 300;
+      max-width: 44ch;
+      margin: 0 auto 2.25rem;
+    }
+
+    @media (max-width: 900px) {
+      .portfolio-full-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 600px) {
+      .portfolio-full-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Loader -->
+  <div id="page-loader">
+    <div class="loader-ring"></div>
+  </div>
+
+  <!-- ─── Header ─────────────────────────────────────────────────── -->
+  <header>
+    <div class="container nav-inner">
+      <a href="index.html" class="nav-logo">
+        <img src="assets/images/logo.png" alt="WebCraft" />
+      </a>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="index.html#services">Services</a></li>
+          <li><a href="index.html#why">Pourquoi nous</a></li>
+          <li><a href="portfolio.html">Portfolio</a></li>
+          <li><a href="index.html#contact">Contact</a></li>
+        </ul>
+      </nav>
+      <a href="index.html#contact" class="btn btn-primary nav-cta">Démarrer un projet</a>
+      <button class="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Mobile menu -->
+  <nav class="mobile-menu">
+    <a href="index.html#services">Services</a>
+    <a href="index.html#why">Pourquoi nous</a>
+    <a href="portfolio.html">Portfolio</a>
+    <a href="index.html#contact">Contact</a>
+    <a href="index.html#contact" class="btn btn-primary" style="margin-top:1rem;">Démarrer un projet</a>
+  </nav>
+
+  <!-- ─── Hero ───────────────────────────────────────────────────── -->
+  <section class="portfolio-hero">
+    <div class="container">
+      <span class="section-label">Nos réalisations</span>
+      <h1 class="section-title" style="margin-top:0.4rem;">Le travail parle<br>pour lui-même.</h1>
+      <p class="section-subtitle">Des projets pensés pour chaque client, de l'artisan au commerçant.</p>
+    </div>
+  </section>
+
+  <!-- ─── Filtres + Grille ────────────────────────────────────────── -->
+  <div class="container">
+    <div class="portfolio-filters">
+      <button class="filter-btn active" data-filter="all">Tous</button>
+      <button class="filter-btn" data-filter="vitrine">Vitrine</button>
+      <button class="filter-btn" data-filter="ecommerce">E-commerce</button>
+    </div>
+
+    <div class="portfolio-full-grid" id="portfolio-grid">
+
+      <div class="pf-card reveal reveal-delay-1" data-category="vitrine">
+        <div class="pf-thumb">🍕</div>
+        <div class="pf-info">
+          <div class="pf-tags"><span class="pf-tag vitrine">Vitrine</span></div>
+          <h3>Pizzeria Da Marco</h3>
+          <p>Menu consultable en ligne, formulaire de réservation et galerie photos appétissante.</p>
+          <span class="pf-link">Voir le projet →</span>
+        </div>
+      </div>
+
+      <div class="pf-card reveal reveal-delay-2" data-category="ecommerce">
+        <div class="pf-thumb">👗</div>
+        <div class="pf-info">
+          <div class="pf-tags"><span class="pf-tag ecommerce">E-commerce</span></div>
+          <h3>Atelier Léonie</h3>
+          <p>Boutique en ligne pour une créatrice de mode. Catalogue, paiement Stripe, gestion commandes.</p>
+          <span class="pf-link">Voir le projet →</span>
+        </div>
+      </div>
+
+      <div class="pf-card reveal reveal-delay-3" data-category="vitrine">
+        <div class="pf-thumb">🔧</div>
+        <div class="pf-info">
+          <div class="pf-tags"><span class="pf-tag vitrine">Vitrine</span></div>
+          <h3>Plomberie Renaud</h3>
+          <p>Site professionnel avec zone d'intervention, tarifs clairs et bouton d'appel direct mis en avant.</p>
+          <span class="pf-link">Voir le projet →</span>
+        </div>
+      </div>
+
+      <div class="pf-card reveal reveal-delay-1" data-category="ecommerce">
+        <div class="pf-thumb">🍰</div>
+        <div class="pf-info">
+          <div class="pf-tags"><span class="pf-tag ecommerce">E-commerce</span></div>
+          <h3>Pâtisserie Soleil</h3>
+          <p>Commandes en ligne avec sélection de la date de retrait — zéro attente en boutique.</p>
+          <span class="pf-link">Voir le projet →</span>
+        </div>
+      </div>
+
+      <div class="pf-card reveal reveal-delay-2" data-category="vitrine">
+        <div class="pf-thumb">💆</div>
+        <div class="pf-info">
+          <div class="pf-tags"><span class="pf-tag vitrine">Vitrine</span></div>
+          <h3>Institut Zen & Beauté</h3>
+          <p>Présentation des soins, galerie, et système de prise de RDV en ligne intégré.</p>
+          <span class="pf-link">Voir le projet →</span>
+        </div>
+      </div>
+
+      <div class="pf-card reveal reveal-delay-3" data-category="ecommerce">
+        <div class="pf-thumb">🪴</div>
+        <div class="pf-info">
+          <div class="pf-tags"><span class="pf-tag ecommerce">E-commerce</span></div>
+          <h3>La Serre Verte</h3>
+          <p>E-commerce de plantes et accessoires de jardinage. Fiches produits, stocks et livraison intégrés.</p>
+          <span class="pf-link">Voir le projet →</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ─── CTA ─────────────────────────────────────────────────────── -->
+  <section class="portfolio-cta">
+    <div class="container reveal">
+      <span class="section-label">Votre projet</span>
+      <h2 class="section-title">Votre site est le prochain ?</h2>
+      <p>Parlez-nous de votre projet et obtenez un devis personnalisé sous 24h.</p>
+      <a href="index.html#contact" class="btn btn-primary">Démarrer mon projet →</a>
+    </div>
+  </section>
+
+  <!-- ─── Footer ──────────────────────────────────────────────────── -->
+  <footer>
+    <div class="container footer-inner">
+      <p class="footer-text">© 2025 WebCraft. Tous droits réservés.</p>
+      <ul class="footer-links">
+        <li><a href="index.html#services">Services</a></li>
+        <li><a href="portfolio.html">Portfolio</a></li>
+        <li><a href="index.html#contact">Contact</a></li>
+      </ul>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+  <script src="js/animations.js"></script>
+  <script src="js/preview.js"></script>
+  <script>
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const cards      = document.querySelectorAll('.pf-card');
+
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const filter = btn.dataset.filter;
+        cards.forEach(card => {
+          card.style.display = (filter === 'all' || card.dataset.category === filter) ? '' : 'none';
+        });
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WebCraft Admin — Dashboard</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="stylesheet" href="css/admin.css" />
+</head>
+<body id="admin-dashboard">
+<div class="admin-layout">
+
+  <!-- ─── Sidebar ─────────────────────────────────────────────────── -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <img src="../assets/images/logo.png" alt="WebCraft" />
+      <div>
+        <div class="sidebar-brand-text">WebCraft</div>
+        <div class="sidebar-brand-sub">Panneau admin</div>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Navigation</div>
+      <div class="sidebar-item active" data-panel="panel-overview">
+        <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+          <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+        </svg>
+        <span class="sidebar-label">Vue d'ensemble</span>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Contenu du site</div>
+      <div class="sidebar-item" data-panel="panel-hero">
+        <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
+          <polyline points="9 22 9 12 15 12 15 22"/>
+        </svg>
+        <span class="sidebar-label">Hero / Accueil</span>
+      </div>
+      <div class="sidebar-item" data-panel="panel-services">
+        <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 010 14.14M4.93 4.93a10 10 0 000 14.14"/>
+        </svg>
+        <span class="sidebar-label">Services</span>
+        <span class="sidebar-badge">4</span>
+      </div>
+      <div class="sidebar-item" data-panel="panel-stats">
+        <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/>
+          <line x1="6" y1="20" x2="6" y2="14"/>
+        </svg>
+        <span class="sidebar-label">Statistiques</span>
+      </div>
+      <div class="sidebar-item" data-panel="panel-portfolio">
+        <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/>
+          <polyline points="21 15 16 10 5 21"/>
+        </svg>
+        <span class="sidebar-label">Portfolio</span>
+        <span class="sidebar-badge" id="portfolio-count">6</span>
+      </div>
+      <div class="sidebar-item" data-panel="panel-contact">
+        <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+          <polyline points="22,6 12,13 2,6"/>
+        </svg>
+        <span class="sidebar-label">Contact</span>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Personnalisation</div>
+      <div class="sidebar-item" data-panel="panel-appearance">
+        <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="13.5" cy="6.5" r="0.5" fill="currentColor"/><circle cx="17.5" cy="10.5" r="0.5" fill="currentColor"/>
+          <circle cx="8.5" cy="7.5" r="0.5" fill="currentColor"/><circle cx="6.5" cy="12.5" r="0.5" fill="currentColor"/>
+          <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 011.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/>
+        </svg>
+        <span class="sidebar-label">Apparence</span>
+      </div>
+      <div class="sidebar-item" data-panel="panel-settings">
+        <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="3"/>
+          <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/>
+        </svg>
+        <span class="sidebar-label">Paramètres</span>
+      </div>
+    </div>
+
+    <div class="sidebar-footer">
+      <div class="sidebar-user">
+        <div class="sidebar-avatar">A</div>
+        <div>
+          <div class="sidebar-user-name">Administrateur</div>
+          <div class="sidebar-user-role">Accès complet</div>
+        </div>
+      </div>
+      <button id="logout-btn" class="sidebar-logout">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/>
+          <polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>
+        </svg>
+        Se déconnecter
+      </button>
+    </div>
+  </aside>
+
+  <!-- ─── Topbar ───────────────────────────────────────────────────── -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <div class="topbar-breadcrumb">
+        <span>WebCraft</span>
+        <span class="sep">/</span>
+        <span class="current">Vue d'ensemble</span>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <span id="save-indicator" class="topbar-save-indicator"></span>
+      <div class="topbar-status">
+        <span class="topbar-status-dot"></span>
+        Site en ligne
+      </div>
+      <button id="view-site-btn" class="topbar-btn">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/>
+          <polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
+        </svg>
+        Voir le site
+      </button>
+      <button class="topbar-btn primary" data-save>
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/>
+          <polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/>
+        </svg>
+        Enregistrer
+      </button>
+    </div>
+  </header>
+
+  <!-- ─── Main ─────────────────────────────────────────────────────── -->
+  <main class="admin-main">
+
+    <!-- ══════════════════════════════════════════════════════════════
+         VUE D'ENSEMBLE
+    ════════════════════════════════════════════════════════════════ -->
+    <div id="panel-overview" class="admin-panel active">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Vue d'ensemble</div>
+          <div class="page-subtitle">Résumé de votre site WebCraft</div>
+        </div>
+        <div class="page-actions">
+          <button class="btn-admin primary" data-save>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/>
+              <polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/>
+            </svg>
+            Enregistrer tout
+          </button>
+        </div>
+      </div>
+
+      <div class="overview-grid">
+        <div class="overview-card">
+          <div class="overview-card-label">Sections actives</div>
+          <div class="overview-card-value">7</div>
+          <div class="overview-card-sub">Hero, Services, Stats, Portfolio…</div>
+        </div>
+        <div class="overview-card">
+          <div class="overview-card-label">Projets portfolio</div>
+          <div class="overview-card-value" id="overview-portfolio-count">6</div>
+          <div class="overview-card-sub">Vitrine + E-commerce</div>
+        </div>
+        <div class="overview-card">
+          <div class="overview-card-label">Services affichés</div>
+          <div class="overview-card-value">4</div>
+          <div class="overview-card-sub">Tous actifs</div>
+        </div>
+        <div class="overview-card">
+          <div class="overview-card-label">Dernière modif.</div>
+          <div class="overview-card-value" style="font-size:1.1rem;">Aujourd'hui</div>
+          <div class="overview-card-sub">Session en cours</div>
+        </div>
+      </div>
+
+      <div class="admin-card">
+        <div class="admin-card-header">
+          <div class="admin-card-title"><div class="admin-card-icon">⚡</div>Accès rapide</div>
+        </div>
+        <div class="admin-card-body">
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:0.75rem;">
+            <button class="btn-admin" style="width:100%;justify-content:center;padding:1rem;" onclick="document.querySelector('[data-panel=panel-hero]').click()">🏠 Modifier le Hero</button>
+            <button class="btn-admin" style="width:100%;justify-content:center;padding:1rem;" onclick="document.querySelector('[data-panel=panel-services]').click()">⚙️ Éditer les services</button>
+            <button class="btn-admin" style="width:100%;justify-content:center;padding:1rem;" onclick="document.querySelector('[data-panel=panel-portfolio]').click()">🖼️ Gérer le portfolio</button>
+            <button class="btn-admin" style="width:100%;justify-content:center;padding:1rem;" onclick="document.querySelector('[data-panel=panel-appearance]').click()">🎨 Apparence</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════════════
+         HERO
+    ════════════════════════════════════════════════════════════════ -->
+    <div id="panel-hero" class="admin-panel">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Hero / Accueil</div>
+          <div class="page-subtitle">Première impression du site — section la plus visible</div>
+        </div>
+        <div class="page-actions">
+          <button class="btn-admin primary" data-save>Enregistrer</button>
+        </div>
+      </div>
+
+      <div class="admin-card">
+        <div class="admin-card-header">
+          <div class="admin-card-title"><div class="admin-card-icon">✏️</div>Titre principal</div>
+        </div>
+        <div class="admin-card-body">
+          <div class="form-grid">
+            <div class="field-group form-grid-full">
+              <label class="field-label">Ligne en dégradé <span>(partie colorée bleu → violet → rose)</span></label>
+              <input type="text" class="field-input" data-field="hero.gradLine" />
+            </div>
+            <div class="field-group form-grid-full">
+              <label class="field-label">Ligne normale <span>(texte foncé, deuxième ligne)</span></label>
+              <input type="text" class="field-input" data-field="hero.normalLine" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="admin-card">
+        <div class="admin-card-header">
+          <div class="admin-card-title"><div class="admin-card-icon">💬</div>Sous-titre & badge</div>
+        </div>
+        <div class="admin-card-body">
+          <div class="form-grid">
+            <div class="field-group form-grid-full">
+              <label class="field-label">Texte du badge <span>(pastille verte en haut du hero)</span></label>
+              <input type="text" class="field-input" data-field="hero.badge" />
+            </div>
+            <div class="field-group form-grid-full">
+              <label class="field-label">Sous-titre</label>
+              <textarea class="field-textarea" data-field="hero.subtitle"></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="admin-card">
+        <div class="admin-card-header">
+          <div class="admin-card-title"><div class="admin-card-icon">🔘</div>Boutons d'action</div>
+        </div>
+        <div class="admin-card-body">
+          <div class="form-grid">
+            <div class="field-group">
+              <label class="field-label">Bouton principal <span>(dégradé)</span></label>
+              <input type="text" class="field-input" data-field="hero.btn1Text" />
+            </div>
+            <div class="field-group">
+              <label class="field-label">Lien bouton principal</label>
+              <input type="text" class="field-input" data-field="hero.btn1Href" />
+            </div>
+            <div class="field-group">
+              <label class="field-label">Bouton secondaire <span>(contour)</span></label>
+              <input type="text" class="field-input" data-field="hero.btn2Text" />
+            </div>
+            <div class="field-group">
+              <label class="field-label">Lien bouton secondaire</label>
+              <input type="text" class="field-input" data-field="hero.btn2Href" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="admin-card">
+        <div class="admin-card-header">
+          <div class="admin-card-title"><div class="admin-card-icon">🪟</div>Cartes flottantes (colonne droite)</div>
+        </div>
+        <div class="admin-card-body">
+          <div class="form-grid">
+            <div class="field-group">
+              <label class="field-label">Carte 1 — Titre projet</label>
+              <input type="text" class="field-input" data-field="hero.card1Title" />
+            </div>
+            <div class="field-group">
+              <label class="field-label">Carte 1 — Sous-texte</label>
+              <input type="text" class="field-input" data-field="hero.card1Sub" />
+            </div>
+          </div>
+        </div>
+        <div class="admin-card-footer">
+          <button class="btn-admin primary" data-save>Enregistrer le Hero</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════════════
+         SERVICES
+    ════════════════════════════════════════════════════════════════ -->
+    <div id="panel-services" class="admin-panel">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Services</div>
+          <div class="page-subtitle">Les 4 services affichés sur la page d'accueil</div>
+        </div>
+        <div class="page-actions">
+          <button class="btn-admin primary" data-save>Enregistrer</button>
+        </div>
+      </div>
+
+      <div class="admin-card">
+        <div class="admin-card-header">
+          <div class="admin-card-title"><div class="admin-card-icon">📝</div>En-tête de la section</div>
+        </div>
+        <div class="admin-card-body">
+          <div class="form-grid">
+            <div class="field-group">
+              <label class="field-label">Label <span>(petit texte gradient au-dessus)</span></label>
+              <input type="text" class="field-input" data-field="services.header.label" />
+            </div>
+            <div class="field-group">
+              <label class="field-label">Titre de section</label>
+              <input type="text" class="field-input" data-field="services.header.title" />
+            </div>
+            <div class="field-group form-grid-full">
+              <label class="field-label">Sous-titre</label>
+              <input type="text" class="field-input" data-field="services.header.subtitle" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="admin-card">
+        <div class="admin-card-header">
+          <div class="admin-card-title"><div class="admin-card-icon">🗂️</div>Cartes services</div>
+          <span style="font-size:0.75rem;color:var(--text-muted);">Cliquez pour éditer</span>
+        </div>
+        <div class="admin-card-body">
+          <div class="service-items">
+
+            <div class="service-item">
+              <div class="service-item-header">
+                <div class="service-item-left">
+                  <div class="service-item-emoji">🌐</div>
+                  <div>
+                    <div class="service-item-name">Site vitrine</div>
+                    <div class="service-item-status">Position 1</div>
+                  </div>
+                </div>
+                <div class="service-item-right">
+                  <label class="toggle" style="margin:0;" onclick="event.stopPropagation()">
+                    <input type="checkbox" data-field="services.items.0.visible" /><span class="toggle-slider"></span>
+                  </label>
+                  <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                </div>
+              </div>
+              <div class="service-item-body">
+                <div class="form-grid">
+                  <div class="field-group">
+                    <label class="field-label">Emoji / icône</label>
+                    <input type="text" class="field-input" data-field="services.items.0.emoji" />
+                  </div>
+                  <div class="field-group">
+                    <label class="field-label">Titre</label>
+                    <input type="text" class="field-input" data-field="services.items.0.title" />
+                  </div>
+                  <div class="field-group form-grid-full">
+                    <label class="field-label">Description</label>
+                    <textarea class="field-textarea" data-field="services.items.0.desc"></textarea>
+                  </div>
+                  <div class="field-group">
+                    <label class="field-label">Texte du lien</label>
+                    <input type="text" class="field-input" data-field="services.items.0.link" />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="service-item">
+              <div class="service-item-header">
+                <div class="service-item-left">
+                  <div class="service-item-emoji">🛒</div>
+                  <div>
+                    <div class="service-item-name">Boutique e-commerce</div>
+                    <div class="service-item-status">Position 2</div>
+                  </div>
+                </div>
+                <div class="service-item-right">
+                  <label class="toggle" style="margin:0;" onclick="event.stopPropagation()">
+                    <input type="checkbox" data-field="services.items.1.visible" /><span class="toggle-slider"></span>
+                  </label>
+                  <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                </div>
+              </div>
+              <div class="service-item-body">
+                <div class="form-grid">
+                  <div class="field-group">
+                    <label class="field-label">Emoji / icône</label>
+                    <input type="text" class="field-input" data-field="services.items.1.emoji" />
+                  </div>
+                  <div class="field-group">
+                    <label class="field-label">Titre</label>
+                    <input type="text" class="field-input" data-field="services.items.1.title" />
+                  </div>
+                  <div class="field-group form-grid-full">
+                    <label class="field-label">Description</label>
+                    <textarea class="field-textarea" data-field="services.items.1.desc"></textarea>
+                  </div>
+                  <div class="field-group">
+                    <label class="field-label">Texte du lien</label>
+                    <input type="text" class="field-input" data-field="services.items.1.link" />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="service-item">
+              <div class="service-item-header">
+                <div class="service-item-left">
+                  <div class="service-item-emoji">⚡</div>
+                  <div>
+                    <div class="service-item-name">Refonte & optimisation</div>
+                    <div class="service-item-status">Position 3</div>
+                  </div>
+                </div>
+                <div class="service-item-right">
+                  <label class="toggle" style="margin:0;" onclick="event.stopPropagation()">
+                    <input type="checkbox" data-field="services.items.2.visible" /><span class="toggle-slider"></span>
+                  </label>
+                  <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                </div>
+              </div>
+              <div class="service-item-body">
+                <div class="form-grid">
+                  <div class="field-group">
+                    <label class="field-label">Emoji / icône</label>
+                    <input type="text" class="field-input" data-field="services.items.2.emoji" />
+                  </div>
+                  <div class="field-group">
+                    <label class="field-label">Titre</label>
+                    <input type="text" class="field-input" data-field="services.items.2.title" />
+                  </div>
+                  <div class="field-group form-grid-full">
+                    <label class="field-label">Description</label>
+                    <textarea class="field-textarea" data-field="services.items.2.desc"></textarea>
+                  </div>
+                  <div class="field-group">
+                    <label class="field-label">Texte du lien</label>
+                    <input type="text" class="field-input" data-field="services.items.2.link" />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="service-item">
+              <div class="service-item-header">
+                <div class="service-item-left">
+                  <div class="service-item-emoji">🛡️</div>
+                  <div>
+                    <div class="service-item-name">Maintenance & suivi</div>
+                    <div class="service-item-status">Position 4</div>
+                  </div>
+                </div>
+                <div class="service-item-right">
+                  <label class="toggle" style="margin:0;" onclick="event.stopPropagation()">
+                    <input type="checkbox" data-field="services.items.3.visible" /><span class="toggle-slider"></span>
+                  </label>
+                  <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                </div>
+              </div>
+              <div class="service-item-body">
+                <div class="form-grid">
+                  <div class="field-group">
+                    <label class="field-label">Emoji / icône</label>
+                    <input type="text" class="field-input" data-field="services.items.3.emoji" />
+                  </div>
+                  <div class="field-group">
+                    <label class="field-label">Titre</label>
+                    <input type="text" class="field-input" data-field="services.items.3.title" />
+                  </div>
+                  <div class="field-group form-grid-full">
+                    <label class="field-label">Description</label>
+                    <textarea class="field-textarea" data-field="services.items.3.desc"></textarea>
+                  </div>
+                  <div class="field-group">
+                    <label class="field-label">Texte du lien</label>
+                    <input type="text" class="field-input" data-field="services.items.3.link" />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <div class="admin-card-footer">
+          <button class="btn-admin primary" data-save>Enregistrer les services</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════════════
+         STATS
+    ════════════════════════════════════════════════════════════════ -->
+    <div id="panel-stats" class="admin-panel">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Statistiques</div>
+          <div class="page-subtitle">Les 4 chiffres clés de la section sombre</div>
+        </div>
+        <div class="page-actions">
+          <button class="btn-admin primary" data-save>Enregistrer</button>
+        </div>
+      </div>
+
+      <div class="admin-card">
+        <div class="admin-card-header">
+          <div class="admin-card-title"><div class="admin-card-icon">📊</div>En-tête de section</div>
+        </div>
+        <div class="admin-card-body">
+          <div class="form-grid">
+            <div class="field-group">
+              <label class="field-label">Label</label>
+              <input type="text" class="field-input" data-field="stats.label" />
+            </div>
+            <div class="field-group">
+              <label class="field-label">Titre</label>
+              <input type="text" class="field-input" data-field="stats.title" />
+            </div>
+            <div class="field-group form-grid-full">
+              <label class="field-label">Sous-titre</label>
+              <input type="text" class="field-input" data-field="stats.subtitle" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="admin-card">
+        <div class="admin-card-header">
+          <div class="admin-card-title"><div class="admin-card-icon">🔢</div>Chiffres clés</div>
+        </div>
+        <div class="admin-card-body">
+          <div class="stats-items">
+
+            <div class="stat-item">
+              <div class="stat-item-label">Stat 1 — Label</div>
+              <input type="text" class="field-input" data-field="stats.items.0.label" style="margin-bottom:0.75rem;font-size:0.8rem;" />
+              <div class="stat-item-inputs">
+                <input type="number" class="stat-value-input" data-field="stats.items.0.value" />
+                <input type="text"   class="stat-suffix-input" data-field="stats.items.0.suffix" placeholder="suffixe" />
+              </div>
+            </div>
+
+            <div class="stat-item">
+              <div class="stat-item-label">Stat 2 — Label</div>
+              <input type="text" class="field-input" data-field="stats.items.1.label" style="margin-bottom:0.75rem;font-size:0.8rem;" />
+              <div class="stat-item-inputs">
+                <input type="number" class="stat-value-input" data-field="stats.items.1.value" />
+                <input type="text"   class="stat-suffix-input" data-field="stats.items.1.suffix" placeholder="suffixe" />
+              </div>
+            </div>
+
+            <div class="stat-item">
+              <div class="stat-item-label">Stat 3 — Label</div>
+              <input type="text" class="field-input" data-field="stats.items.2.label" style="margin-bottom:0.75rem;font-size:0.8rem;" />
+              <div class="stat-item-inputs">
+                <input type="number" class="stat-value-input" data-field="stats.items.2.value" />
+                <input type="text"   class="stat-suffix-input" data-field="stats.items.2.suffix" placeholder="suffixe" />
+              </div>
+            </div>
+
+            <div class="stat-item">
+              <div class="stat-item-label">Stat 4 — Label</div>
+              <input type="text" class="field-input" data-field="stats.items.3.label" style="margin-bottom:0.75rem;font-size:0.8rem;" />
+              <div class="stat-item-inputs">
+                <input type="number" class="stat-value-input" data-field="stats.items.3.value" />
+                <input type="text"   class="stat-suffix-input" data-field="stats.items.3.suffix" placeholder="suffixe" />
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <div class="admin-card-footer">
+          <button class="btn-admin primary" data-save>Enregistrer les stats</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════════════
+         PORTFOLIO
+    ════════════════════════════════════════════════════════════════ -->
+    <div id="panel-portfolio" class="admin-panel">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Portfolio</div>
+          <div class="page-subtitle">Gérez les projets affichés sur portfolio.html</div>
+        </div>
+        <div class="page-actions">
+          <button id="add-portfolio-btn" class="btn-admin">+ Ajouter un projet</button>
+          <button class="btn-admin primary" data-save>Enregistrer</button>
+        </div>
+      </div>
+
+      <div class="admin-card">
+        <div class="admin-card-header">
+          <div class="admin-card-title">
+            <div class="admin-card-icon">🖼️</div>
+            Projets (<span id="portfolio-count-card">6</span>)
+          </div>
+          <span style="font-size:0.75rem;color:var(--text-muted);">Survolez une carte pour éditer ou supprimer</span>
+        </div>
+        <div class="admin-card-body">
+          <div id="admin-portfolio-grid" class="portfolio-items"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════════════
+         CONTACT
+    ════════════════════════════════════════════════════════════════ -->
+    <div id="panel-contact" class="admin-panel">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Contact</div>
+          <div class="page-subtitle">Informations de contact et réseaux sociaux</div>
+        </div>
+        <div class="page-actions">
+          <button class="btn-admin primary" data-save>Enregistrer</button>
+        </div>
+      </div>
+
+      <div class="admin-card">
+        <div class="admin-card-header">
+          <div class="admin-card-title"><div class="admin-card-icon">✉️</div>Informations</div>
+        </div>
+        <div class="admin-card-body">
+          <div class="form-grid">
+            <div class="field-group">
+              <label class="field-label">Label de section</label>
+              <input type="text" class="field-input" data-field="contact.label" />
+            </div>
+            <div class="field-group">
+              <label class="field-label">Titre</label>
+              <input type="text" class="field-input" data-field="contact.title" />
+            </div>
+            <div class="field-group form-grid-full">
+              <label class="field-label">Sous-titre</label>
+              <input type="text" class="field-input" data-field="contact.subtitle" />
+            </div>
+            <div class="field-group">
+              <label class="field-label">Adresse email</label>
+              <input type="email" class="field-input" data-field="contact.email" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="admin-card">
+        <div class="admin-card-header">
+          <div class="admin-card-title"><div class="admin-card-icon">🔗</div>Réseaux sociaux</div>
+        </div>
+        <div class="admin-card-body">
+          <div class="form-grid">
+            <div class="field-group">
+              <label class="field-label">Instagram</label>
+              <input type="url" class="field-input" data-field="contact.instagram" placeholder="https://instagram.com/…" />
+            </div>
+            <div class="field-group">
+              <label class="field-label">LinkedIn</label>
+              <input type="url" class="field-input" data-field="contact.linkedin" placeholder="https://linkedin.com/…" />
+            </div>
+            <div class="field-group">
+              <label class="field-label">Facebook</label>
+              <input type="url" class="field-input" data-field="contact.facebook" placeholder="https://facebook.com/…" />
+            </div>
+          </div>
+        </div>
+        <div class="admin-card-footer">
+          <button class="btn-admin primary" data-save>Enregistrer le contact</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════════════
+         APPARENCE
+    ════════════════════════════════════════════════════════════════ -->
+    <div id="panel-appearance" class="admin-panel">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Apparence</div>
+          <div class="page-subtitle">Couleurs, typographie et éléments visuels</div>
+        </div>
+        <div class="page-actions">
+          <button class="btn-admin primary" data-save>Enregistrer</button>
+        </div>
+      </div>
+
+      <div class="admin-card">
+        <div class="admin-card-header">
+          <div class="admin-card-title"><div class="admin-card-icon">🎨</div>Palette de couleurs</div>
+          <span style="font-size:0.75rem;color:var(--text-muted);">Les changements s'appliquent en temps réel dans la prévisualisation</span>
+        </div>
+        <div class="admin-card-body">
+          <div class="color-grid">
+            <div class="color-item">
+              <input type="color" class="color-swatch" data-field="appearance.blue" />
+              <div class="color-item-info">
+                <div class="color-item-name">Bleu primaire</div>
+                <div class="color-item-hex">#7FB3FF</div>
+              </div>
+            </div>
+            <div class="color-item">
+              <input type="color" class="color-swatch" data-field="appearance.violet" />
+              <div class="color-item-info">
+                <div class="color-item-name">Violet secondaire</div>
+                <div class="color-item-hex">#C3A6FF</div>
+              </div>
+            </div>
+            <div class="color-item">
+              <input type="color" class="color-swatch" data-field="appearance.pink" />
+              <div class="color-item-info">
+                <div class="color-item-name">Rose accent</div>
+                <div class="color-item-hex">#FFB3C7</div>
+              </div>
+            </div>
+            <div class="color-item">
+              <input type="color" class="color-swatch" data-field="appearance.mint" />
+              <div class="color-item-info">
+                <div class="color-item-name">Menthe accent</div>
+                <div class="color-item-hex">#A8E6CF</div>
+              </div>
+            </div>
+            <div class="color-item">
+              <input type="color" class="color-swatch" data-field="appearance.bg" />
+              <div class="color-item-info">
+                <div class="color-item-name">Fond principal</div>
+                <div class="color-item-hex">#F9FAFB</div>
+              </div>
+            </div>
+            <div class="color-item">
+              <input type="color" class="color-swatch" data-field="appearance.text" />
+              <div class="color-item-info">
+                <div class="color-item-name">Texte principal</div>
+                <div class="color-item-hex">#1F2937</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="admin-card">
+        <div class="admin-card-header">
+          <div class="admin-card-title"><div class="admin-card-icon">🖼️</div>Logo</div>
+        </div>
+        <div class="admin-card-body">
+          <div class="field-group">
+            <label class="field-label">Logo actuel</label>
+            <div style="display:flex;align-items:center;gap:1rem;margin-top:0.25rem;">
+              <img src="../assets/images/logo.png" alt="Logo" style="height:48px;border-radius:8px;background:#fff;padding:4px;" />
+              <button class="btn-admin" onclick="showToast('Upload disponible avec un backend serveur','warning')">Changer le logo</button>
+            </div>
+            <p class="field-hint">Format recommandé : PNG transparent, min. 400×400px</p>
+          </div>
+        </div>
+        <div class="admin-card-footer">
+          <button class="btn-admin primary" data-save>Enregistrer l'apparence</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════════════
+         PARAMÈTRES
+    ════════════════════════════════════════════════════════════════ -->
+    <div id="panel-settings" class="admin-panel">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Paramètres</div>
+          <div class="page-subtitle">Configuration générale du site et de l'admin</div>
+        </div>
+      </div>
+
+      <div class="admin-card">
+        <div class="admin-card-header">
+          <div class="admin-card-title"><div class="admin-card-icon">🌐</div>Informations du site</div>
+        </div>
+        <div class="admin-card-body">
+          <div class="form-grid">
+            <div class="field-group">
+              <label class="field-label">Nom du site</label>
+              <input type="text" class="field-input" data-field="settings.siteName" />
+            </div>
+            <div class="field-group">
+              <label class="field-label">Tagline</label>
+              <input type="text" class="field-input" data-field="settings.tagline" />
+            </div>
+            <div class="field-group">
+              <label class="field-label">Copyright footer</label>
+              <input type="text" class="field-input" data-field="settings.copyright" />
+            </div>
+          </div>
+        </div>
+        <div class="admin-card-footer">
+          <button class="btn-admin primary" data-save>Enregistrer</button>
+        </div>
+      </div>
+
+      <div class="admin-card">
+        <div class="admin-card-header">
+          <div class="admin-card-title"><div class="admin-card-icon">🔐</div>Sécurité admin</div>
+        </div>
+        <div class="admin-card-body">
+          <div class="form-grid">
+            <div class="field-group">
+              <label class="field-label">Nouveau mot de passe</label>
+              <input type="password" id="new-password" class="field-input" placeholder="••••••••" />
+            </div>
+            <div class="field-group">
+              <label class="field-label">Confirmer le mot de passe</label>
+              <input type="password" id="confirm-password" class="field-input" placeholder="••••••••" />
+            </div>
+          </div>
+          <p class="field-hint" style="margin-top:1rem;">
+            ⚠️ Le mot de passe est actuellement stocké côté client (SHA-256).
+            Pour une sécurité maximale, connectez un backend serveur.
+          </p>
+        </div>
+        <div class="admin-card-footer">
+          <button class="btn-admin primary" id="change-password-btn">Mettre à jour le mot de passe</button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ─── Preview panel ────────────────────────────────────────────── -->
+  <div class="preview-panel">
+    <div class="preview-header">
+      <div class="device-btns">
+        <button class="device-btn active" data-device="desktop" title="Desktop">🖥</button>
+        <button class="device-btn" data-device="tablet" title="Tablette">⬜</button>
+        <button class="device-btn" data-device="mobile" title="Mobile">📱</button>
+      </div>
+      <div class="preview-url-bar">index.html</div>
+      <button class="preview-refresh" id="refresh-preview" title="Rafraîchir">↻</button>
+    </div>
+    <div class="preview-iframe-wrap">
+      <iframe id="preview-iframe" src="../index.html" title="Prévisualisation du site"></iframe>
+    </div>
+  </div>
+
+</div>
+
+<!-- ─── Portfolio modal ─────────────────────────────────────────── -->
+<div id="portfolio-modal" class="modal-overlay">
+  <div class="modal">
+    <div class="modal-header">
+      <div id="modal-title" class="modal-title">Modifier le projet</div>
+      <button id="modal-close" class="modal-close">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="field-group">
+          <label class="field-label">Emoji <span>(icône du projet)</span></label>
+          <input type="text" id="modal-emoji" class="field-input" placeholder="🌟" />
+        </div>
+        <div class="field-group">
+          <label class="field-label">Catégorie</label>
+          <select id="modal-category" class="field-select">
+            <option value="vitrine">Vitrine</option>
+            <option value="ecommerce">E-commerce</option>
+          </select>
+        </div>
+        <div class="field-group form-grid-full">
+          <label class="field-label">Nom du projet</label>
+          <input type="text" id="modal-name" class="field-input" placeholder="Nom du client…" />
+        </div>
+        <div class="field-group form-grid-full">
+          <label class="field-label">Description</label>
+          <textarea id="modal-desc" class="field-textarea" rows="3" placeholder="Décrivez le projet en 1-2 phrases…"></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-admin" id="modal-cancel">Annuler</button>
+      <button class="btn-admin primary" id="modal-save">Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div id="toast">
+  <span class="toast-icon">✓</span>
+  <span class="toast-msg"></span>
+</div>
+
+<script src="js/admin.js"></script>
+</body>
+</html>

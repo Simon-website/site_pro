@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(Get-ChildItem -Path \"C:\\\\site_pro\" -Force)",
+      "Bash(Select-Object Name, Mode)",
+      "PowerShell(Test-Path *)",
+      "PowerShell(New-Item *)",
+      "PowerShell(Get-ChildItem -Path \"C:\\\\site_pro\" -Recurse | Where-Object { -not $_.PSIsContainer } | Select-Object FullName)",
+      "PowerShell(Start-Process \"C:\\\\site_pro\\\\index.html\")",
+      "PowerShell(Start-Process \"C:\\\\site_pro\\\\admin\\\\index.html\")",
+      "PowerShell(python --version 2>$null; node --version 2>$null; python3 --version 2>$null)",
+      "PowerShell(cd C:\\\\site_pro; Start-Process powershell -ArgumentList \"-NoExit\", \"-Command\", \"cd 'C:\\\\site_pro'; npx serve -p 3000 --no-clipboard\" -WindowStyle Normal)"
+    ]
+  }
+}

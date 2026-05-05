@@ -1,0 +1,178 @@
+/* ─── Curseur personnalisé ───────────────────────────────────────── */
+.cursor-dot,
+.cursor-ring {
+  position: fixed;
+  top: 0; left: 0;
+  pointer-events: none;
+  z-index: 9999;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: opacity 0.3s ease;
+}
+.cursor-dot {
+  width: 6px; height: 6px;
+  background: var(--blue);
+}
+.cursor-ring {
+  width: 32px; height: 32px;
+  border: 1.5px solid rgba(127,179,255,0.55);
+  transition: width 0.2s ease, height 0.2s ease, border-color 0.2s ease, opacity 0.3s ease;
+}
+.cursor-ring.hovering {
+  width: 48px; height: 48px;
+  border-color: rgba(127,179,255,0.9);
+  background: rgba(127,179,255,0.06);
+}
+body:has(.cursor-dot) { cursor: none; }
+body:has(.cursor-dot) a,
+body:has(.cursor-dot) button,
+body:has(.cursor-dot) input,
+body:has(.cursor-dot) textarea { cursor: none; }
+
+/* ─── Hero cards — lévitation douce ────────────────────────────── */
+.hero-card:nth-child(1) {
+  animation: heroFloat 4.2s ease-in-out infinite;
+}
+.hero-card:nth-child(2) {
+  animation: heroFloat 5s ease-in-out 0.6s infinite;
+}
+.hero-card:nth-child(3) {
+  animation: heroFloat 4.6s ease-in-out 1.2s infinite;
+}
+.hero-card:hover {
+  animation-play-state: paused;
+}
+@keyframes heroFloat {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-10px); }
+}
+
+/* ─── Orbs — dérive lente ───────────────────────────────────────── */
+.hero-orb-1 { animation: orbDrift1 18s ease-in-out infinite; }
+.hero-orb-2 { animation: orbDrift2 22s ease-in-out infinite; }
+.hero-orb-3 { animation: orbDrift3 16s ease-in-out infinite; }
+
+@keyframes orbDrift1 {
+  0%, 100% { transform: translate(0,   0)   scale(1); }
+  33%       { transform: translate(-30px, 20px) scale(1.05); }
+  66%       { transform: translate(20px, -15px) scale(0.95); }
+}
+@keyframes orbDrift2 {
+  0%, 100% { transform: translate(0,   0)   scale(1); }
+  40%       { transform: translate(25px, -20px) scale(1.08); }
+  70%       { transform: translate(-15px, 15px) scale(0.96); }
+}
+@keyframes orbDrift3 {
+  0%, 100% { transform: translate(0,   0)   scale(1); }
+  50%       { transform: translate(-20px, -25px) scale(1.1); }
+}
+
+/* ─── Reveal au scroll ──────────────────────────────────────────── */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px) scale(0.97);
+  transition: opacity 0.55s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+.reveal-left {
+  opacity: 0;
+  transform: translateX(-36px) scale(0.97);
+  transition: opacity 0.55s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.reveal-left.visible {
+  opacity: 1;
+  transform: translateX(0) scale(1);
+}
+.reveal-right {
+  opacity: 0;
+  transform: translateX(36px) scale(0.97);
+  transition: opacity 0.55s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.reveal-right.visible {
+  opacity: 1;
+  transform: translateX(0) scale(1);
+}
+
+/* Délais cascade */
+.reveal-delay-1 { transition-delay: 0.07s; }
+.reveal-delay-2 { transition-delay: 0.14s; }
+.reveal-delay-3 { transition-delay: 0.21s; }
+.reveal-delay-4 { transition-delay: 0.28s; }
+.reveal-delay-5 { transition-delay: 0.35s; }
+.reveal-delay-6 { transition-delay: 0.42s; }
+
+/* ─── Hero entry — words stagger ────────────────────────────────── */
+.hero-word {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(30px);
+  animation: wordIn 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+@keyframes wordIn {
+  to { opacity: 1; transform: translateY(0); }
+}
+.hero-badge    { animation: fadeSlideUp 0.5s 0.05s both; }
+.hero-subtitle { animation: fadeSlideUp 0.5s both; }
+.hero-actions  { animation: fadeSlideUp 0.5s both; }
+.hero-scroll   { animation: fadeSlideUp 0.5s 0.1s both; }
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* ─── Bouton shine ──────────────────────────────────────────────── */
+.btn-primary {
+  position: relative;
+  overflow: hidden;
+}
+.btn-primary::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -80%;
+  width: 50%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.28), transparent);
+  transform: skewX(-20deg);
+  transition: none;
+  pointer-events: none;
+}
+.btn-primary:hover::after {
+  animation: btnShine 0.55s ease forwards;
+}
+@keyframes btnShine {
+  to { left: 140%; }
+}
+
+/* ─── Nav link actif ────────────────────────────────────────────── */
+.nav-links a.active { color: var(--text); }
+.nav-links a.active::after { width: 100%; }
+
+/* ─── Page loader ────────────────────────────────────────────────── */
+#page-loader {
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  z-index: 9998;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+#page-loader.hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+.loader-ring {
+  width: 44px; height: 44px;
+  border: 2.5px solid var(--border);
+  border-top-color: var(--blue);
+  border-right-color: var(--violet);
+  border-radius: 50%;
+  animation: spin 0.75s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }

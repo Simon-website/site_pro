@@ -1,0 +1,270 @@
+# WebCraft — Brand Guidelines (Référence complète)
+
+Dernière mise à jour : 2026-05-05
+Ce fichier est la source de vérité pour tout développement ou modification du site WebCraft.
+Claude doit toujours lire ce fichier en début de session avant de toucher au design.
+
+---
+
+## Identité
+
+Nom       : WebCraft
+Tagline   : Web Code, You Grow.
+Baseline  : We code, you craft.
+Logo      : assets/images/logo.png  (W stylisé avec < >, dégradé bleu→violet→rose)
+Style     : Moderne · Punchy · Professionnel · Propre · Tech-friendly
+Ambiance  : Dynamique et percutant, pas épuré à l'excès. Chaque section doit avoir du caractère.
+
+---
+
+## Direction artistique
+
+L'objectif est un site "punchy" mais qui reste propre et moderne.
+On évite le minimalisme fade : chaque section doit avoir une intention visuelle forte.
+Points clés :
+- Utiliser les dégradés généreusement (pas juste en accents)
+- Créer du contraste entre sections (alterner fond clair / fond sombre)
+- Les titres sont grands, gras (font-weight 700-800), percutants
+- Les cartes ont toujours de la profondeur (ombres, hover lift)
+- Le hero est split 2 colonnes sur desktop : texte à gauche, visuels flottants à droite
+
+---
+
+## Couleurs
+
+Primaire (Bleu pastel)  : #7FB3FF
+Secondaire (Violet)     : #C3A6FF
+Accent chaud (Rose)     : #FFB3C7
+Accent frais (Menthe)   : #A8E6CF
+
+Dégradé principal       : linear-gradient(135deg, #7FB3FF, #C3A6FF)
+Dégradé hero            : linear-gradient(135deg, #7FB3FF, #C3A6FF 55%, #FFB3C7)
+Dégradé chaud           : linear-gradient(135deg, #C3A6FF, #FFB3C7)
+Dégradé frais           : linear-gradient(135deg, #7FB3FF, #A8E6CF)
+
+Fond principal          : #F9FAFB  (blanc cassé)
+Fond surface            : #FFFFFF
+Fond surface-2          : #F3F4F6  (gris très léger, sections alternées)
+
+Section sombre (stats)  : #0D1117 (dark navy — section de contraste obligatoire)
+Surface sombre          : #161B22
+Bordure sombre          : rgba(255,255,255,0.08)
+
+Texte principal         : #1F2937
+Texte atténué           : #6B7280
+Texte fantôme           : #9CA3AF
+
+---
+
+## Typographie
+
+Titres  : Poppins (Google Fonts), font-weight 700 ou 800
+Corps   : Inter (Google Fonts), font-weight 300 (regular) ou 400
+Tagline : Inter font-weight 300 (light)
+
+Tailles clés :
+- Hero title    : clamp(2.8rem, 5.5vw, 4.8rem) — letter-spacing: -0.02em
+- Section title : clamp(2rem, 4vw, 3rem) — font-weight 700
+- Subtitle      : 1rem–1.08rem — font-weight 300 — color text-muted
+- Section label : 0.72rem — font-weight 700 — letter-spacing 0.18em — uppercase — gradient text
+
+---
+
+## Boutons
+
+Principal (btn-primary)
+  Background    : linear-gradient(135deg, #7FB3FF, #C3A6FF)
+  Texte         : #FFFFFF — font-weight 600
+  Border-radius : 12px
+  Shadow        : 0 4px 20px rgba(127,179,255,0.4)
+  Hover         : filter brightness(0.9) + translateY(-3px) + shadow renforcée
+
+Secondaire (btn-outline)
+  Background    : #FFFFFF
+  Bordure       : 1.5px solid rgba(0,0,0,0.08)
+  Texte         : #6B7280
+  Hover         : bordure bleue + fond rgba(127,179,255,0.07) + translateY(-2px)
+
+Sur fond sombre (btn-dark)
+  Background    : #FFFFFF
+  Texte         : #0D1117 — font-weight 700
+  Hover         : translateY(-3px) + shadow renforcée
+
+---
+
+## Composants UI
+
+Cartes (light)
+  Background    : #FFFFFF
+  Bordure       : 1px solid rgba(0,0,0,0.08)
+  Border-radius : 16px
+  Shadow        : 0 2px 10px rgba(0,0,0,0.06)
+  Hover         : translateY(-5px) + shadow renforcée (0 8px 32px rgba(0,0,0,0.10))
+
+Cartes services
+  Barre colorée de 3px en haut au hover (scaleX 0→1 depuis la gauche)
+  Icône sur fond pastel teinté selon la couleur du service
+
+Cartes (dark / section stats)
+  Background    : #161B22
+  Bordure       : 1px solid rgba(255,255,255,0.08)
+  Border-radius : 16px
+  Hover         : translateY(-4px) + bordure rgba(127,179,255,0.3)
+
+Inputs
+  Background    : #F9FAFB
+  Bordure       : 1.5px solid rgba(0,0,0,0.08)
+  Focus         : bordure #7FB3FF + box-shadow 0 0 0 3px rgba(127,179,255,0.15)
+  Border-radius : 10px
+
+Section label (badge de titre)
+  Gradient text bleu→violet
+  Petit tiret de 20px en gradient avant le texte (pseudo ::before)
+
+---
+
+## Structure des pages
+
+index.html (one-page scroll)
+  1. Header fixe avec logo + nav + CTA
+  2. Hero — split 2 colonnes : titre/CTA gauche | cartes flottantes droite
+  3. Marquee — bande défilante de mots-clés services
+  4. Services — grille 4 cartes
+  5. Stats — section fond sombre (#0D1117), 4 chiffres clés
+  6. Pourquoi nous — liste arguments gauche | bloc visuel cartes droite
+  7. Portfolio preview — 3 cartes avec overlay au hover
+  8. CTA Band — section fond dégradé bleu→violet→rose, texte blanc
+  9. Contact — formulaire + infos contact
+  10. Footer
+
+portfolio.html (page dédiée)
+  Header identique
+  Hero texte centré
+  Filtres : Tous / Vitrine / E-commerce
+  Grille 3 colonnes (6 projets)
+  CTA bas de page
+  Footer identique
+
+---
+
+## Animations
+
+Durées       : 0.25s (transitions UI) — 0.28s (reveal scroll)
+Easing       : cubic-bezier(0.4, 0, 0.2, 1)
+Cascade      : delay de 0.06s entre éléments d'une même grille
+Hero entry   : fadeSlideUp 0.4s — chaque élément décalé de 0.12s
+Scroll       : IntersectionObserver — classes .reveal / .reveal-left / .reveal-right
+Compteurs    : animateCounter() déclenchée par IntersectionObserver sur .stat-number[data-target]
+
+À éviter     : animations > 0.4s sur les éléments UI courants, effets lourds, canvas complexe
+
+---
+
+## Sections spéciales
+
+Marquee
+  Bande de mots-clés défilant en boucle continue (animation 22s linear infinite)
+  Pause au survol
+  Fond blanc avec bordures top/bottom
+
+CTA Band (#cta-band)
+  Fond : var(--grad-hero) = linear-gradient(135deg, #7FB3FF, #C3A6FF 55%, #FFB3C7)
+  Motif de points blancs superposé (SVG data URI)
+  Titre blanc font-weight 800, bouton blanc sur fond gradient (btn-dark)
+
+Section Stats (#stats)
+  Fond : #0D1117
+  Orbs en arrière-plan (blur 100px, très subtils)
+  Nombres en gradient hero, texte labels rgba(255,255,255,0.45)
+
+---
+
+## Animations avancées (js/animations.js)
+
+Curseur personnalisé
+  Dot 6px bleu qui suit instantanément
+  Ring 32px avec lag fluide (lerp 0.1) — grossit à 48px au survol des éléments interactifs
+  Désactivé automatiquement sur mobile/tactile (matchMedia hover:hover)
+
+Hero title word stagger
+  Chaque mot du titre est wrappé en .hero-word via JS
+  Animation fadeSlideUp 0.5s, délai 0.11s par mot
+  Subtitle et actions décalés après le dernier mot
+
+Hero cards lévitation
+  Animation CSS heroFloat — translateY 0→-10px→0
+  Durées différentes (4.2s / 5s / 4.6s) et délais (0 / 0.6s / 1.2s)
+  Pause au hover + tilt 3D sur mousemove (perspective 800px)
+
+Hero orbs parallax
+  Scroll listener passive → translateY proportionnel à scrollY
+  orb-1 : ×0.18 / orb-2 : ×-0.12 / orb-3 : ×0.10
+
+Tilt magnétique
+  addMagneticTilt() sur .service-card (6°), .why-small-card (5°), .stat-card (4°)
+  perspective(900px) rotateY rotateX translateY(-5px) scale(1.01)
+  Transition 0.35s ease au mouseleave pour retour fluide
+
+Compteurs
+  easeOut cubique (1 - (1-t)³) via requestAnimationFrame
+  Durée 1600ms
+
+Bouton shine
+  Pseudo ::after qui traverse le bouton primary au hover (animation 0.55s)
+
+Nav active
+  IntersectionObserver sur les sections → classe .active sur le lien nav correspondant
+
+---
+
+## Fichiers clés
+
+css/style.css           — Toutes les variables, composants, layout
+css/animations.css      — Classes reveal + animations hero + loader + curseur + shine
+js/main.js              — Header scroll, hamburger, smooth scroll, tilt hero cards, formulaire
+js/animations.js        — Curseur, word stagger, parallax, reveal, tilt magnétique, compteurs, nav active
+assets/images/logo.png  — Logo WebCraft (fond transparent recommandé)
+
+---
+
+## Panneau d'administration
+
+URL d'accès    : admin/index.html (à mettre derrière un sous-domaine ou route /admin en prod)
+Mot de passe   : stocké en SHA-256 côté client (hash de "1234")
+               → Pour changer : recalculer SHA-256 du nouveau mdp et remplacer PASSWORD_HASH dans admin/js/admin.js
+Sécurité       : max 5 tentatives puis lockout 15 min (localStorage)
+               : session sessionStorage expirée après 2h d'inactivité
+               : noindex/nofollow sur toutes les pages admin
+
+Structure admin
+  admin/index.html       — Page de login
+  admin/dashboard.html   — Dashboard complet (7 panneaux)
+  admin/css/admin.css    — Thème sombre premium (variables indépendantes du site public)
+  admin/js/admin.js      — Auth SHA-256, session, navigation, toasts, accordéons
+
+Panneaux disponibles
+  Vue d'ensemble  — Résumé, accès rapide, toggles sections
+  Hero / Accueil  — Titre, sous-titre, badge, boutons, cartes flottantes
+  Services        — 4 cards éditables en accordéon + toggle visible/caché
+  Statistiques    — 4 chiffres avec valeur + suffixe
+  Portfolio       — 6 projets avec ajout/édition/suppression
+  Contact         — Email, réseaux sociaux, textes
+  Apparence       — Palette 6 couleurs, logo, hauteur nav
+  Paramètres      — Nom site, tagline, SEO, changement mot de passe
+
+⚠️  IMPORTANT — Limitations actuelles (interface only)
+  Les boutons "Enregistrer" affichent un toast mais ne modifient pas les fichiers HTML/CSS.
+  Pour brancher la logique réelle, il faudra un backend Node.js/Express ou équivalent
+  avec accès en écriture aux fichiers du projet.
+
+---
+
+## À éviter absolument
+
+- Couleurs flashy hors palette définie
+- Font-weight < 300 ou polices fantaisie
+- Sections toutes identiques (alterner clair / sombre / gradient)
+- Design trop épuré / trop blanc sans contraste
+- Animations lourdes (particules canvas, parallax intensif)
+- Commentaires excessifs dans le code
+- Templates génériques ou Bootstrap
