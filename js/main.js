@@ -74,10 +74,10 @@ form?.addEventListener('submit', e => {
     btn.disabled = true;
     btn.textContent = 'Envoi en cours…';
 
-    fetch('/', {
+    fetch('/.netlify/functions/submit-contact', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: new URLSearchParams(new FormData(form)).toString(),
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name: form.name.value, email: form.email.value, message: form.message.value }),
     })
       .finally(() => {
         form.style.display = 'none';

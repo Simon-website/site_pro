@@ -13,7 +13,11 @@
       "PowerShell(gh auth *)",
       "PowerShell(gh repo *)",
       "PowerShell($env:PATH = $env:PATH + \";C:\\\\Program Files\\\\GitHub CLI\"; Start-Process \"https://github.com/Simon-website/site_pro\")",
-      "Bash(git add *)"
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(git push *)",
+      "Bash(npx serve *)",
+      "Bash(curl *)"
     ]
   }
 }
