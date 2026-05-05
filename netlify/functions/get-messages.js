@@ -22,7 +22,7 @@ exports.handler = async (event) => {
   }
 
   /* ── Lecture depuis Netlify Blobs ── */
-  const store = getStore('contact-messages');
+  const store = getStore({ name: 'contact-messages', siteID: process.env.SITE_ID, token: process.env.NETLIFY_ACCESS_TOKEN });
   const index = await store.get('__index', { type: 'json' }).catch(() => []);
 
   if (!Array.isArray(index) || index.length === 0) {

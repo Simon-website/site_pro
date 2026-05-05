@@ -29,7 +29,7 @@ exports.handler = async (event) => {
     return { statusCode: 400, headers, body: JSON.stringify({ error: 'Champs manquants' }) };
   }
 
-  const store = getStore('contact-messages');
+  const store = getStore({ name: 'contact-messages', siteID: process.env.SITE_ID, token: process.env.NETLIFY_ACCESS_TOKEN });
   const id    = `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
 
   const existing = await store.get('__index', { type: 'json' }).catch(() => []);

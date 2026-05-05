@@ -1,4 +1,6 @@
 {
+  "name": "harvey-web",
+  "private": true,
   "dependencies": {
     "@netlify/blobs": "^8.0.0"
   }
