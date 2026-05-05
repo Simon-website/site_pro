@@ -5,7 +5,10 @@ window.addEventListener('load', () => {
 });
 
 /* ─── Header scroll ──────────────────────────────────────────────── */
-const header = document.querySelector('header');
+const header    = document.querySelector('header');
+const hamburger  = document.querySelector('.hamburger');
+const mobileMenu = document.querySelector('.mobile-menu');
+
 window.addEventListener('scroll', () => {
   header.classList.toggle('scrolled', window.scrollY > 40);
 }, { passive: true });
@@ -19,7 +22,6 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
     const offset = (header?.offsetHeight ?? 72) + 16;
     window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY - offset, behavior: 'smooth' });
 
-    /* Fermer le menu mobile si ouvert */
     hamburger?.classList.remove('open');
     mobileMenu?.classList.remove('open');
     document.body.style.overflow = '';
@@ -27,8 +29,6 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
 });
 
 /* ─── Menu hamburger ─────────────────────────────────────────────── */
-const hamburger  = document.querySelector('.hamburger');
-const mobileMenu = document.querySelector('.mobile-menu');
 
 hamburger?.addEventListener('click', () => {
   const isOpen = hamburger.classList.toggle('open');
