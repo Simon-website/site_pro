@@ -69,6 +69,13 @@
         </svg>
         <span class="sidebar-label">Contact</span>
       </div>
+      <div class="sidebar-item" data-panel="panel-messages">
+        <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
+        </svg>
+        <span class="sidebar-label">Messages reçus</span>
+        <span class="sidebar-badge" id="messages-badge" style="display:none">0</span>
+      </div>
     </div>
 
     <div class="sidebar-section">
@@ -832,6 +839,47 @@
           <button class="btn-admin primary" id="change-password-btn">Mettre à jour le mot de passe</button>
         </div>
       </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════════════
+         MESSAGES REÇUS
+    ════════════════════════════════════════════════════════════════ -->
+    <div id="panel-messages" class="admin-panel">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Messages reçus</div>
+          <div class="page-subtitle">Formulaires de contact envoyés depuis le site</div>
+        </div>
+        <div class="page-actions">
+          <button class="btn-admin" id="refresh-messages-btn">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/>
+              <path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/>
+            </svg>
+            Actualiser
+          </button>
+        </div>
+      </div>
+
+      <div id="messages-loading" class="messages-state">
+        <div class="messages-spinner"></div>
+        <p>Chargement des messages…</p>
+      </div>
+
+      <div id="messages-error" class="messages-state" style="display:none">
+        <div class="messages-state-icon">⚠️</div>
+        <p id="messages-error-text">Erreur de chargement.</p>
+        <p class="messages-state-hint">Vérifiez vos variables d'environnement Netlify :<br>
+          <code>ADMIN_PASSWORD_HASH</code> et <code>NETLIFY_ACCESS_TOKEN</code></p>
+      </div>
+
+      <div id="messages-empty" class="messages-state" style="display:none">
+        <div class="messages-state-icon">📭</div>
+        <p>Aucun message reçu pour l'instant.</p>
+        <p class="messages-state-hint">Les messages du formulaire de contact apparaîtront ici.</p>
+      </div>
+
+      <div id="messages-list" style="display:none"></div>
     </div>
 
   </main>

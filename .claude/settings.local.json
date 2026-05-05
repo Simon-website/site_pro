@@ -9,7 +9,11 @@
       "PowerShell(Start-Process \"C:\\\\site_pro\\\\index.html\")",
       "PowerShell(Start-Process \"C:\\\\site_pro\\\\admin\\\\index.html\")",
       "PowerShell(python --version 2>$null; node --version 2>$null; python3 --version 2>$null)",
-      "PowerShell(cd C:\\\\site_pro; Start-Process powershell -ArgumentList \"-NoExit\", \"-Command\", \"cd 'C:\\\\site_pro'; npx serve -p 3000 --no-clipboard\" -WindowStyle Normal)"
+      "PowerShell(cd C:\\\\site_pro; Start-Process powershell -ArgumentList \"-NoExit\", \"-Command\", \"cd 'C:\\\\site_pro'; npx serve -p 3000 --no-clipboard\" -WindowStyle Normal)",
+      "PowerShell(gh auth *)",
+      "PowerShell(gh repo *)",
+      "PowerShell($env:PATH = $env:PATH + \";C:\\\\Program Files\\\\GitHub CLI\"; Start-Process \"https://github.com/Simon-website/site_pro\")",
+      "Bash(git add *)"
     ]
   }
 }

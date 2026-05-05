@@ -85,6 +85,7 @@ if (loginForm) {
     if (hash === PASSWORD_HASH) {
       setAttempts({ count: 0, ts: 0 });
       setSession(crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36));
+      sessionStorage.setItem('wc_admin_hash', hash);
       submitBtn.textContent = '✓ Accès autorisé';
       submitBtn.style.background = 'linear-gradient(135deg,#3fb950,#2ea043)';
       setTimeout(() => window.location.href = 'dashboard.html', 600);
@@ -261,7 +262,10 @@ if (document.getElementById('admin-dashboard')) {
   }
 
   sidebarItems.forEach(item => {
-    item.addEventListener('click', () => activatePanel(item.dataset.panel));
+    item.addEventListener('click', () => {
+      activatePanel(item.dataset.panel);
+      if (item.dataset.panel === 'panel-messages' && !messagesLoaded) loadMessages();
+    });
   });
 
   /* ── Helpers accès objet par chemin ── */
@@ -476,6 +480,83 @@ if (document.getElementById('admin-dashboard')) {
 
   /* ── Bouton "Ajouter un projet" (en-tête de panel) ── */
   document.getElementById('add-portfolio-btn')?.addEventListener('click', addPortfolioItem);
+
+  /* ── Messages reçus ── */
+  let messagesLoaded = false;
+
+  async function loadMessages() {
+    const hash = sessionStorage.getItem('wc_admin_hash');
+    const loadingEl = document.getElementById('messages-loading');
+    const errorEl   = document.getElementById('messages-error');
+    const emptyEl   = document.getElementById('messages-empty');
+    const listEl    = document.getElementById('messages-list');
+    const badge     = document.getElementById('messages-badge');
+
+    [errorEl, emptyEl, listEl].forEach(el => { if (el) el.style.display = 'none'; });
+    if (loadingEl) loadingEl.style.display = 'flex';
+
+    try {
+      const res = await fetch('/.netlify/functions/get-messages', {
+        headers: { 'x-admin-hash': hash || '' },
+      });
+
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({ error: `HTTP ${res.status}` }));
+        throw new Error(data.error || `HTTP ${res.status}`);
+      }
+
+      const messages = await res.json();
+      if (loadingEl) loadingEl.style.display = 'none';
+
+      if (!messages.length) {
+        if (emptyEl) emptyEl.style.display = 'flex';
+        if (badge)   badge.style.display = 'none';
+        return;
+      }
+
+      if (badge) {
+        badge.textContent = messages.length;
+        badge.style.display = '';
+      }
+
+      listEl.style.display = 'block';
+      listEl.innerHTML = messages.map(m => {
+        const date = new Date(m.date).toLocaleString('fr-FR', {
+          day: '2-digit', month: 'short', year: 'numeric',
+          hour: '2-digit', minute: '2-digit',
+        });
+        return `
+          <div class="message-card">
+            <div class="message-card-header">
+              <div class="message-meta">
+                <span class="message-name">${escHtml(m.name)}</span>
+                <a class="message-email" href="mailto:${escHtml(m.email)}">${escHtml(m.email)}</a>
+              </div>
+              <span class="message-date">${date}</span>
+            </div>
+            <div class="message-body">${escHtml(m.message)}</div>
+            <div class="message-footer">
+              <span class="message-num">#${m.number}</span>
+              <a class="btn-admin sm" href="mailto:${escHtml(m.email)}?subject=Re: votre message&body=Bonjour ${escHtml(m.name)},%0A%0A">
+                ✉️ Répondre
+              </a>
+            </div>
+          </div>`;
+      }).join('');
+
+      messagesLoaded = true;
+    } catch (err) {
+      if (loadingEl) loadingEl.style.display = 'none';
+      const errText = document.getElementById('messages-error-text');
+      if (errText) errText.textContent = `Erreur : ${err.message}`;
+      if (errorEl) errorEl.style.display = 'flex';
+    }
+  }
+
+  document.getElementById('refresh-messages-btn')?.addEventListener('click', () => {
+    messagesLoaded = false;
+    loadMessages();
+  });
 
   /* ── Changement de mot de passe ── */
   document.getElementById('change-password-btn')?.addEventListener('click', async () => {

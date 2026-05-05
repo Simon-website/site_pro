@@ -70,8 +70,19 @@ form?.addEventListener('submit', e => {
   });
 
   if (valid) {
-    form.style.display = 'none';
-    document.querySelector('.form-success').style.display = 'block';
+    const btn = form.querySelector('button[type="submit"]');
+    btn.disabled = true;
+    btn.textContent = 'Envoi en cours…';
+
+    fetch('/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams(new FormData(form)).toString(),
+    })
+      .finally(() => {
+        form.style.display = 'none';
+        document.querySelector('.form-success').style.display = 'block';
+      });
   }
 });
 
