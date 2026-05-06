@@ -2,38 +2,37 @@
 
 /* ─── Variables ─────────────────────────────────────────────────── */
 :root {
-  --bg:           #F9FAFB;
+  --bg:           #F1F4FC;
   --surface:      #FFFFFF;
-  --surface-2:    #F3F4F6;
-  --border:       rgba(0, 0, 0, 0.08);
-  --border-focus: rgba(127, 179, 255, 0.5);
+  --surface-2:    #E7EDF8;
+  --border:       rgba(10, 14, 36, 0.08);
+  --border-focus: rgba(43,110,245,0.5);
 
-  --blue:         #7FB3FF;
-  --violet:       #C3A6FF;
-  --pink:         #FFB3C7;
-  --mint:         #A8E6CF;
+  --blue:         #2B6EF5;
+  --violet:       #7040E8;
+  --pink:         #9A3FF8;
+  --mint:         #22D3EE;
 
-  --grad-main:    linear-gradient(135deg, #7FB3FF 0%, #C3A6FF 100%);
-  --grad-hero:    linear-gradient(135deg, #7FB3FF 0%, #C3A6FF 55%, #FFB3C7 100%);
-  --grad-warm:    linear-gradient(135deg, #C3A6FF 0%, #FFB3C7 100%);
-  --grad-mint:    linear-gradient(135deg, #7FB3FF 0%, #A8E6CF 100%);
+  --grad-main:    linear-gradient(135deg, #2B6EF5 0%, #7040E8 100%);
+  --grad-hero:    linear-gradient(135deg, #2B6EF5 0%, #7040E8 55%, #9A3FF8 100%);
+  --grad-warm:    linear-gradient(135deg, #7040E8 0%, #9A3FF8 100%);
+  --grad-mint:    linear-gradient(135deg, #2B6EF5 0%, #22D3EE 100%);
 
-  /* Section sombre pour le contraste */
-  --dark-bg:      #0D1117;
-  --dark-surface: #161B22;
-  --dark-border:  rgba(255,255,255,0.08);
+  --dark-bg:      #060A1B;
+  --dark-surface: #0E1530;
+  --dark-border:  rgba(255,255,255,0.07);
 
-  --text:         #1F2937;
-  --text-muted:   #6B7280;
-  --text-faint:   #9CA3AF;
+  --text:         #090E21;
+  --text-muted:   #4E597A;
+  --text-faint:   #8795B5;
 
   --radius:       16px;
   --radius-sm:    10px;
   --radius-btn:   12px;
-  --shadow-sm:    0 2px 10px rgba(0,0,0,0.06);
-  --shadow-md:    0 8px 32px rgba(0,0,0,0.10);
-  --shadow-lg:    0 24px 64px rgba(0,0,0,0.13);
-  --shadow-color: 0 8px 32px rgba(127,179,255,0.25);
+  --shadow-sm:    0 2px 12px rgba(10,14,36,0.07);
+  --shadow-md:    0 8px 32px rgba(10,14,36,0.11);
+  --shadow-lg:    0 24px 64px rgba(10,14,36,0.14);
+  --shadow-color: 0 8px 32px rgba(43,110,245,0.22);
   --transition:   0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -364,9 +363,9 @@ header.scrolled {
   font-size: 1.2rem;
   flex-shrink: 0;
 }
-.hero-card-icon.blue   { background: rgba(127,179,255,0.18); }
-.hero-card-icon.violet { background: rgba(195,166,255,0.18); }
-.hero-card-icon.mint   { background: rgba(168,230,207,0.22); }
+.hero-card-icon.blue   { background: rgba(43,110,245,0.14); color: #2B6EF5; }
+.hero-card-icon.violet { background: rgba(112,64,232,0.14); color: #7040E8; }
+.hero-card-icon.mint   { background: rgba(34,211,238,0.14); color: #0EA5E9; }
 .hero-card-title {
   font-family: 'Poppins', sans-serif;
   font-weight: 600;
@@ -546,13 +545,12 @@ header.scrolled {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.5rem;
   margin-bottom: 1.5rem;
 }
-.service-card:nth-child(1) .service-icon { background: rgba(127,179,255,0.15); }
-.service-card:nth-child(2) .service-icon { background: rgba(195,166,255,0.15); }
-.service-card:nth-child(3) .service-icon { background: rgba(255,179,199,0.15); }
-.service-card:nth-child(4) .service-icon { background: rgba(168,230,207,0.18); }
+.service-card:nth-child(1) .service-icon { background: rgba(43,110,245,0.12); color: #2B6EF5; }
+.service-card:nth-child(2) .service-icon { background: rgba(112,64,232,0.12); color: #7040E8; }
+.service-card:nth-child(3) .service-icon { background: rgba(43,110,245,0.10); color: #2B6EF5; }
+.service-card:nth-child(4) .service-icon { background: rgba(112,64,232,0.10); color: #7040E8; }
 .service-card h3 {
   font-family: 'Poppins', sans-serif;
   font-size: 1.15rem;
@@ -682,8 +680,8 @@ header.scrolled {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.15rem;
   box-shadow: var(--shadow-sm);
+  color: var(--blue);
 }
 .why-item h4 {
   font-family: 'Poppins', sans-serif;
@@ -750,8 +748,14 @@ header.scrolled {
 }
 .why-small-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
 .why-small-icon {
-  font-size: 1.4rem;
-  margin-bottom: 0.65rem;
+  width: 40px; height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.85rem;
+  background: rgba(43,110,245,0.09);
+  border-radius: var(--radius-sm);
+  color: var(--blue);
 }
 .why-small-card h4 {
   font-family: 'Poppins', sans-serif;
@@ -843,7 +847,6 @@ header.scrolled {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 3.5rem;
   background: var(--surface-2);
 }
 
@@ -912,9 +915,9 @@ header.scrolled {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.95rem;
   flex-shrink: 0;
   box-shadow: var(--shadow-sm);
+  color: var(--blue);
 }
 .contact-detail a { transition: color var(--transition); }
 .contact-detail a:hover { color: var(--blue); }

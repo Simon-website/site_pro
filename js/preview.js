@@ -122,8 +122,7 @@ function applyServices(services) {
     if (!card) return;
     if (!svc.visible) { card.style.display = 'none'; return; }
     card.style.display = '';
-    const icon = card.querySelector('.service-icon');
-    if (icon && svc.emoji) icon.textContent = svc.emoji;
+    // service icons are static SVGs — not overridden by admin
     setText2(card, 'h3', svc.title);
     setText2(card, 'p',  svc.desc);
     const link = card.querySelector('.service-link');
@@ -169,7 +168,7 @@ function applyPortfolio(items) {
   if (previewGrid) {
     previewGrid.innerHTML = items.slice(0, 3).map(item => `
       <div class="portfolio-card">
-        <div class="portfolio-placeholder">${escHtml(item.emoji)}</div>
+        <div class="portfolio-placeholder" style="background:linear-gradient(135deg,#E8EEFF,#D4DBFA)"></div>
         <div class="portfolio-overlay">
           <span class="portfolio-tag">${item.category === 'ecommerce' ? 'E-commerce' : 'Vitrine'}</span>
           <h3>${escHtml(item.name)}</h3>
@@ -184,7 +183,7 @@ function applyPortfolio(items) {
   if (fullGrid) {
     fullGrid.innerHTML = items.map(item => `
       <div class="pf-card reveal visible" data-category="${escHtml(item.category)}">
-        <div class="pf-thumb">${escHtml(item.emoji)}</div>
+        <div class="pf-thumb" style="background:linear-gradient(135deg,#E8EEFF,#D4DBFA)"></div>
         <div class="pf-info">
           <div class="pf-tags">
             <span class="pf-tag ${escHtml(item.category)}">
