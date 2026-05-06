@@ -224,13 +224,21 @@ if (document.getElementById('admin-dashboard')) {
   function sendAll() { sendToPreview('all'); }
 
   iframe?.addEventListener('load', () => {
-    iframeReady = true;
     if (previewUrlEl) {
       try {
         previewUrlEl.textContent = decodeURIComponent(iframe.src.split('/').slice(-2).join('/'));
       } catch { previewUrlEl.textContent = iframe.src; }
     }
-    setTimeout(sendAll, 120);
+  });
+
+  /* preview.js envoie WC_READY dès qu'il est chargé — fiable même si
+     l'iframe finit de charger avant que ce listener soit enregistré */
+  window.addEventListener('message', e => {
+    if (e.source !== iframe?.contentWindow) return;
+    if (e.data?.type === 'WC_READY') {
+      iframeReady = true;
+      sendAll();
+    }
   });
 
   function setPreviewPage(url) {

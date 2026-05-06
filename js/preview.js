@@ -280,3 +280,8 @@ function escHtml(str) {
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;');
 }
+
+/* Signale à l'admin que la page est prête à recevoir des mises à jour */
+if (window.parent !== window) {
+  window.parent.postMessage({ type: 'WC_READY' }, '*');
+}

@@ -16,11 +16,12 @@ window.addEventListener('scroll', () => {
 /* ─── Smooth scroll ancres avec offset header ────────────────────── */
 document.querySelectorAll('a[href^="#"]').forEach(a => {
   a.addEventListener('click', e => {
-    const target = document.querySelector(a.getAttribute('href'));
+    const href = a.getAttribute('href');
+    if (!href || href === '#') { e.preventDefault(); return; }
+    const target = document.querySelector(href);
     if (!target) return;
     e.preventDefault();
-    const offset = (header?.offsetHeight ?? 72) + 16;
-    window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY - offset, behavior: 'smooth' });
+    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
     hamburger?.classList.remove('open');
     mobileMenu?.classList.remove('open');

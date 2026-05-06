@@ -289,14 +289,15 @@
   <script src="js/preview.js"></script>
   <script>
     const filterBtns = document.querySelectorAll('.filter-btn');
-    const cards      = document.querySelectorAll('.pf-card');
 
     filterBtns.forEach(btn => {
       btn.addEventListener('click', () => {
         filterBtns.forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         const filter = btn.dataset.filter;
-        cards.forEach(card => {
+        /* querySelectorAll à chaque clic pour prendre en compte les cards
+           injectées par preview.js après un update admin */
+        document.querySelectorAll('.pf-card').forEach(card => {
           card.style.display = (filter === 'all' || card.dataset.category === filter) ? '' : 'none';
         });
       });
