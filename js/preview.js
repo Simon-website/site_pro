@@ -4,13 +4,13 @@
    Chargé sur index.html ET portfolio.html.
 ───────────────────────────────────────────────────────────────── */
 
-/* Charge les données sauvegardées et les applique au démarrage */
-(function initFromStorage() {
+/* Charge les données depuis le serveur au démarrage */
+(async function initFromServer() {
   try {
-    const raw = localStorage.getItem('wc_site_data');
-    if (!raw) return;
-    const data = JSON.parse(raw);
-    applyAll(data);
+    const res = await fetch('/api/site-data');
+    if (!res.ok) return;
+    const data = await res.json();
+    if (data) applyAll(data);
   } catch {}
 })();
 
@@ -49,7 +49,6 @@ function applyAll(data) {
 function applyHero(h) {
   if (!h) return;
 
-  /* Titre — ligne gradient */
   const gradSpan = document.querySelector('.hero-title .grad');
   if (gradSpan && h.gradLine !== undefined) {
     gradSpan.innerHTML = '';
@@ -62,7 +61,6 @@ function applyHero(h) {
     });
   }
 
-  /* Titre — ligne normale */
   if (h.normalLine !== undefined) {
     const h1 = document.querySelector('.hero-title');
     if (h1) {
@@ -86,7 +84,6 @@ function applyHero(h) {
     }
   }
 
-  /* Badge disponibilité */
   if (h.badge !== undefined) {
     const badge = document.querySelector('.hero-badge');
     if (badge) {
@@ -96,15 +93,9 @@ function applyHero(h) {
     }
   }
 
-  /* Sous-titre */
   setText('.hero-subtitle', h.subtitle);
-
-  /* Bouton primaire */
   setTextHref('.hero-actions .btn-primary', h.btn1Text, h.btn1Href);
-  /* Bouton secondaire */
   setTextHref('.hero-actions .btn-outline', h.btn2Text, h.btn2Href);
-
-  /* Carte 1 — titre projet */
   setText('.hero-card:nth-child(1) .hero-card-title', h.card1Title);
   setText('.hero-card:nth-child(1) .hero-card-sub', h.card1Sub);
 }
@@ -112,9 +103,8 @@ function applyHero(h) {
 /* ─── Services ──────────────────────────────────────────────────── */
 function applyServices(services) {
   if (!services) return;
-  /* Compatibilité ancienne structure (tableau) et nouvelle (objet) */
-  const items  = Array.isArray(services) ? services : (services.items || []);
-  const hdr    = services.header || services._header;
+  const items = Array.isArray(services) ? services : (services.items || []);
+  const hdr   = services.header || services._header;
 
   const cards = document.querySelectorAll('.service-card');
   items.forEach((svc, i) => {
@@ -122,14 +112,12 @@ function applyServices(services) {
     if (!card) return;
     if (!svc.visible) { card.style.display = 'none'; return; }
     card.style.display = '';
-    // service icons are static SVGs — not overridden by admin
     setText2(card, 'h3', svc.title);
     setText2(card, 'p',  svc.desc);
     const link = card.querySelector('.service-link');
     if (link && svc.link) link.textContent = svc.link;
   });
 
-  /* En-tête section */
   if (hdr) {
     const header = document.querySelector('#services .services-header');
     if (header) {
@@ -152,7 +140,7 @@ function applyStats(stats) {
       if (!cards[i]) return;
       cards[i].dataset.target = item.value;
       cards[i].dataset.suffix = item.suffix;
-      cards[i].textContent   = item.value + item.suffix;
+      cards[i].textContent    = item.value + item.suffix;
       const label = cards[i].nextElementSibling;
       if (label) label.textContent = item.label;
     });
@@ -163,7 +151,6 @@ function applyStats(stats) {
 function applyPortfolio(items) {
   if (!Array.isArray(items)) return;
 
-  /* Preview accueil — 3 premières cartes */
   const previewGrid = document.querySelector('#portfolio-preview .portfolio-grid');
   if (previewGrid) {
     previewGrid.innerHTML = items.slice(0, 3).map(item => `
@@ -178,7 +165,6 @@ function applyPortfolio(items) {
     `).join('');
   }
 
-  /* Page portfolio complète */
   const fullGrid = document.getElementById('portfolio-grid');
   if (fullGrid) {
     fullGrid.innerHTML = items.map(item => `

@@ -4,11 +4,17 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Dev server
 
+**Option A — Netlify CLI (recommandé, même comportement qu'en prod) :**
 ```
-npx serve -p 3000
+npx netlify dev
 ```
+Démarre sur http://localhost:3000. Les Netlify Functions tournent localement et les données vont dans Netlify Blobs (nécessite `netlify link` et d'être connecté).
 
-Must be run from `C:\site_pro`. The admin panel uses `postMessage` across iframes — this only works over HTTP, not `file://`. Always serve before testing admin ↔ site communication.
+**Option B — Express local (rapide, données fichiers locaux) :**
+```
+npm start
+```
+Démarre sur http://localhost:3000 avec stockage dans `data/`. Le `data/config.json` est auto-créé au premier lancement (mdp par défaut : `1234`). Ne pas commiter les fichiers `data/*.json`.
 
 - Site : http://localhost:3000
 - Admin : http://localhost:3000/admin/index.html (password: `1234`)

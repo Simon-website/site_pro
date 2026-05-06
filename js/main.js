@@ -75,7 +75,7 @@ form?.addEventListener('submit', e => {
     btn.disabled = true;
     btn.textContent = 'Envoi en cours…';
 
-    fetch('/.netlify/functions/submit-contact', {
+    fetch('/api/contact', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name: form.name.value, email: form.email.value, message: form.message.value }),

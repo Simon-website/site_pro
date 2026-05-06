@@ -1,44 +1,19 @@
-/* ─── Constantes ─────────────────────────────────────────────────── */
-const PASSWORD_HASH = '03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4';
-const SESSION_KEY   = 'wc_admin_session';
-const DATA_KEY      = 'wc_site_data';
-const MAX_ATTEMPTS  = 5;
-const LOCKOUT_MS    = 15 * 60 * 1000;
+/* ─── Icônes SVG ─────────────────────────────────────────────────── */
+const EYE_ICON     = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`;
+const EYE_OFF_ICON = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>`;
 
-/* ─── SHA-256 ────────────────────────────────────────────────────── */
-async function sha256(str) {
-  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
-  return [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2,'0')).join('');
+function escHtml(str) {
+  return String(str || '')
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
-/* ─── Session ────────────────────────────────────────────────────── */
-function getSession() {
-  try { return JSON.parse(sessionStorage.getItem(SESSION_KEY)); } catch { return null; }
-}
-function setSession(token) {
-  sessionStorage.setItem(SESSION_KEY, JSON.stringify({ token, ts: Date.now() }));
-}
-function clearSession() { sessionStorage.removeItem(SESSION_KEY); }
-function isAuthenticated() {
-  const s = getSession();
-  if (!s) return false;
-  if (Date.now() - s.ts > 2 * 60 * 60 * 1000) { clearSession(); return false; }
-  return true;
-}
-
-/* ─── Lockout ────────────────────────────────────────────────────── */
-function getAttempts() {
-  try { return JSON.parse(localStorage.getItem('wc_attempts')) || { count: 0, ts: 0 }; }
-  catch { return { count: 0, ts: 0 }; }
-}
-function setAttempts(a) { localStorage.setItem('wc_attempts', JSON.stringify(a)); }
-function isLocked() {
-  const a = getAttempts();
-  return a.count >= MAX_ATTEMPTS && (Date.now() - a.ts) < LOCKOUT_MS;
-}
-function getRemainingLockout() {
-  const a = getAttempts();
-  return Math.ceil((LOCKOUT_MS - (Date.now() - a.ts)) / 60000);
+/* ─── Helper fetch API ───────────────────────────────────────────── */
+async function apiFetch(url, opts = {}) {
+  const res  = await fetch(url, { headers: { 'Content-Type': 'application/json' }, credentials: 'same-origin', ...opts });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw Object.assign(new Error(data.error || `HTTP ${res.status}`), { status: res.status });
+  return data;
 }
 
 /* ─────────────────────────────────────────────────────────────────
@@ -46,28 +21,14 @@ function getRemainingLockout() {
 ───────────────────────────────────────────────────────────────── */
 const loginForm = document.getElementById('login-form');
 if (loginForm) {
-  if (isAuthenticated()) window.location.href = 'dashboard.html';
+  /* Redirige si session déjà active */
+  apiFetch('/api/me').then(d => { if (d.authenticated) window.location.href = 'dashboard.html'; }).catch(() => {});
 
   const pwdInput   = document.getElementById('pwd');
   const eyeBtn     = document.getElementById('eye-btn');
   const errEl      = document.getElementById('login-error');
   const attemptsEl = document.getElementById('attempts-left');
   const submitBtn  = document.getElementById('login-btn');
-
-  function updateAttemptsUI() {
-    const a = getAttempts();
-    if (a.count > 0 && a.count < MAX_ATTEMPTS)
-      attemptsEl.textContent = `${MAX_ATTEMPTS - a.count} tentative(s) restante(s)`;
-    else attemptsEl.textContent = '';
-  }
-  updateAttemptsUI();
-
-  if (isLocked()) {
-    submitBtn.disabled = true;
-    submitBtn.textContent = `Bloqué ${getRemainingLockout()} min`;
-    errEl.textContent = `Trop de tentatives. Réessayez dans ${getRemainingLockout()} minute(s).`;
-    errEl.classList.add('show');
-  }
 
   eyeBtn?.addEventListener('click', () => {
     const isText = pwdInput.type === 'text';
@@ -77,37 +38,49 @@ if (loginForm) {
 
   loginForm.addEventListener('submit', async e => {
     e.preventDefault();
-    if (isLocked()) return;
-    submitBtn.disabled = true;
+    submitBtn.disabled    = true;
     submitBtn.textContent = 'Vérification…';
-    const hash = await sha256(pwdInput.value);
+    errEl.classList.remove('show');
+    attemptsEl.textContent = '';
 
-    if (hash === PASSWORD_HASH) {
-      setAttempts({ count: 0, ts: 0 });
-      setSession(crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36));
-      sessionStorage.setItem('wc_admin_hash', hash);
-      submitBtn.textContent = '✓ Accès autorisé';
-      submitBtn.style.background = 'linear-gradient(135deg,#3fb950,#2ea043)';
-      setTimeout(() => window.location.href = 'dashboard.html', 600);
-    } else {
-      const a = getAttempts();
-      a.count++; a.ts = Date.now();
-      setAttempts(a);
-      updateAttemptsUI();
-      pwdInput.classList.add('error');
-      errEl.classList.add('show');
-      if (isLocked()) {
-        errEl.textContent = `Compte bloqué pendant ${LOCKOUT_MS / 60000} minutes.`;
-        submitBtn.textContent = 'Bloqué';
+    try {
+      const res  = await fetch('/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'same-origin',
+        body: JSON.stringify({ password: pwdInput.value }),
+      });
+      const data = await res.json().catch(() => ({}));
+
+      if (res.ok) {
+        submitBtn.textContent      = '✓ Accès autorisé';
+        submitBtn.style.background = 'linear-gradient(135deg,#3fb950,#2ea043)';
+        setTimeout(() => { window.location.href = 'dashboard.html'; }, 600);
       } else {
-        errEl.textContent = `Mot de passe incorrect. ${MAX_ATTEMPTS - a.count} tentative(s) restante(s).`;
-        submitBtn.disabled = false;
-        submitBtn.textContent = 'Accéder au panneau';
+        pwdInput.classList.add('error');
+        errEl.textContent = data.error || 'Mot de passe incorrect';
+        errEl.classList.add('show');
+
+        if (res.status === 429) {
+          submitBtn.textContent = 'Bloqué';
+        } else {
+          if (data.attemptsLeft !== undefined) {
+            attemptsEl.textContent = `${data.attemptsLeft} tentative(s) restante(s)`;
+          }
+          submitBtn.disabled    = false;
+          submitBtn.textContent = 'Accéder au panneau';
+        }
+
+        pwdInput.addEventListener('input', () => {
+          pwdInput.classList.remove('error');
+          errEl.classList.remove('show');
+        }, { once: true });
       }
-      pwdInput.addEventListener('input', () => {
-        pwdInput.classList.remove('error');
-        errEl.classList.remove('show');
-      }, { once: true });
+    } catch {
+      errEl.textContent = 'Erreur de connexion. Vérifiez votre réseau.';
+      errEl.classList.add('show');
+      submitBtn.disabled    = false;
+      submitBtn.textContent = 'Accéder au panneau';
     }
   });
 }
@@ -116,7 +89,6 @@ if (loginForm) {
    DASHBOARD
 ───────────────────────────────────────────────────────────────── */
 if (document.getElementById('admin-dashboard')) {
-  if (!isAuthenticated()) window.location.href = 'index.html';
 
   /* ── Modèle de données par défaut ── */
   const DEFAULT_DATA = {
@@ -188,17 +160,6 @@ if (document.getElementById('admin-dashboard')) {
     }
   };
 
-  function loadData() {
-    try {
-      const raw = localStorage.getItem(DATA_KEY);
-      if (!raw) return JSON.parse(JSON.stringify(DEFAULT_DATA));
-      /* Merge avec DEFAULT_DATA pour les clés manquantes */
-      const stored = JSON.parse(raw);
-      return deepMerge(JSON.parse(JSON.stringify(DEFAULT_DATA)), stored);
-    } catch { return JSON.parse(JSON.stringify(DEFAULT_DATA)); }
-  }
-  function saveData() { localStorage.setItem(DATA_KEY, JSON.stringify(currentData)); }
-
   function deepMerge(target, source) {
     for (const key of Object.keys(source)) {
       if (source[key] && typeof source[key] === 'object' && !Array.isArray(source[key]) && target[key]) {
@@ -210,7 +171,20 @@ if (document.getElementById('admin-dashboard')) {
     return target;
   }
 
-  let currentData = loadData();
+  async function loadData() {
+    try {
+      const data = await apiFetch('/api/site-data');
+      return data
+        ? deepMerge(JSON.parse(JSON.stringify(DEFAULT_DATA)), data)
+        : JSON.parse(JSON.stringify(DEFAULT_DATA));
+    } catch { return JSON.parse(JSON.stringify(DEFAULT_DATA)); }
+  }
+
+  async function saveData() {
+    await apiFetch('/api/site-data', { method: 'POST', body: JSON.stringify(currentData) });
+  }
+
+  let currentData = null;
 
   /* ── iframe preview ── */
   const iframe       = document.getElementById('preview-iframe');
@@ -225,26 +199,17 @@ if (document.getElementById('admin-dashboard')) {
 
   iframe?.addEventListener('load', () => {
     if (previewUrlEl) {
-      try {
-        previewUrlEl.textContent = decodeURIComponent(iframe.src.split('/').slice(-2).join('/'));
-      } catch { previewUrlEl.textContent = iframe.src; }
+      try { previewUrlEl.textContent = decodeURIComponent(iframe.src.split('/').slice(-2).join('/')); }
+      catch { previewUrlEl.textContent = iframe.src; }
     }
   });
 
-  /* preview.js envoie WC_READY dès qu'il est chargé — fiable même si
-     l'iframe finit de charger avant que ce listener soit enregistré */
   window.addEventListener('message', e => {
     if (e.source !== iframe?.contentWindow) return;
-    if (e.data?.type === 'WC_READY') {
-      iframeReady = true;
-      sendAll();
-    }
+    if (e.data?.type === 'WC_READY') { iframeReady = true; sendAll(); }
   });
 
-  function setPreviewPage(url) {
-    iframeReady = false;
-    iframe.src = url;
-  }
+  function setPreviewPage(url) { iframeReady = false; iframe.src = url; }
 
   /* ── Navigation sidebar ── */
   const sidebarItems = document.querySelectorAll('.sidebar-item[data-panel]');
@@ -261,11 +226,8 @@ if (document.getElementById('admin-dashboard')) {
     if (iframe) {
       const needsPortfolio = id === 'panel-portfolio';
       const currentSrc = iframe.src || '';
-      if (needsPortfolio && !currentSrc.includes('portfolio.html')) {
-        setPreviewPage('../portfolio.html');
-      } else if (!needsPortfolio && currentSrc.includes('portfolio.html')) {
-        setPreviewPage('../index.html');
-      }
+      if (needsPortfolio && !currentSrc.includes('portfolio.html')) setPreviewPage('../portfolio.html');
+      else if (!needsPortfolio && currentSrc.includes('portfolio.html')) setPreviewPage('../index.html');
     }
   }
 
@@ -302,19 +264,17 @@ if (document.getElementById('admin-dashboard')) {
 
       el.addEventListener('input', () => {
         let newVal;
-        if (el.type === 'checkbox') newVal = el.checked;
+        if (el.type === 'checkbox')    newVal = el.checked;
         else if (el.type === 'number') newVal = Number(el.value);
-        else newVal = el.value;
+        else                           newVal = el.value;
 
         setNestedValue(currentData, path, newVal);
 
-        /* Sync hex display pour les color inputs */
         if (el.type === 'color') {
           const hexEl = el.closest('.color-item')?.querySelector('.color-item-hex');
           if (hexEl) hexEl.textContent = el.value.toUpperCase();
         }
 
-        /* Sync emoji/nom dans l'en-tête accordéon services */
         if (path.startsWith('services.items.') && path.endsWith('.emoji')) {
           const idx = parseInt(path.split('.')[2]);
           document.querySelectorAll('.service-item-emoji')[idx].textContent = newVal;
@@ -324,8 +284,7 @@ if (document.getElementById('admin-dashboard')) {
           document.querySelectorAll('.service-item-name')[idx].textContent = newVal;
         }
 
-        const section = path.split('.')[0];
-        sendToPreview(section);
+        sendToPreview(path.split('.')[0]);
         markUnsaved();
       });
     });
@@ -343,22 +302,9 @@ if (document.getElementById('admin-dashboard')) {
     if (saveIndicator) {
       saveIndicator.textContent = 'Enregistré ✓';
       saveIndicator.classList.add('saved');
-      setTimeout(() => {
-        saveIndicator.textContent = '';
-        saveIndicator.classList.remove('saved');
-      }, 3000);
+      setTimeout(() => { saveIndicator.textContent = ''; saveIndicator.classList.remove('saved'); }, 3000);
     }
   }
-
-  /* ── Boutons Enregistrer ── */
-  document.querySelectorAll('[data-save]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      saveData();
-      markSaved();
-      showToast('Modifications enregistrées ✓');
-      sendAll();
-    });
-  });
 
   /* ── Toast ── */
   window.showToast = function(msg, type = 'success') {
@@ -369,9 +315,21 @@ if (document.getElementById('admin-dashboard')) {
   };
   const showToast = window.showToast;
 
+  /* ── Boutons Enregistrer ── */
+  document.querySelectorAll('[data-save]').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      try {
+        await saveData();
+        markSaved();
+        showToast('Modifications enregistrées ✓');
+        sendAll();
+      } catch { showToast('Erreur lors de la sauvegarde', 'warning'); }
+    });
+  });
+
   /* ── Déconnexion ── */
-  document.getElementById('logout-btn')?.addEventListener('click', () => {
-    clearSession();
+  document.getElementById('logout-btn')?.addEventListener('click', async () => {
+    try { await apiFetch('/api/logout', { method: 'POST' }); } catch {}
     window.location.href = 'index.html';
   });
 
@@ -393,9 +351,9 @@ if (document.getElementById('admin-dashboard')) {
       btn.classList.add('active');
       if (!previewWrap) return;
       const device = btn.dataset.device;
-      if (device === 'mobile')  { previewWrap.style.maxWidth = '390px'; previewWrap.style.margin = '0 auto'; }
-      else if (device === 'tablet') { previewWrap.style.maxWidth = '768px'; previewWrap.style.margin = '0 auto'; }
-      else { previewWrap.style.maxWidth = ''; previewWrap.style.margin = ''; }
+      if (device === 'mobile')       { previewWrap.style.maxWidth = '390px'; previewWrap.style.margin = '0 auto'; }
+      else if (device === 'tablet')  { previewWrap.style.maxWidth = '768px'; previewWrap.style.margin = '0 auto'; }
+      else                           { previewWrap.style.maxWidth = '';      previewWrap.style.margin = ''; }
     });
   });
 
@@ -447,37 +405,43 @@ if (document.getElementById('admin-dashboard')) {
     document.getElementById('modal-name').value           = item.name;
     document.getElementById('modal-desc').value           = item.desc;
     document.getElementById('modal-category').value       = item.category;
-    document.getElementById('modal-save').onclick = () => {
+    document.getElementById('modal-save').onclick = async () => {
       currentData.portfolio[i] = {
         emoji:    document.getElementById('modal-emoji').value,
         name:     document.getElementById('modal-name').value,
         desc:     document.getElementById('modal-desc').value,
         category: document.getElementById('modal-category').value,
       };
-      saveData();
-      renderPortfolioAdmin();
-      sendToPreview('portfolio');
-      modal.classList.remove('open');
-      showToast('Projet mis à jour ✓');
+      try {
+        await saveData();
+        renderPortfolioAdmin();
+        sendToPreview('portfolio');
+        modal.classList.remove('open');
+        showToast('Projet mis à jour ✓');
+      } catch { showToast('Erreur de sauvegarde', 'warning'); }
     };
     modal.classList.add('open');
   };
 
-  window.deletePortfolioItem = function(i) {
+  window.deletePortfolioItem = async function(i) {
     if (!confirm(`Supprimer "${currentData.portfolio[i].name}" ?`)) return;
     currentData.portfolio.splice(i, 1);
-    saveData();
-    renderPortfolioAdmin();
-    sendToPreview('portfolio');
-    showToast('Projet supprimé', 'warning');
+    try {
+      await saveData();
+      renderPortfolioAdmin();
+      sendToPreview('portfolio');
+      showToast('Projet supprimé', 'warning');
+    } catch { showToast('Erreur de sauvegarde', 'warning'); }
   };
 
-  window.addPortfolioItem = function() {
+  window.addPortfolioItem = async function() {
     currentData.portfolio.push({ emoji: '🌟', name: 'Nouveau projet', desc: 'Description du projet.', category: 'vitrine' });
-    saveData();
-    renderPortfolioAdmin();
-    sendToPreview('portfolio');
-    editPortfolioItem(currentData.portfolio.length - 1);
+    try {
+      await saveData();
+      renderPortfolioAdmin();
+      sendToPreview('portfolio');
+      editPortfolioItem(currentData.portfolio.length - 1);
+    } catch { showToast('Erreur de sauvegarde', 'warning'); }
   };
 
   /* ── Modal portfolio (fermeture) ── */
@@ -486,14 +450,12 @@ if (document.getElementById('admin-dashboard')) {
   document.getElementById('modal-cancel')?.addEventListener('click', () => modal.classList.remove('open'));
   modal?.addEventListener('click', e => { if (e.target === modal) modal.classList.remove('open'); });
 
-  /* ── Bouton "Ajouter un projet" (en-tête de panel) ── */
   document.getElementById('add-portfolio-btn')?.addEventListener('click', addPortfolioItem);
 
   /* ── Messages reçus ── */
   let messagesLoaded = false;
 
   async function loadMessages() {
-    const hash = sessionStorage.getItem('wc_admin_hash');
     const loadingEl = document.getElementById('messages-loading');
     const errorEl   = document.getElementById('messages-error');
     const emptyEl   = document.getElementById('messages-empty');
@@ -504,16 +466,7 @@ if (document.getElementById('admin-dashboard')) {
     if (loadingEl) loadingEl.style.display = 'flex';
 
     try {
-      const res = await fetch('/.netlify/functions/get-messages', {
-        headers: { 'x-admin-hash': hash || '' },
-      });
-
-      if (!res.ok) {
-        const data = await res.json().catch(() => ({ error: `HTTP ${res.status}` }));
-        throw new Error(data.error || `HTTP ${res.status}`);
-      }
-
-      const messages = await res.json();
+      const messages = await apiFetch('/api/messages');
       if (loadingEl) loadingEl.style.display = 'none';
 
       if (!messages.length) {
@@ -522,10 +475,7 @@ if (document.getElementById('admin-dashboard')) {
         return;
       }
 
-      if (badge) {
-        badge.textContent = messages.length;
-        badge.style.display = '';
-      }
+      if (badge) { badge.textContent = messages.length; badge.style.display = ''; }
 
       listEl.style.display = 'block';
       listEl.innerHTML = messages.map(m => {
@@ -568,24 +518,35 @@ if (document.getElementById('admin-dashboard')) {
 
   /* ── Changement de mot de passe ── */
   document.getElementById('change-password-btn')?.addEventListener('click', async () => {
-    const p1 = document.getElementById('new-password').value;
-    const p2 = document.getElementById('confirm-password').value;
-    if (!p1) return showToast('Saisissez un mot de passe', 'warning');
-    if (p1 !== p2) return showToast('Les mots de passe ne correspondent pas', 'warning');
-    showToast('Fonctionnalité disponible avec un backend serveur', 'warning');
+    const current = document.getElementById('current-password')?.value || '';
+    const p1      = document.getElementById('new-password')?.value     || '';
+    const p2      = document.getElementById('confirm-password')?.value || '';
+    if (!current)    return showToast('Saisissez votre mot de passe actuel', 'warning');
+    if (!p1)         return showToast('Saisissez un nouveau mot de passe', 'warning');
+    if (p1 !== p2)   return showToast('Les mots de passe ne correspondent pas', 'warning');
+    if (p1.length < 6) return showToast('Le mot de passe doit faire au moins 6 caractères', 'warning');
+    try {
+      await apiFetch('/api/change-password', {
+        method: 'POST',
+        body: JSON.stringify({ currentPassword: current, newPassword: p1 }),
+      });
+      showToast('Mot de passe modifié ✓');
+      ['current-password', 'new-password', 'confirm-password'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.value = '';
+      });
+    } catch (err) { showToast(err.message || 'Erreur', 'warning'); }
   });
 
-  /* ── Init ── */
-  bindDataFields();
-  renderPortfolioAdmin();
-}
+  /* ── Initialisation asynchrone ── */
+  (async () => {
+    try {
+      const me = await apiFetch('/api/me');
+      if (!me.authenticated) { window.location.href = 'index.html'; return; }
+    } catch { window.location.href = 'index.html'; return; }
 
-/* ─── SVG icons ──────────────────────────────────────────────────── */
-const EYE_ICON     = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`;
-const EYE_OFF_ICON = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>`;
-
-function escHtml(str) {
-  return String(str || '')
-    .replace(/&/g, '&amp;').replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    currentData = await loadData();
+    bindDataFields();
+    renderPortfolioAdmin();
+  })();
 }

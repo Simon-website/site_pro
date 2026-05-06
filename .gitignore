@@ -4,5 +4,10 @@ node_modules/
 Thumbs.db
 *.log
 
+# Données serveur (contient le hash du mot de passe et les données du site)
+data/config.json
+data/site_data.json
+data/messages.json
+
 # Local Netlify folder
 .netlify

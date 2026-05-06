@@ -821,18 +821,21 @@
         </div>
         <div class="admin-card-body">
           <div class="form-grid">
+            <div class="field-group" style="grid-column:1/-1;">
+              <label class="field-label">Mot de passe actuel</label>
+              <input type="password" id="current-password" class="field-input" placeholder="••••••••" autocomplete="current-password" />
+            </div>
             <div class="field-group">
               <label class="field-label">Nouveau mot de passe</label>
-              <input type="password" id="new-password" class="field-input" placeholder="••••••••" />
+              <input type="password" id="new-password" class="field-input" placeholder="••••••••" autocomplete="new-password" />
             </div>
             <div class="field-group">
               <label class="field-label">Confirmer le mot de passe</label>
-              <input type="password" id="confirm-password" class="field-input" placeholder="••••••••" />
+              <input type="password" id="confirm-password" class="field-input" placeholder="••••••••" autocomplete="new-password" />
             </div>
           </div>
           <p class="field-hint" style="margin-top:1rem;">
-            ⚠️ Le mot de passe est actuellement stocké côté client (SHA-256).
-            Pour une sécurité maximale, connectez un backend serveur.
+            Le mot de passe est haché avec PBKDF2-SHA512 côté serveur. Minimum 6 caractères.
           </p>
         </div>
         <div class="admin-card-footer">
