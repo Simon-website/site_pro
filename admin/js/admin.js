@@ -193,7 +193,7 @@ if (document.getElementById('admin-dashboard')) {
 
   function sendToPreview(section) {
     if (!iframe || !iframeReady) return;
-    iframe.contentWindow.postMessage({ type: 'WC_UPDATE', section, data: currentData }, '*');
+    iframe.contentWindow.postMessage({ type: 'WC_UPDATE', section, data: currentData }, window.location.origin);
   }
   function sendAll() { sendToPreview('all'); }
 
@@ -524,7 +524,7 @@ if (document.getElementById('admin-dashboard')) {
     if (!current)    return showToast('Saisissez votre mot de passe actuel', 'warning');
     if (!p1)         return showToast('Saisissez un nouveau mot de passe', 'warning');
     if (p1 !== p2)   return showToast('Les mots de passe ne correspondent pas', 'warning');
-    if (p1.length < 6) return showToast('Le mot de passe doit faire au moins 6 caractères', 'warning');
+    if (p1.length < 8) return showToast('Le mot de passe doit faire au moins 8 caractères', 'warning');
     try {
       await apiFetch('/api/change-password', {
         method: 'POST',

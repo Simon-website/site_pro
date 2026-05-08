@@ -16,6 +16,7 @@
 
 /* ─── Écoute les messages de l'iframe parent (admin) ────────────── */
 window.addEventListener('message', e => {
+  if (e.origin !== window.location.origin) return;
   const msg = e.data;
   if (!msg || msg.type !== 'WC_UPDATE') return;
 
@@ -268,5 +269,5 @@ function escHtml(str) {
 
 /* Signale à l'admin que la page est prête à recevoir des mises à jour */
 if (window.parent !== window) {
-  window.parent.postMessage({ type: 'WC_READY' }, '*');
+  window.parent.postMessage({ type: 'WC_READY' }, window.location.origin);
 }

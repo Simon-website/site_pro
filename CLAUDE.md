@@ -39,16 +39,16 @@ Pure HTML/CSS/JS — no build step, no framework, no bundler.
 | `css/animations.css` | Reveal classes (`.reveal`, `.reveal-left`, `.reveal-right`), hero word stagger, custom cursor, heroFloat keyframes, page loader |
 | `js/main.js` | Header scroll, smooth anchor scroll, hamburger, hero card tilt on mousemove, contact form validation |
 | `js/animations.js` | Custom cursor (lerp 0.1), hero title word split into `.hero-word` spans, parallax orbs, IntersectionObserver reveal, eased counters (cubic ease-out), magnetic tilt on service/why/stat cards, active nav tracking |
-| `js/preview.js` | Loaded on both `index.html` and `portfolio.html`. On load: reads `localStorage('wc_site_data')` and applies it. Also listens for `postMessage` from the admin iframe. |
+| `js/preview.js` | Loaded on both `index.html` and `portfolio.html`. On load: fetches `/api/site-data` and applies it. Also listens for `postMessage` from the admin iframe (origin-checked). |
 
 ### Admin panel
 
 | File | Role |
 |---|---|
-| `admin/index.html` | Login page — SHA-256 password check, lockout after 5 attempts (15 min), session stored in `sessionStorage` (2h TTL) |
+| `admin/index.html` | Login page — sends password to `/api/login` (PBKDF2-SHA512 backend), JWT cookie HttpOnly, lockout after 5 attempts (15 min) |
 | `admin/dashboard.html` | 3-column layout: sidebar (240px) + editor (400px) + live preview iframe (1fr). All editor inputs have `data-field="section.key.path"` attributes. |
 | `admin/css/admin.css` | Independent dark theme — variables prefixed separately from the public site. |
-| `admin/js/admin.js` | Auth logic + full dashboard: auto-binds `[data-field]` inputs, sends `postMessage` on every keystroke, portfolio CRUD with modal, device toggle, save to `localStorage`. |
+| `admin/js/admin.js` | Auth logic + full dashboard: checks `/api/me` on load (redirects to login if not authenticated), auto-binds `[data-field]` inputs, sends `postMessage` (same-origin only) on every keystroke, portfolio CRUD with modal, device toggle, saves via `/api/site-data`. |
 
 ### Admin ↔ site data flow
 
@@ -56,15 +56,15 @@ Pure HTML/CSS/JS — no build step, no framework, no bundler.
 admin/js/admin.js
   └─ input change → setNestedValue(currentData, path, val)
        └─ sendToPreview(section)
-            └─ iframe.contentWindow.postMessage({ type:'WC_UPDATE', section, data: currentData }, '*')
+            └─ iframe.contentWindow.postMessage({ type:'WC_UPDATE', section, data }, window.location.origin)
 
 js/preview.js (loaded inside iframe)
-  └─ window.addEventListener('message') → switch(section) → applyHero / applyServices / ...
+  └─ message event (origin === window.location.origin) → switch(section) → applyHero / applyServices / ...
        └─ DOM mutations (no re-render, targeted updates)
 
-Persistence: localStorage key 'wc_site_data' (JSON)
-  - Written by: admin.js saveData() on every "Enregistrer" click
-  - Read by: preview.js initFromStorage() on page load (applies saved state without admin)
+Persistence: Netlify Blobs (store: webcraft-site, key: data)
+  - Written by: admin.js saveData() → POST /api/site-data (requires JWT)
+  - Read by: preview.js → GET /api/site-data on page load (public)
 ```
 
 ### Data model (`currentData` / `wc_site_data`)
@@ -85,4 +85,4 @@ Persistence: localStorage key 'wc_site_data' (JSON)
 
 ### Password change
 
-`PASSWORD_HASH` in `admin/js/admin.js` line 2 is SHA-256 of `"1234"`. To change: compute `sha256(newPassword)` and replace the constant. No backend required.
+Via the admin dashboard (Paramètres panel) → calls `POST /api/change-password` with `{ currentPassword, newPassword }`. The backend re-hashes with PBKDF2-SHA512 and a new random salt. Minimum 8 characters. No code change needed.
