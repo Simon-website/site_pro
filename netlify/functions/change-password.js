@@ -28,7 +28,12 @@ exports.handler = async (event) => {
   }
 
   const newSalt = crypto.randomBytes(16).toString('hex');
-  await saveConfig({ ...cfg, salt: newSalt, hash: pbkdf2(newPassword, newSalt) });
+  try {
+    await saveConfig({ ...cfg, salt: newSalt, hash: pbkdf2(String(newPassword), newSalt) });
+  } catch (e) {
+    console.error('[change-password] saveConfig failed:', e?.message);
+    return json(500, { error: 'Erreur lors de la sauvegarde du mot de passe' });
+  }
 
   return json(200, { success: true });
 };

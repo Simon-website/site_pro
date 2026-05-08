@@ -149,16 +149,17 @@ app.post('/api/contact', (req, res) => {
 /* Changement de mot de passe */
 app.post('/api/change-password', requireAuth, (req, res) => {
   const { currentPassword, newPassword } = req.body;
-  if (!newPassword || String(newPassword).length < 6) {
-    return res.status(400).json({ error: 'Le mot de passe doit faire au moins 6 caractères' });
+  if (!currentPassword) return res.status(400).json({ error: 'Mot de passe actuel requis' });
+  if (!newPassword || String(newPassword).length < 8) {
+    return res.status(400).json({ error: 'Le nouveau mot de passe doit faire au moins 8 caractères' });
   }
   const current = JSON.parse(fs.readFileSync(CONFIG_F, 'utf8'));
-  if (pbkdf2(currentPassword, current.salt) !== current.hash) {
+  if (pbkdf2(String(currentPassword), current.salt) !== current.hash) {
     return res.status(401).json({ error: 'Mot de passe actuel incorrect' });
   }
   const newSalt = crypto.randomBytes(16).toString('hex');
   fs.writeFileSync(CONFIG_F, JSON.stringify(
-    { ...current, salt: newSalt, hash: pbkdf2(newPassword, newSalt) }, null, 2
+    { ...current, salt: newSalt, hash: pbkdf2(String(newPassword), newSalt) }, null, 2
   ));
   res.json({ success: true });
 });
