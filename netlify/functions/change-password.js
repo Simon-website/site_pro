@@ -13,12 +13,17 @@ exports.handler = async (event) => {
   try { ({ currentPassword, newPassword } = JSON.parse(event.body || '{}')); }
   catch { return json(400, { error: 'Corps invalide' }); }
 
+  if (!currentPassword) return json(400, { error: 'Mot de passe actuel requis' });
   if (!newPassword || String(newPassword).length < 8) {
-    return json(400, { error: 'Le mot de passe doit faire au moins 8 caractères' });
+    return json(400, { error: 'Le nouveau mot de passe doit faire au moins 8 caractères' });
   }
 
   const cfg = await getConfig();
-  if (pbkdf2(currentPassword, cfg.salt) !== cfg.hash) {
+  let inputHash;
+  try { inputHash = pbkdf2(String(currentPassword), cfg.salt); }
+  catch { return json(500, { error: 'Erreur interne de vérification' }); }
+
+  if (inputHash !== cfg.hash) {
     return json(401, { error: 'Mot de passe actuel incorrect' });
   }
 

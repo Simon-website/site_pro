@@ -94,10 +94,12 @@ function clearCookieHeader() {
 
 /* ── Auth guard ───────────────────────────────────────────────────── */
 async function requireAuth(event) {
-  const token = getTokenFromEvent(event);
-  if (!token) return null;
-  const cfg = await getConfig();
-  return verifyToken(token, cfg.jwtSecret);
+  try {
+    const token = getTokenFromEvent(event);
+    if (!token) return null;
+    const cfg = await getConfig();
+    return verifyToken(token, cfg.jwtSecret);
+  } catch { return null; }
 }
 
 /* ── Rate limiting via Blobs ──────────────────────────────────────── */

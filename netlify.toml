@@ -43,5 +43,3 @@
   for = "/api/*"
   [headers.values]
     Cache-Control = "no-store, no-cache, must-revalidate"
-    # Bloque tout appel cross-origin vers l'API
-    Access-Control-Allow-Origin = ""
