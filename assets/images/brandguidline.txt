@@ -229,18 +229,30 @@ assets/images/logo.png  — Logo WebCraft (fond transparent recommandé)
 
 ## Panneau d'administration
 
-URL d'accès    : admin/index.html (à mettre derrière un sous-domaine ou route /admin en prod)
-Mot de passe   : stocké en SHA-256 côté client (hash de "1234")
-               → Pour changer : recalculer SHA-256 du nouveau mdp et remplacer PASSWORD_HASH dans admin/js/admin.js
-Sécurité       : max 5 tentatives puis lockout 15 min (localStorage)
-               : session sessionStorage expirée après 2h d'inactivité
+URL d'accès    : admin/index.html
+Mot de passe   : haché PBKDF2-SHA512 (100 000 itérations) + sel aléatoire côté SERVEUR
+               → Pour changer : dashboard → Paramètres → Sécurité admin (min. 8 caractères)
+               → Ne jamais modifier admin/js/admin.js pour changer le mot de passe
+Authentification : JWT cookie HttpOnly + SameSite=Strict + Secure (en production)
+Sécurité       : max 5 tentatives puis lockout 15 min (Netlify Blobs, côté serveur)
+               : session expirée après 2h (JWT exp claim)
                : noindex/nofollow sur toutes les pages admin
+               : headers HTTP : HSTS, X-Frame-Options, X-Content-Type-Options, etc.
+
+Backend        : Netlify Functions (netlify/functions/)
+  /api/login           — POST, vérifie mdp PBKDF2, retourne JWT cookie
+  /api/logout          — POST, efface le cookie
+  /api/me              — GET, vérifie le JWT (utilisé au chargement du dashboard)
+  /api/site-data       — GET public / POST protégé JWT (données du site)
+  /api/messages        — GET protégé JWT (messages de contact)
+  /api/contact         — POST public, rate-limited 5/h par IP
+  /api/change-password — POST protégé JWT + ancien mdp requis
 
 Structure admin
-  admin/index.html       — Page de login
+  admin/index.html       — Page de login (appelle /api/login)
   admin/dashboard.html   — Dashboard complet (7 panneaux)
   admin/css/admin.css    — Thème sombre premium (variables indépendantes du site public)
-  admin/js/admin.js      — Auth SHA-256, session, navigation, toasts, accordéons
+  admin/js/admin.js      — Auth backend JWT, navigation, toasts, accordéons, CRUD portfolio
 
 Panneaux disponibles
   Vue d'ensemble  — Résumé, accès rapide, toggles sections
@@ -252,10 +264,7 @@ Panneaux disponibles
   Apparence       — Palette 6 couleurs, logo, hauteur nav
   Paramètres      — Nom site, tagline, SEO, changement mot de passe
 
-⚠️  IMPORTANT — Limitations actuelles (interface only)
-  Les boutons "Enregistrer" affichent un toast mais ne modifient pas les fichiers HTML/CSS.
-  Pour brancher la logique réelle, il faudra un backend Node.js/Express ou équivalent
-  avec accès en écriture aux fichiers du projet.
+Stockage       : Netlify Blobs (webcraft-site → données site, webcraft-admin → config/auth)
 
 ---
 
