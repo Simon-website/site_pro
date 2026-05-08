@@ -69,6 +69,9 @@ function verifyToken(token, secret) {
 }
 
 /* ── Cookies ──────────────────────────────────────────────────────── */
+// Secure flag activé uniquement hors dev local (Netlify set CONTEXT=dev en local)
+const _secure = process.env.CONTEXT && process.env.CONTEXT !== 'dev' ? '; Secure' : '';
+
 function parseCookies(header) {
   if (!header) return {};
   return Object.fromEntries(
@@ -83,10 +86,10 @@ function getTokenFromEvent(event) {
   return parseCookies(h).wc_token || null;
 }
 function setCookieHeader(token) {
-  return `wc_token=${token}; HttpOnly; SameSite=Strict; Path=/; Max-Age=7200`;
+  return `wc_token=${token}; HttpOnly; SameSite=Strict; Path=/${_secure}; Max-Age=7200`;
 }
 function clearCookieHeader() {
-  return `wc_token=; HttpOnly; SameSite=Strict; Path=/; Max-Age=0`;
+  return `wc_token=; HttpOnly; SameSite=Strict; Path=/${_secure}; Max-Age=0`;
 }
 
 /* ── Auth guard ───────────────────────────────────────────────────── */

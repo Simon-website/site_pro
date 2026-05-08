@@ -17,9 +17,11 @@ exports.handler = async (event) => {
     const auth = await requireAuth(event);
     if (!auth) return json(401, { error: 'Non autorisé' });
 
+    if ((event.body || '').length > 200_000) return json(413, { error: 'Payload trop volumineux' });
+
     let data;
     try { data = JSON.parse(event.body || 'null'); } catch { return json(400, { error: 'JSON invalide' }); }
-    if (!data) return json(400, { error: 'Données manquantes' });
+    if (!data || typeof data !== 'object' || Array.isArray(data)) return json(400, { error: 'Données invalides' });
 
     await blobSet(store, 'data', data);
     return json(200, { success: true });

@@ -13,8 +13,8 @@ exports.handler = async (event) => {
   try { ({ currentPassword, newPassword } = JSON.parse(event.body || '{}')); }
   catch { return json(400, { error: 'Corps invalide' }); }
 
-  if (!newPassword || String(newPassword).length < 6) {
-    return json(400, { error: 'Le mot de passe doit faire au moins 6 caractères' });
+  if (!newPassword || String(newPassword).length < 8) {
+    return json(400, { error: 'Le mot de passe doit faire au moins 8 caractères' });
   }
 
   const cfg = await getConfig();

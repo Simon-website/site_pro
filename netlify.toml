@@ -11,3 +11,37 @@
   to     = "/.netlify/functions/:splat"
   status = 200
   force  = true
+
+# ── Headers de sécurité globaux ────────────────────────────────────────────
+[[headers]]
+  for = "/*"
+  [headers.values]
+    # Empêche le sniffing de type MIME
+    X-Content-Type-Options = "nosniff"
+    # Politique de referrer : envoie uniquement l'origine sur les requêtes cross-origin
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    # Désactive les APIs sensibles non utilisées
+    Permissions-Policy = "camera=(), microphone=(), geolocation=(), payment=()"
+    # HSTS : force HTTPS pendant 1 an, incluant les sous-domaines
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains; preload"
+    # Autorise l'iframe uniquement depuis la même origine (pour le preview admin)
+    X-Frame-Options = "SAMEORIGIN"
+
+# ── Headers spécifiques aux pages admin ────────────────────────────────────
+[[headers]]
+  for = "/admin/*"
+  [headers.values]
+    # Jamais de cache sur les pages admin
+    Cache-Control = "no-store, no-cache, must-revalidate, proxy-revalidate"
+    Pragma = "no-cache"
+    Expires = "0"
+    # Renforce le noindex déjà présent dans le HTML
+    X-Robots-Tag = "noindex, nofollow"
+
+# ── Headers spécifiques aux routes API ─────────────────────────────────────
+[[headers]]
+  for = "/api/*"
+  [headers.values]
+    Cache-Control = "no-store, no-cache, must-revalidate"
+    # Bloque tout appel cross-origin vers l'API
+    Access-Control-Allow-Origin = ""
