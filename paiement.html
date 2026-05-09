@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Paiement — WebCraft</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    body { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; background: var(--bg); padding: 2rem; }
+    .pay-card { background: #fff; border-radius: 1.5rem; box-shadow: 0 8px 40px rgba(0,0,0,.08); padding: 2.5rem 2rem; width: 100%; max-width: 440px; }
+    .pay-logo { font-family: 'Poppins', sans-serif; font-weight: 800; font-size: 1.5rem; background: linear-gradient(135deg, #7FB3FF, #C3A6FF); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 1.5rem; display: block; text-align: center; }
+    .pay-title { font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 1.3rem; color: #1F2937; margin: 0 0 .4rem; text-align: center; }
+    .pay-amount { text-align: center; font-size: 2.2rem; font-weight: 800; font-family: 'Poppins', sans-serif; background: linear-gradient(135deg, #7FB3FF, #C3A6FF); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: .5rem 0 1.5rem; }
+    .pay-form label { display: block; font-size: .85rem; font-weight: 500; color: #374151; margin-bottom: .3rem; margin-top: 1rem; }
+    .pay-form input { width: 100%; padding: .75rem 1rem; border: 1.5px solid #E5E7EB; border-radius: .75rem; font-size: 1rem; font-family: 'Inter', sans-serif; outline: none; transition: border-color .2s; box-sizing: border-box; }
+    .pay-form input:focus { border-color: #7FB3FF; }
+    .pay-form input.error { border-color: #ef4444; }
+    .pay-btn { width: 100%; margin-top: 1.5rem; padding: 1rem; border: none; border-radius: .75rem; background: linear-gradient(135deg, #7FB3FF, #C3A6FF); color: #fff; font-size: 1rem; font-weight: 600; font-family: 'Poppins', sans-serif; cursor: pointer; transition: opacity .2s, transform .15s; }
+    .pay-btn:hover { opacity: .9; transform: translateY(-1px); }
+    .pay-btn:disabled { opacity: .6; cursor: not-allowed; transform: none; }
+    .pay-error { color: #ef4444; font-size: .85rem; margin-top: .75rem; text-align: center; display: none; }
+    .pay-cancel { display: none; color: #ef4444; background: #fef2f2; border: 1px solid #fecaca; border-radius: .75rem; padding: .75rem; text-align: center; margin-bottom: 1rem; font-size: .9rem; }
+    .pay-secure { display: flex; align-items: center; justify-content: center; gap: .4rem; margin-top: 1.2rem; font-size: .78rem; color: #9CA3AF; }
+    .pay-secure svg { flex-shrink: 0; }
+    .pay-back { display: block; text-align: center; margin-top: 1rem; color: #7FB3FF; font-size: .85rem; text-decoration: none; }
+    .pay-back:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <div class="pay-card">
+    <span class="pay-logo">WebCraft</span>
+    <h1 class="pay-title">Paiement sécurisé</h1>
+    <div class="pay-amount">0,50 €</div>
+
+    <div class="pay-cancel" id="cancel-msg">Paiement annulé. Vous pouvez réessayer.</div>
+
+    <form class="pay-form" id="pay-form" novalidate>
+      <label for="pay-name">Votre nom</label>
+      <input type="text" id="pay-name" placeholder="Jean Dupont" required autocomplete="name">
+
+      <label for="pay-email">Votre email</label>
+      <input type="email" id="pay-email" placeholder="jean@exemple.fr" required autocomplete="email">
+
+      <label for="pay-desc">Objet (optionnel)</label>
+      <input type="text" id="pay-desc" placeholder="Acompte site vitrine">
+
+      <button type="submit" class="pay-btn" id="pay-btn">
+        Payer 0,50 € par carte →
+      </button>
+      <div class="pay-error" id="pay-error"></div>
+    </form>
+
+    <div class="pay-secure">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      Paiement sécurisé par Stripe · Données chiffrées
+    </div>
+    <a href="index.html" class="pay-back">← Retour au site</a>
+  </div>
+
+  <script src="js/paiement.js"></script>
+</body>
+</html>
