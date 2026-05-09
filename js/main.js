@@ -80,9 +80,20 @@ form?.addEventListener('submit', e => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name: form.name.value, email: form.email.value, message: form.message.value }),
     })
-      .finally(() => {
-        form.style.display = 'none';
-        document.querySelector('.form-success').style.display = 'block';
+      .then(res => {
+        if (res.ok) {
+          form.style.display = 'none';
+          document.querySelector('.form-success').style.display = 'block';
+        } else {
+          btn.disabled = false;
+          btn.textContent = 'Envoyer';
+          const errEl = form.querySelector('.form-error') || form.querySelector('[data-global-error]');
+          if (errEl) { errEl.textContent = 'Erreur lors de l\'envoi. Réessayez.'; errEl.style.display = 'block'; }
+        }
+      })
+      .catch(() => {
+        btn.disabled = false;
+        btn.textContent = 'Envoyer';
       });
   }
 });

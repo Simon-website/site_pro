@@ -23,13 +23,17 @@ exports.handler = async (event) => {
   try { inputHash = pbkdf2(String(currentPassword), cfg.salt); }
   catch { return json(500, { error: 'Erreur interne de vérification' }); }
 
-  if (inputHash !== cfg.hash) {
+  const inputBuf = Buffer.from(inputHash,  'hex');
+  const cfgBuf   = Buffer.from(cfg.hash,   'hex');
+  const match = inputBuf.length === cfgBuf.length && crypto.timingSafeEqual(inputBuf, cfgBuf);
+  if (!match) {
     return json(401, { error: 'Mot de passe actuel incorrect' });
   }
 
-  const newSalt = crypto.randomBytes(16).toString('hex');
+  const newSalt      = crypto.randomBytes(16).toString('hex');
+  const newJwtSecret = crypto.randomBytes(32).toString('hex');
   try {
-    await saveConfig({ ...cfg, salt: newSalt, hash: pbkdf2(String(newPassword), newSalt) });
+    await saveConfig({ salt: newSalt, hash: pbkdf2(String(newPassword), newSalt), jwtSecret: newJwtSecret });
   } catch (e) {
     console.error('[change-password] saveConfig failed:', e?.message);
     return json(500, { error: 'Erreur lors de la sauvegarde du mot de passe' });

@@ -204,6 +204,12 @@ function applyContact(c) {
 /* ─── Apparence (CSS variables) ─────────────────────────────────── */
 function applyAppearance(a) {
   if (!a) return;
+  const blue   = safeColor(a.blue,   '#7FB3FF');
+  const violet = safeColor(a.violet, '#C3A6FF');
+  const pink   = safeColor(a.pink,   '#FFB3C7');
+  const mint   = safeColor(a.mint,   '#A8E6CF');
+  const bg     = safeColor(a.bg,     '#F9FAFB');
+  const text   = safeColor(a.text,   '#1F2937');
   let styleEl = document.getElementById('wc-preview-vars');
   if (!styleEl) {
     styleEl = document.createElement('style');
@@ -211,16 +217,16 @@ function applyAppearance(a) {
     document.head.appendChild(styleEl);
   }
   styleEl.textContent = `:root {
-    --blue:      ${a.blue   || '#7FB3FF'};
-    --violet:    ${a.violet || '#C3A6FF'};
-    --pink:      ${a.pink   || '#FFB3C7'};
-    --mint:      ${a.mint   || '#A8E6CF'};
-    --bg:        ${a.bg     || '#F9FAFB'};
-    --text:      ${a.text   || '#1F2937'};
-    --grad-main: linear-gradient(135deg, ${a.blue || '#7FB3FF'}, ${a.violet || '#C3A6FF'});
-    --grad-hero: linear-gradient(135deg, ${a.blue || '#7FB3FF'}, ${a.violet || '#C3A6FF'} 55%, ${a.pink || '#FFB3C7'});
-    --grad-warm: linear-gradient(135deg, ${a.violet || '#C3A6FF'}, ${a.pink || '#FFB3C7'});
-    --grad-mint: linear-gradient(135deg, ${a.blue || '#7FB3FF'}, ${a.mint || '#A8E6CF'});
+    --blue:      ${blue};
+    --violet:    ${violet};
+    --pink:      ${pink};
+    --mint:      ${mint};
+    --bg:        ${bg};
+    --text:      ${text};
+    --grad-main: linear-gradient(135deg, ${blue}, ${violet});
+    --grad-hero: linear-gradient(135deg, ${blue}, ${violet} 55%, ${pink});
+    --grad-warm: linear-gradient(135deg, ${violet}, ${pink});
+    --grad-mint: linear-gradient(135deg, ${blue}, ${mint});
   }`;
 }
 
@@ -238,6 +244,18 @@ function scrollTo(selector) {
 }
 
 /* ─── Helpers ────────────────────────────────────────────────────── */
+function safeHref(url) {
+  if (!url || typeof url !== 'string') return '#';
+  const s = url.trim().toLowerCase();
+  if (s.startsWith('javascript:') || s.startsWith('data:') || s.startsWith('vbscript:')) return '#';
+  return url;
+}
+
+const HEX_RE = /^#[0-9a-fA-F]{3,8}$/;
+function safeColor(val, fallback) {
+  return (typeof val === 'string' && HEX_RE.test(val.trim())) ? val.trim() : fallback;
+}
+
 function setText(selector, value) {
   if (value === undefined) return;
   const el = document.querySelector(selector);
@@ -252,7 +270,7 @@ function setTextHref(selector, text, href) {
   const el = document.querySelector(selector);
   if (!el) return;
   if (text !== undefined) el.textContent = text;
-  if (href !== undefined) el.href = href;
+  if (href !== undefined) el.href = safeHref(href);
 }
 function setSocialHref(label, url) {
   if (url === undefined) return;
