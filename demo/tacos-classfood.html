@@ -3,9 +3,647 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tacos ClassFood — Démo WebCraft</title>
+  <title>Class'food — Tacos & Kebab à Saint-Georges-de-Reneins</title>
   <meta name="robots" content="noindex, nofollow" />
+  <meta name="description" content="Class'food, le meilleur tacos de Saint-Georges-de-Reneins. Maxi Tacos, Kebab, Burgers. Halal certifié. Livraison et sur place." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg:       #0D0D0D;
+      --surface:  #181818;
+      --surface2: #212121;
+      --orange:   #FF5C28;
+      --orange2:  #FF8B00;
+      --gold:     #FFB800;
+      --green:    #22C55E;
+      --text:     #FFFFFF;
+      --muted:    rgba(255,255,255,0.58);
+      --faint:    rgba(255,255,255,0.28);
+      --border:   rgba(255,255,255,0.07);
+      --grad:     linear-gradient(135deg, #FF5C28 0%, #FF8B00 100%);
+      --radius:   16px;
+      --radius-sm:10px;
+      --glow:     0 0 40px rgba(255,92,40,0.18);
+    }
+    html { scroll-behavior: smooth; scroll-padding-top: 80px; font-size: 16px; }
+    body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; line-height: 1.6; overflow-x: hidden; }
+    img  { display: block; max-width: 100%; }
+    a    { color: inherit; text-decoration: none; }
+    ul   { list-style: none; }
+    button { cursor: pointer; font-family: inherit; border: none; background: none; }
+    .container { width: min(1100px, 92%); margin-inline: auto; }
+
+    /* ── Buttons ── */
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.85rem 1.8rem; border-radius: 12px;
+      font-size: 0.95rem; font-weight: 600; font-family: 'Inter', sans-serif;
+      transition: all 0.25s ease; white-space: nowrap;
+    }
+    .btn-primary { background: var(--grad); color: #fff; box-shadow: 0 4px 20px rgba(255,92,40,0.35); }
+    .btn-primary:hover { filter: brightness(1.1); transform: translateY(-2px); box-shadow: 0 10px 32px rgba(255,92,40,0.45); }
+    .btn-outline { border: 1.5px solid rgba(255,255,255,0.18); color: var(--text); background: rgba(255,255,255,0.04); }
+    .btn-outline:hover { border-color: var(--orange); background: rgba(255,92,40,0.07); transform: translateY(-2px); }
+    .btn-white { background: #fff; color: #111; font-weight: 700; box-shadow: 0 4px 20px rgba(0,0,0,0.25); }
+    .btn-white:hover { transform: translateY(-2px); box-shadow: 0 10px 32px rgba(0,0,0,0.3); }
+
+    /* ── Header ── */
+    header {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 1rem 0;
+      transition: background 0.3s, box-shadow 0.3s;
+    }
+    header.scrolled {
+      background: rgba(13,13,13,0.93);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      box-shadow: 0 1px 0 var(--border);
+    }
+    .nav-inner { display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; }
+    .nav-logo {
+      font-family: 'Poppins', sans-serif; font-weight: 900; font-size: 1.25rem;
+      display: flex; align-items: center; gap: 0.35rem;
+    }
+    .nav-logo .apos { color: var(--orange); }
+    .halal-dot {
+      width: 8px; height: 8px; background: var(--green);
+      border-radius: 50%; display: inline-block;
+      animation: blink 2.2s ease-in-out infinite;
+    }
+    @keyframes blink {
+      0%,100% { opacity:1; transform:scale(1); }
+      50%      { opacity:0.45; transform:scale(1.6); }
+    }
+    .nav-links { display: flex; align-items: center; gap: 2rem; }
+    .nav-links a { font-size: 0.9rem; font-weight: 500; color: var(--muted); transition: color 0.2s; }
+    .nav-links a:hover { color: var(--text); }
+    .nav-right { display: flex; align-items: center; gap: 1rem; }
+    .nav-phone { font-size: 0.88rem; font-weight: 600; color: var(--muted); transition: color 0.2s; }
+    .nav-phone:hover { color: var(--orange); }
+
+    .hamburger { display: none; flex-direction: column; gap: 5px; padding: 4px; }
+    .hamburger span { display: block; width: 22px; height: 2px; background: var(--text); border-radius: 2px; transition: all 0.25s; }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    .mobile-menu {
+      display: none; position: fixed; inset: 0;
+      background: var(--bg); z-index: 99;
+      flex-direction: column; align-items: center; justify-content: center; gap: 2rem;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a { font-family: 'Poppins', sans-serif; font-size: 1.6rem; font-weight: 700; color: var(--muted); transition: color 0.2s; }
+    .mobile-menu a:hover { color: var(--text); }
+
+    /* ── Hero ── */
+    #hero { padding-top: 5.5rem; padding-bottom: 3rem; position: relative; overflow: hidden; }
+    .hero-bg { position: absolute; inset: 0; pointer-events: none; }
+    .hero-orb-1 {
+      position: absolute; width: 600px; height: 600px;
+      background: rgba(255,92,40,0.15); border-radius: 50%;
+      filter: blur(110px); top: -200px; right: -80px;
+    }
+    .hero-orb-2 {
+      position: absolute; width: 400px; height: 400px;
+      background: rgba(255,139,0,0.1); border-radius: 50%;
+      filter: blur(90px); bottom: -80px; left: -60px;
+    }
+    .hero-inner {
+      display: grid; grid-template-columns: 1fr 1fr;
+      align-items: center; gap: 3rem;
+      min-height: calc(100svh - 8.5rem); padding: 2rem 0;
+      position: relative; z-index: 1;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: rgba(255,184,0,0.1); border: 1px solid rgba(255,184,0,0.28);
+      border-radius: 100px; padding: 0.4rem 1rem;
+      font-size: 0.8rem; font-weight: 600; color: var(--gold);
+      margin-bottom: 1.75rem;
+    }
+    .hero-title {
+      font-family: 'Poppins', sans-serif;
+      font-size: clamp(2.6rem, 5.5vw, 4.5rem);
+      font-weight: 900; line-height: 1.05; letter-spacing: -0.02em;
+      margin-bottom: 1.4rem;
+    }
+    .hero-title .orange {
+      background: var(--grad);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .hero-sub {
+      font-size: 1.05rem; font-weight: 300; color: var(--muted);
+      max-width: 44ch; line-height: 1.75; margin-bottom: 2.25rem;
+    }
+    .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; margin-bottom: 2.25rem; }
+    .hero-tags { display: flex; gap: 0.6rem; flex-wrap: wrap; }
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: 0.3rem;
+      padding: 0.32rem 0.85rem; border-radius: 100px;
+      font-size: 0.77rem; font-weight: 500;
+      border: 1px solid var(--border); color: var(--muted);
+      background: rgba(255,255,255,0.03);
+    }
+    .hero-tag.halal { border-color: rgba(34,197,94,0.3); color: var(--green); background: rgba(34,197,94,0.06); }
+
+    /* Hero right — food grid */
+    .hero-visual { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .food-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1.6rem 1.25rem; text-align: center;
+      transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+    }
+    .food-card:hover { border-color: rgba(255,92,40,0.35); transform: translateY(-5px); box-shadow: var(--glow); }
+    .food-card:nth-child(2) { margin-top: 1.5rem; }
+    .food-card:nth-child(4) { margin-top: -1.5rem; }
+    .food-emoji { font-size: 2.6rem; line-height: 1; margin-bottom: 0.6rem; }
+    .food-name { font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 0.88rem; }
+    .food-label { font-size: 0.72rem; color: var(--muted); margin-top: 0.2rem; }
+
+    /* ── Section commons ── */
+    .section-label {
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase;
+      background: var(--grad); -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent; background-clip: text;
+      display: block; margin-bottom: 0.7rem;
+    }
+    .section-title {
+      font-family: 'Poppins', sans-serif;
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 800; line-height: 1.15; margin-bottom: 0.7rem;
+    }
+    .section-sub { font-size: 1rem; color: var(--muted); font-weight: 300; max-width: 50ch; line-height: 1.7; }
+
+    /* ── Menu ── */
+    #menu { padding: 7rem 0; }
+    #menu .section-sub { margin-bottom: 3rem; }
+    .menu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(255px, 1fr)); gap: 1.25rem; }
+    .menu-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1.75rem;
+      transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+      position: relative; overflow: hidden;
+    }
+    .menu-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0;
+      height: 2px; background: var(--grad); opacity: 0; transition: opacity 0.25s;
+    }
+    .menu-card:hover { border-color: rgba(255,92,40,0.28); transform: translateY(-4px); box-shadow: var(--glow); }
+    .menu-card:hover::before { opacity: 1; }
+    .menu-card.star { border-color: rgba(255,92,40,0.3); background: linear-gradient(135deg, rgba(255,92,40,0.05) 0%, rgba(255,139,0,0.03) 100%); }
+    .menu-card.star::before { opacity: 1; }
+    .menu-emoji { font-size: 2.8rem; line-height: 1; margin-bottom: 1rem; }
+    .menu-top { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; margin-bottom: 0.5rem; }
+    .menu-name { font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 1.05rem; }
+    .menu-badge {
+      background: rgba(255,184,0,0.13); color: var(--gold);
+      font-size: 0.68rem; font-weight: 700; padding: 0.18rem 0.55rem; border-radius: 6px;
+      white-space: nowrap;
+    }
+    .menu-badge.pop { background: rgba(255,92,40,0.13); color: var(--orange); }
+    .menu-badge.home { background: rgba(34,197,94,0.1); color: var(--green); }
+    .menu-desc { font-size: 0.86rem; color: var(--muted); font-weight: 300; line-height: 1.6; }
+    .menu-price { margin-top: 0.85rem; font-size: 0.83rem; font-weight: 600; color: var(--orange); }
+
+    /* ── Engagements ── */
+    #engagements {
+      padding: 6rem 0;
+      background: var(--surface);
+      border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+    }
+    #engagements .section-sub { margin-bottom: 3rem; }
+    .eng-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.25rem; }
+    .eng-card {
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 2rem 1.5rem; text-align: center;
+      transition: border-color 0.25s, transform 0.25s;
+    }
+    .eng-card:hover { border-color: rgba(255,92,40,0.3); transform: translateY(-3px); }
+    .eng-icon { font-size: 2.2rem; line-height: 1; margin-bottom: 1rem; }
+    .eng-card h3 { font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 1rem; margin-bottom: 0.5rem; }
+    .eng-card p { font-size: 0.83rem; color: var(--muted); font-weight: 300; line-height: 1.6; }
+
+    /* ── Horaires ── */
+    #horaires { padding: 7rem 0; }
+    .horaires-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; }
+    .hours-table { width: 100%; margin-top: 2rem; border-collapse: collapse; }
+    .hours-row { display: flex; justify-content: space-between; align-items: center; padding: 0.8rem 0; border-bottom: 1px solid var(--border); }
+    .hours-row:last-child { border-bottom: none; }
+    .hours-day { font-size: 0.92rem; color: var(--muted); }
+    .hours-time { font-family: 'Poppins', sans-serif; font-size: 0.88rem; font-weight: 600; text-align: right; }
+    .hours-time.closed { color: var(--faint); font-style: italic; font-weight: 400; font-family: 'Inter', sans-serif; }
+    .hours-row.today .hours-day { color: var(--orange); font-weight: 600; }
+    .hours-row.today .hours-time { color: var(--orange); }
+
+    .info-cards { display: flex; flex-direction: column; gap: 1rem; margin-top: 2rem; }
+    .info-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1.4rem 1.5rem;
+      display: flex; gap: 1rem; align-items: flex-start;
+    }
+    .info-icon { font-size: 1.3rem; flex-shrink: 0; margin-top: 0.1rem; }
+    .info-card h4 { font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 0.9rem; margin-bottom: 0.25rem; }
+    .info-card p { font-size: 0.83rem; color: var(--muted); font-weight: 300; line-height: 1.55; }
+    .info-card a { color: var(--orange); transition: opacity 0.2s; }
+    .info-card a:hover { opacity: 0.75; }
+
+    /* ── CTA Band ── */
+    #cta-band {
+      padding: 5.5rem 0; text-align: center;
+      background: var(--grad); position: relative; overflow: hidden;
+    }
+    #cta-band::before {
+      content: ''; position: absolute; inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='28' height='28' viewBox='0 0 28 28' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='1' cy='1' r='1' fill='rgba(255,255,255,0.1)'/%3E%3C/svg%3E") repeat;
+    }
+    .cta-inner { position: relative; z-index: 1; }
+    #cta-band h2 {
+      font-family: 'Poppins', sans-serif;
+      font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 900;
+      line-height: 1.1; margin-bottom: 0.9rem;
+    }
+    #cta-band p { font-size: 1.05rem; font-weight: 300; color: rgba(255,255,255,0.82); max-width: 44ch; margin: 0 auto 2rem; line-height: 1.7; }
+    .cta-phone {
+      display: inline-flex; align-items: center; gap: 0.6rem;
+      background: rgba(255,255,255,0.15); border: 1.5px solid rgba(255,255,255,0.3);
+      border-radius: 100px; padding: 0.75rem 1.75rem;
+      font-size: 1.15rem; font-weight: 700; font-family: 'Poppins', sans-serif;
+      color: #fff; transition: background 0.25s, transform 0.25s;
+    }
+    .cta-phone:hover { background: rgba(255,255,255,0.25); transform: translateY(-2px); }
+
+    /* ── Footer ── */
+    footer { padding: 2.25rem 0; border-top: 1px solid var(--border); background: var(--surface); }
+    .footer-inner { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+    .footer-logo { font-family: 'Poppins', sans-serif; font-weight: 800; font-size: 1rem; color: var(--faint); }
+    .footer-logo span { color: var(--orange); }
+    .footer-text { font-size: 0.8rem; color: var(--faint); }
+    .footer-socials { display: flex; gap: 0.65rem; }
+    .soc-btn {
+      width: 38px; height: 38px; background: var(--surface2); border: 1px solid var(--border);
+      border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center;
+      color: var(--muted); transition: border-color 0.25s, color 0.25s;
+    }
+    .soc-btn:hover { border-color: var(--orange); color: var(--orange); }
+
+    /* ── Reveal animations ── */
+    .reveal { opacity: 0; transform: translateY(22px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+    .d1 { transition-delay: 0.08s; }
+    .d2 { transition-delay: 0.16s; }
+    .d3 { transition-delay: 0.24s; }
+    .d4 { transition-delay: 0.32s; }
+
+    /* ── Responsive ── */
+    @media (max-width: 1024px) {
+      .hero-inner { grid-template-columns: 1fr; min-height: auto; padding: 3rem 0; }
+      .hero-visual { grid-template-columns: repeat(4,1fr); }
+      .food-card:nth-child(2), .food-card:nth-child(4) { margin-top: 0; }
+      .eng-grid { grid-template-columns: repeat(2,1fr); }
+    }
+    @media (max-width: 900px) {
+      .horaires-inner { grid-template-columns: 1fr; gap: 3rem; }
+    }
+    @media (max-width: 700px) {
+      .nav-links, .nav-phone, .nav-right .btn { display: none; }
+      .hamburger { display: flex; }
+      .hero-visual { display: none; }
+      .hero-title { font-size: clamp(2rem, 9vw, 2.8rem); }
+      .hero-actions { flex-direction: column; align-items: flex-start; }
+      #menu, #horaires { padding: 5rem 0; }
+      #engagements, #cta-band { padding: 4rem 0; }
+      .footer-inner { flex-direction: column; text-align: center; }
+      .footer-socials { justify-content: center; }
+      .form-group input, .form-group textarea { font-size: 1rem; }
+    }
+    @media (max-width: 480px) {
+      .eng-grid { grid-template-columns: 1fr; }
+      #menu, #horaires { padding: 4rem 0; }
+      #engagements, #cta-band { padding: 3rem 0; }
+      .cta-phone { font-size: 1rem; padding: 0.7rem 1.4rem; }
+    }
+  </style>
 </head>
 <body>
+
+  <!-- HEADER -->
+  <header id="site-header">
+    <div class="container nav-inner">
+      <a href="#" class="nav-logo">
+        Class<span class="apos">'</span>food
+        <span class="halal-dot" title="Halal certifié"></span>
+      </a>
+      <nav class="nav-links">
+        <a href="#menu">La carte</a>
+        <a href="#engagements">Nos engagements</a>
+        <a href="#horaires">Horaires</a>
+      </nav>
+      <div class="nav-right">
+        <a href="tel:+33980459439" class="nav-phone">09 80 45 94 39</a>
+        <a href="tel:+33980459439" class="btn btn-primary">Commander</a>
+      </div>
+      <button class="hamburger" id="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- MOBILE MENU -->
+  <div class="mobile-menu" id="mobile-menu">
+    <a href="#menu">La carte</a>
+    <a href="#engagements">Nos engagements</a>
+    <a href="#horaires">Horaires</a>
+    <a href="tel:+33980459439" class="btn btn-primary" style="font-size:1.05rem;padding:0.9rem 2rem;">📞 09 80 45 94 39</a>
+  </div>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-bg">
+      <div class="hero-orb-1"></div>
+      <div class="hero-orb-2"></div>
+    </div>
+    <div class="container">
+      <div class="hero-inner">
+
+        <div class="hero-content">
+          <div class="hero-badge">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="#FFB800"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            4.4 / 5 sur Google &nbsp;·&nbsp; +150 avis vérifiés
+          </div>
+          <h1 class="hero-title">
+            Les meilleurs<br>
+            <span class="orange">tacos</span> du coin
+          </h1>
+          <p class="hero-sub">
+            Depuis 2015 à Saint-Georges-de-Reneins — Maxi Tacos généreux,
+            frites maison croustillantes et accueil chaleureux garanti.
+          </p>
+          <div class="hero-actions">
+            <a href="tel:+33980459439" class="btn btn-primary">
+              <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+              Commander maintenant
+            </a>
+            <a href="#menu" class="btn btn-outline">Voir la carte</a>
+          </div>
+          <div class="hero-tags">
+            <span class="hero-tag halal">✅ Halal certifié</span>
+            <span class="hero-tag">🍟 Frites maison</span>
+            <span class="hero-tag">🛵 Livraison</span>
+            <span class="hero-tag">🅿️ Parking gratuit</span>
+          </div>
+        </div>
+
+        <div class="hero-visual">
+          <div class="food-card">
+            <div class="food-emoji">🌮</div>
+            <div class="food-name">Maxi Tacos</div>
+            <div class="food-label">La signature</div>
+          </div>
+          <div class="food-card">
+            <div class="food-emoji">🥙</div>
+            <div class="food-name">Kebab</div>
+            <div class="food-label">Broche maison</div>
+          </div>
+          <div class="food-card">
+            <div class="food-emoji">🍔</div>
+            <div class="food-name">Burger</div>
+            <div class="food-label">Fait maison</div>
+          </div>
+          <div class="food-card">
+            <div class="food-emoji">🍟</div>
+            <div class="food-name">Frites</div>
+            <div class="food-label">Fraîches du jour</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- MENU -->
+  <section id="menu">
+    <div class="container">
+      <span class="section-label reveal">Notre carte</span>
+      <h2 class="section-title reveal">Fait pour régaler</h2>
+      <p class="section-sub reveal" style="margin-bottom:3rem;">Des portions généreuses, des saveurs authentiques. Viande halal, pain et frites préparés sur place chaque jour.</p>
+
+      <div class="menu-grid">
+        <div class="menu-card star reveal">
+          <div class="menu-emoji">🌮</div>
+          <div class="menu-top">
+            <span class="menu-name">Maxi Tacos</span>
+            <span class="menu-badge">⭐ Star</span>
+          </div>
+          <p class="menu-desc">Notre spécialité — tortilla généreuse garnie de viande de broche, frites maison, sauce crémeuse et fromage gratiné. Disponible en plusieurs tailles.</p>
+          <p class="menu-price">Dès 5 €</p>
+        </div>
+
+        <div class="menu-card reveal d1">
+          <div class="menu-emoji">🍗</div>
+          <div class="menu-top">
+            <span class="menu-name">Tacos Tenders</span>
+            <span class="menu-badge pop">🔥 Populaire</span>
+          </div>
+          <p class="menu-desc">Les fameux tenders croustillants dans un tacos bien garni. Préparés avec soin, un favori des habitués depuis l'ouverture.</p>
+        </div>
+
+        <div class="menu-card reveal d2">
+          <div class="menu-emoji">🥙</div>
+          <div class="menu-top">
+            <span class="menu-name">Kebab</span>
+          </div>
+          <p class="menu-desc">Viande tendre cuite à la broche maison, crudités fraîches, sauces au choix dans un pain doré. Un classique irréprochable.</p>
+        </div>
+
+        <div class="menu-card reveal d3">
+          <div class="menu-emoji">🍽️</div>
+          <div class="menu-top">
+            <span class="menu-name">Assiette Kebab</span>
+          </div>
+          <p class="menu-desc">La broche servie généreusement en assiette avec frites maison et crudités fraîches. Idéal pour déjeuner sur place.</p>
+        </div>
+
+        <div class="menu-card reveal">
+          <div class="menu-emoji">🍔</div>
+          <div class="menu-top">
+            <span class="menu-name">Burger</span>
+          </div>
+          <p class="menu-desc">Steaks savoureux, cheddar fondant, légumes croquants. Nos burgers maison ont leur propre caractère.</p>
+        </div>
+
+        <div class="menu-card reveal d1">
+          <div class="menu-emoji">🥪</div>
+          <div class="menu-top">
+            <span class="menu-name">Super Rock</span>
+          </div>
+          <p class="menu-desc">Le sandwich pressé à la française — pain croustillant à l'extérieur, garniture généreuse et fondante à l'intérieur.</p>
+        </div>
+
+        <div class="menu-card reveal d2">
+          <div class="menu-emoji">🫓</div>
+          <div class="menu-top">
+            <span class="menu-name">Lahmacun</span>
+          </div>
+          <p class="menu-desc">Pâte fine garnie de viande épicée, herbes fraîches et légumes du moment. Une pépite de notre carte.</p>
+        </div>
+
+        <div class="menu-card reveal d3">
+          <div class="menu-emoji">🍟</div>
+          <div class="menu-top">
+            <span class="menu-name">Frites Maison</span>
+            <span class="menu-badge home">🏡 Maison</span>
+          </div>
+          <p class="menu-desc">Coupées fraîches chaque jour, dorées à point. Légères et croustillantes — incontournables en accompagnement.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ENGAGEMENTS -->
+  <section id="engagements">
+    <div class="container">
+      <span class="section-label reveal">Nos engagements</span>
+      <h2 class="section-title reveal">Qualité &amp; Confiance</h2>
+      <p class="section-sub reveal" style="margin-bottom:3rem;">Ce qui nous distingue depuis 2015 : des produits frais, une cuisine honnête et un accueil qui fait revenir.</p>
+
+      <div class="eng-grid">
+        <div class="eng-card reveal">
+          <div class="eng-icon">✅</div>
+          <h3>Halal certifié</h3>
+          <p>Toutes nos viandes sont certifiées halal. Exigence et traçabilité à chaque commande, sans exception.</p>
+        </div>
+        <div class="eng-card reveal d1">
+          <div class="eng-icon">🍞</div>
+          <h3>Pain &amp; frites maison</h3>
+          <p>Rien de surgelé ici. Notre pain et nos frites sont préparés sur place chaque jour. Le goût se sent.</p>
+        </div>
+        <div class="eng-card reveal d2">
+          <div class="eng-icon">⭐</div>
+          <h3>4,4 / 5 sur Google</h3>
+          <p>Plus de 150 avis vérifiés, 70 % de 5 étoiles. La satisfaction de nos clients est notre meilleure vitrine.</p>
+        </div>
+        <div class="eng-card reveal d3">
+          <div class="eng-icon">🛵</div>
+          <h3>Livraison disponible</h3>
+          <p>On vient jusqu'à vous. Livraison disponible autour de Saint-Georges-de-Reneins, en plus du sur place et de l'emporter.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HORAIRES -->
+  <section id="horaires">
+    <div class="container">
+      <div class="horaires-inner">
+
+        <div>
+          <span class="section-label reveal">Horaires</span>
+          <h2 class="section-title reveal">On vous attend</h2>
+
+          <div class="hours-table" id="hours-table">
+            <div class="hours-row" data-day="1">
+              <span class="hours-day">Lundi</span>
+              <span class="hours-time">18h00 – 21h30</span>
+            </div>
+            <div class="hours-row" data-day="2">
+              <span class="hours-day">Mardi</span>
+              <span class="hours-time">11h30 – 14h30 · 18h00 – 21h30</span>
+            </div>
+            <div class="hours-row" data-day="3">
+              <span class="hours-day">Mercredi</span>
+              <span class="hours-time">11h30 – 14h30 · 18h00 – 21h30</span>
+            </div>
+            <div class="hours-row" data-day="4">
+              <span class="hours-day">Jeudi</span>
+              <span class="hours-time">11h30 – 14h30 · 18h00 – 21h30</span>
+            </div>
+            <div class="hours-row" data-day="5">
+              <span class="hours-day">Vendredi</span>
+              <span class="hours-time">11h30 – 13h30 · 18h00 – 21h30</span>
+            </div>
+            <div class="hours-row" data-day="6">
+              <span class="hours-day">Samedi</span>
+              <span class="hours-time">11h45 – 14h30 · 18h00 – 21h30</span>
+            </div>
+            <div class="hours-row" data-day="0">
+              <span class="hours-day">Dimanche</span>
+              <span class="hours-time">18h00 – 21h30</span>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <span class="section-label reveal">Nous trouver</span>
+          <h2 class="section-title reveal">Infos pratiques</h2>
+
+          <div class="info-cards">
+            <div class="info-card reveal">
+              <div class="info-icon">📍</div>
+              <div>
+                <h4>Adresse</h4>
+                <p>79 Avenue Charles de Gaulle<br>69830 Saint-Georges-de-Reneins</p>
+              </div>
+            </div>
+            <div class="info-card reveal d1">
+              <div class="info-icon">📞</div>
+              <div>
+                <h4>Téléphone</h4>
+                <p><a href="tel:+33980459439">09 80 45 94 39</a></p>
+              </div>
+            </div>
+            <div class="info-card reveal d2">
+              <div class="info-icon">🅿️</div>
+              <div>
+                <h4>Accès &amp; Services</h4>
+                <p>Parking gratuit sur place · Terrasse · Accès PMR · Wi-Fi gratuit · Climatisation</p>
+              </div>
+            </div>
+            <div class="info-card reveal d3">
+              <div class="info-icon">💳</div>
+              <div>
+                <h4>Paiement</h4>
+                <p>CB, espèces, sans contact, titres-restaurant (Pluxee, Sodexo) · Carte de fidélité · Tarif étudiant</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA BAND -->
+  <section id="cta-band">
+    <div class="container cta-inner">
+      <h2>Envie d'un bon tacos ce soir ?</h2>
+      <p>Appelez-nous pour commander sur place, à emporter ou en livraison. On s'occupe du reste.</p>
+      <a href="tel:+33980459439" class="cta-phone">
+        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+        09 80 45 94 39
+      </a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container footer-inner">
+      <span class="footer-logo">Class<span>'</span>food</span>
+      <p class="footer-text">79 Av. Charles de Gaulle, 69830 Saint-Georges-de-Reneins</p>
+      <div class="footer-socials">
+        <a href="https://instagram.com/class_me_food" target="_blank" rel="noopener" class="soc-btn" aria-label="Instagram">
+          <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+        </a>
+        <a href="https://www.facebook.com/p/Classfood-100027234115901/" target="_blank" rel="noopener" class="soc-btn" aria-label="Facebook">
+          <svg width="17" height="17" fill="currentColor" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="./js/classfood.js"></script>
 </body>
 </html>
