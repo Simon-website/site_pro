@@ -50,3 +50,28 @@ document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 const today = new Date().getDay();
 const row = document.querySelector(`.hours-row[data-day="${today}"]`);
 if (row) row.classList.add('today');
+
+/* Accordion */
+document.querySelectorAll('.acc-section.open').forEach(section => {
+  const body = section.querySelector('.acc-body');
+  const items = section.querySelector('.acc-items');
+  if (body && items) body.style.maxHeight = items.offsetHeight + 'px';
+});
+
+document.querySelectorAll('.acc-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const section = btn.closest('.acc-section');
+    const body = section.querySelector('.acc-body');
+    const items = section.querySelector('.acc-items');
+    const isOpen = section.classList.contains('open');
+    if (isOpen) {
+      section.classList.remove('open');
+      body.style.maxHeight = '0';
+      btn.setAttribute('aria-expanded', 'false');
+    } else {
+      section.classList.add('open');
+      body.style.maxHeight = items.offsetHeight + 'px';
+      btn.setAttribute('aria-expanded', 'true');
+    }
+  });
+});
