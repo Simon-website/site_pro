@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Le Cosy — Restaurant & Pizzeria à Saint-Georges-de-Reneins</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="description" content="Le Cosy, restaurant et pizzeria depuis 2009 à Saint-Georges-de-Reneins. Pizzas artisanales, pâtes maison, formule midi. Face à l'église, terrasse, ambiance chaleureuse." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=Poppins:wght@500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg:       #FAF7F2;
+      --surface:  #FFFFFF;
+      --surface2: #F2EAE0;
+      --red:      #9B3322;
+      --amber:    #C46A28;
+      --dark:     #1C130E;
+      --text:     #1C130E;
+      --muted:    #6B5040;
+      --faint:    #A0876E;
+      --border:   rgba(28,19,14,0.1);
+      --grad:     linear-gradient(135deg, #9B3322 0%, #C46A28 100%);
+      --radius:   16px;
+      --radius-sm:10px;
+      --shadow-sm:0 2px 12px rgba(28,19,14,0.07);
+      --shadow-md:0 8px 32px rgba(28,19,14,0.11);
+      --glow:     0 0 40px rgba(155,51,34,0.13);
+      --transition:0.25s cubic-bezier(0.4,0,0.2,1);
+    }
+    html { scroll-behavior: smooth; scroll-padding-top: 84px; font-size: 16px; }
+    body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; line-height: 1.6; overflow-x: hidden; }
+    img  { display: block; max-width: 100%; }
+    a    { color: inherit; text-decoration: none; }
+    ul   { list-style: none; }
+    button { cursor: pointer; font-family: inherit; border: none; background: none; }
+    .container { width: min(1100px, 92%); margin-inline: auto; }
+
+    /* ── Buttons ── */
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.88rem 1.85rem; border-radius: 12px;
+      font-size: 0.95rem; font-weight: 600; font-family: 'Inter', sans-serif;
+      transition: all var(--transition); white-space: nowrap;
+    }
+    .btn-primary { background: var(--grad); color: #fff; box-shadow: 0 4px 20px rgba(155,51,34,0.3); }
+    .btn-primary:hover { filter: brightness(1.08); transform: translateY(-2px); box-shadow: 0 10px 32px rgba(155,51,34,0.38); }
+    .btn-outline { border: 1.5px solid var(--border); color: var(--text); background: var(--surface); }
+    .btn-outline:hover { border-color: var(--red); color: var(--red); transform: translateY(-2px); box-shadow: var(--shadow-sm); }
+
+    /* ── Header ── */
+    header {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 1.1rem 0; transition: background var(--transition), box-shadow var(--transition);
+    }
+    header.scrolled {
+      background: rgba(250,247,242,0.94);
+      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      box-shadow: 0 1px 0 var(--border);
+    }
+    .nav-inner { display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; }
+    .nav-logo {
+      font-family: 'Playfair Display', serif; font-weight: 700; font-size: 1.35rem;
+      color: var(--text); display: flex; align-items: center; gap: 0.4rem;
+    }
+    .nav-logo .le { color: var(--muted); font-weight: 400; font-style: italic; font-size: 1.1rem; }
+    .nav-logo .cosy { color: var(--red); }
+    .nav-links { display: flex; align-items: center; gap: 2rem; }
+    .nav-links a { font-size: 0.9rem; font-weight: 500; color: var(--muted); transition: color var(--transition); }
+    .nav-links a:hover { color: var(--text); }
+    .nav-right { display: flex; align-items: center; gap: 1rem; }
+    .nav-phone { font-size: 0.88rem; font-weight: 600; color: var(--muted); transition: color var(--transition); }
+    .nav-phone:hover { color: var(--red); }
+
+    .hamburger { display: none; flex-direction: column; gap: 5px; padding: 4px; }
+    .hamburger span { display: block; width: 22px; height: 2px; background: var(--text); border-radius: 2px; transition: all var(--transition); }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    .mobile-menu {
+      display: none; position: fixed; inset: 0; background: var(--bg); z-index: 99;
+      flex-direction: column; align-items: center; justify-content: center; gap: 2rem;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a { font-family: 'Poppins', sans-serif; font-size: 1.5rem; font-weight: 600; color: var(--muted); transition: color var(--transition); }
+    .mobile-menu a:hover { color: var(--text); }
+
+    /* ── Hero ── */
+    #hero { padding-top: 5.5rem; padding-bottom: 3rem; position: relative; overflow: hidden; }
+    .hero-orb-1 {
+      position: absolute; width: 500px; height: 500px;
+      background: rgba(155,51,34,0.09); border-radius: 50%;
+      filter: blur(100px); top: -150px; right: -80px; pointer-events: none;
+    }
+    .hero-orb-2 {
+      position: absolute; width: 350px; height: 350px;
+      background: rgba(196,106,40,0.07); border-radius: 50%;
+      filter: blur(80px); bottom: -80px; left: -60px; pointer-events: none;
+    }
+    .hero-inner {
+      display: grid; grid-template-columns: 1fr 1fr;
+      align-items: center; gap: 3rem;
+      min-height: calc(100svh - 8.5rem); padding: 2rem 0;
+      position: relative; z-index: 1;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: rgba(155,51,34,0.08); border: 1px solid rgba(155,51,34,0.2);
+      border-radius: 100px; padding: 0.4rem 1rem;
+      font-size: 0.8rem; font-weight: 600; color: var(--red);
+      margin-bottom: 1.6rem;
+    }
+    .hero-label {
+      display: block; font-size: 0.72rem; font-weight: 700;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      background: var(--grad); -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent; background-clip: text;
+      margin-bottom: 0.75rem;
+    }
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.4rem, 5.2vw, 4.2rem);
+      font-weight: 800; line-height: 1.1; letter-spacing: -0.01em;
+      color: var(--text); margin-bottom: 1.4rem;
+    }
+    .hero-title em { font-style: italic; color: var(--red); }
+    .hero-sub {
+      font-size: 1.05rem; font-weight: 300; color: var(--muted);
+      max-width: 44ch; line-height: 1.75; margin-bottom: 2.25rem;
+    }
+    .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; margin-bottom: 2.25rem; }
+    .hero-tags { display: flex; gap: 0.6rem; flex-wrap: wrap; }
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: 0.3rem;
+      padding: 0.32rem 0.85rem; border-radius: 100px;
+      font-size: 0.77rem; font-weight: 500;
+      border: 1px solid var(--border); color: var(--muted); background: var(--surface);
+    }
+
+    /* Hero right ── visual cards */
+    .hero-visual { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .food-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1.6rem 1.25rem; text-align: center;
+      box-shadow: var(--shadow-sm);
+      transition: border-color var(--transition), transform var(--transition), box-shadow var(--transition);
+    }
+    .food-card:hover { border-color: rgba(155,51,34,0.3); transform: translateY(-5px); box-shadow: var(--glow); }
+    .food-card:nth-child(2) { margin-top: 1.5rem; }
+    .food-card:nth-child(4) { margin-top: -1.5rem; }
+    .food-emoji { font-size: 2.5rem; line-height: 1; margin-bottom: 0.6rem; }
+    .food-name { font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 0.88rem; color: var(--text); }
+    .food-label { font-size: 0.72rem; color: var(--faint); margin-top: 0.2rem; }
+
+    /* ── Section commons ── */
+    .section-label {
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase;
+      background: var(--grad); -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent; background-clip: text;
+      display: block; margin-bottom: 0.75rem;
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 800; line-height: 1.15;
+      color: var(--text); margin-bottom: 0.7rem;
+    }
+    .section-sub { font-size: 1rem; color: var(--muted); font-weight: 300; max-width: 52ch; line-height: 1.7; }
+
+    /* ── Formule Midi band ── */
+    #formule {
+      background: var(--grad); padding: 3rem 0; text-align: center;
+      position: relative; overflow: hidden;
+    }
+    #formule::before {
+      content: ''; position: absolute; inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='28' height='28' viewBox='0 0 28 28' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='1' cy='1' r='1' fill='rgba(255,255,255,0.1)'/%3E%3C/svg%3E") repeat;
+    }
+    .formule-inner { position: relative; z-index: 1; }
+    #formule h2 {
+      font-family: 'Playfair Display', serif; font-size: clamp(1.6rem, 3.5vw, 2.5rem);
+      font-weight: 700; font-style: italic; color: #fff; margin-bottom: 0.6rem;
+    }
+    #formule p { color: rgba(255,255,255,0.88); font-size: 1rem; font-weight: 300; margin-bottom: 1.75rem; }
+    .formule-pills { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+    .formule-pill {
+      background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 100px; padding: 0.55rem 1.35rem;
+      font-size: 0.9rem; font-weight: 600; color: #fff;
+      display: inline-flex; align-items: center; gap: 0.5rem;
+    }
+
+    /* ── Menu ── */
+    #menu { padding: 7rem 0; }
+    #menu .section-sub { margin-bottom: 3rem; }
+    .menu-tabs { display: flex; gap: 0.5rem; margin-bottom: 2.5rem; flex-wrap: wrap; }
+    .menu-tab {
+      padding: 0.5rem 1.25rem; border-radius: 100px; font-size: 0.87rem; font-weight: 600;
+      border: 1.5px solid var(--border); color: var(--muted); background: var(--surface);
+      cursor: pointer; transition: all var(--transition);
+    }
+    .menu-tab.active, .menu-tab:hover { background: var(--grad); border-color: transparent; color: #fff; }
+    .menu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(255px, 1fr)); gap: 1.25rem; }
+    .menu-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1.75rem;
+      box-shadow: var(--shadow-sm);
+      transition: border-color var(--transition), transform var(--transition), box-shadow var(--transition);
+      position: relative; overflow: hidden;
+    }
+    .menu-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0;
+      height: 2px; background: var(--grad); opacity: 0; transition: opacity var(--transition);
+    }
+    .menu-card:hover { border-color: rgba(155,51,34,0.25); transform: translateY(-4px); box-shadow: var(--shadow-md); }
+    .menu-card:hover::before { opacity: 1; }
+    .menu-card.star { border-color: rgba(155,51,34,0.2); }
+    .menu-card.star::before { opacity: 1; }
+    .menu-emoji { font-size: 2.6rem; line-height: 1; margin-bottom: 1rem; }
+    .menu-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 0.5rem; margin-bottom: 0.5rem; }
+    .menu-name { font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 1.05rem; color: var(--text); }
+    .menu-price {
+      font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 1rem;
+      color: var(--red); white-space: nowrap; flex-shrink: 0;
+    }
+    .menu-badge {
+      display: inline-block; background: rgba(155,51,34,0.1); color: var(--red);
+      font-size: 0.68rem; font-weight: 700; padding: 0.18rem 0.55rem; border-radius: 6px;
+      margin-bottom: 0.45rem;
+    }
+    .menu-badge.maison { background: rgba(196,106,40,0.1); color: var(--amber); }
+    .menu-desc { font-size: 0.86rem; color: var(--muted); font-weight: 300; line-height: 1.6; }
+
+    /* ── Atouts ── */
+    #atouts {
+      padding: 6rem 0; background: var(--surface2);
+      border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+    }
+    #atouts .section-sub { margin-bottom: 3rem; }
+    .atouts-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.25rem; }
+    .atout-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 2rem 1.5rem;
+      box-shadow: var(--shadow-sm);
+      transition: border-color var(--transition), transform var(--transition);
+    }
+    .atout-card:hover { border-color: rgba(155,51,34,0.25); transform: translateY(-3px); }
+    .atout-icon { font-size: 2.2rem; line-height: 1; margin-bottom: 1rem; }
+    .atout-card h3 { font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 1rem; margin-bottom: 0.45rem; color: var(--text); }
+    .atout-card p { font-size: 0.83rem; color: var(--muted); font-weight: 300; line-height: 1.6; }
+
+    /* ── Horaires ── */
+    #horaires { padding: 7rem 0; }
+    .horaires-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; }
+    .hours-table { width: 100%; margin-top: 2rem; }
+    .hours-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 0.8rem 0; border-bottom: 1px solid var(--border);
+    }
+    .hours-row:last-child { border-bottom: none; }
+    .hours-day { font-size: 0.92rem; color: var(--muted); }
+    .hours-time { font-family: 'Poppins', sans-serif; font-size: 0.87rem; font-weight: 600; text-align: right; color: var(--text); }
+    .hours-time.closed { color: var(--faint); font-style: italic; font-weight: 400; font-family: 'Inter', sans-serif; }
+    .hours-row.today .hours-day { color: var(--red); font-weight: 600; }
+    .hours-row.today .hours-time { color: var(--red); }
+
+    .info-cards { display: flex; flex-direction: column; gap: 1rem; margin-top: 2rem; }
+    .info-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1.4rem 1.5rem;
+      display: flex; gap: 1rem; align-items: flex-start;
+      box-shadow: var(--shadow-sm);
+    }
+    .info-icon { font-size: 1.3rem; flex-shrink: 0; margin-top: 0.1rem; }
+    .info-card h4 { font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 0.9rem; margin-bottom: 0.25rem; }
+    .info-card p { font-size: 0.83rem; color: var(--muted); font-weight: 300; line-height: 1.55; }
+    .info-card a { color: var(--red); transition: opacity var(--transition); }
+    .info-card a:hover { opacity: 0.75; }
+
+    /* ── CTA ── */
+    #cta { padding: 6rem 0; text-align: center; }
+    #cta h2 { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 800; margin-bottom: 0.9rem; }
+    #cta h2 em { font-style: italic; color: var(--red); }
+    #cta p { font-size: 1.05rem; color: var(--muted); font-weight: 300; max-width: 44ch; margin: 0 auto 2.25rem; line-height: 1.7; }
+    .cta-actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+    .cta-phone-big {
+      display: inline-flex; align-items: center; gap: 0.6rem;
+      padding: 0.9rem 2rem; border-radius: 12px;
+      background: var(--grad); color: #fff;
+      font-size: 1.1rem; font-weight: 700; font-family: 'Poppins', sans-serif;
+      box-shadow: 0 4px 24px rgba(155,51,34,0.3);
+      transition: all var(--transition);
+    }
+    .cta-phone-big:hover { filter: brightness(1.08); transform: translateY(-2px); box-shadow: 0 10px 36px rgba(155,51,34,0.38); }
+    .cta-email {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.9rem 2rem; border-radius: 12px;
+      border: 1.5px solid var(--border); color: var(--text); background: var(--surface);
+      font-size: 0.95rem; font-weight: 600;
+      transition: all var(--transition);
+    }
+    .cta-email:hover { border-color: var(--red); color: var(--red); transform: translateY(-2px); }
+
+    /* ── Footer ── */
+    footer { padding: 2.25rem 0; border-top: 1px solid var(--border); background: var(--surface); }
+    .footer-inner { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+    .footer-logo { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 1rem; color: var(--faint); }
+    .footer-logo span { color: var(--red); }
+    .footer-text { font-size: 0.8rem; color: var(--faint); }
+    .footer-socials { display: flex; gap: 0.65rem; }
+    .soc-btn {
+      width: 38px; height: 38px; background: var(--surface2); border: 1px solid var(--border);
+      border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center;
+      color: var(--muted); transition: border-color var(--transition), color var(--transition);
+    }
+    .soc-btn:hover { border-color: var(--red); color: var(--red); }
+
+    /* ── Reveal ── */
+    .reveal { opacity: 0; transform: translateY(22px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+    .d1 { transition-delay: 0.08s; }
+    .d2 { transition-delay: 0.16s; }
+    .d3 { transition-delay: 0.24s; }
+    .d4 { transition-delay: 0.32s; }
+
+    /* ── Responsive ── */
+    @media (max-width: 1024px) {
+      .hero-inner { grid-template-columns: 1fr; min-height: auto; padding: 3rem 0; }
+      .hero-visual { grid-template-columns: repeat(4,1fr); }
+      .food-card:nth-child(2), .food-card:nth-child(4) { margin-top: 0; }
+      .atouts-grid { grid-template-columns: repeat(2,1fr); }
+    }
+    @media (max-width: 900px) {
+      .horaires-inner { grid-template-columns: 1fr; gap: 3rem; }
+    }
+    @media (max-width: 700px) {
+      .nav-links, .nav-phone, .nav-right .btn { display: none; }
+      .hamburger { display: flex; }
+      .hero-visual { display: none; }
+      .hero-title { font-size: clamp(2rem, 9vw, 2.8rem); }
+      .hero-actions { flex-direction: column; align-items: flex-start; }
+      #menu, #horaires, #cta { padding: 5rem 0; }
+      #formule, #atouts { padding: 3.5rem 0; }
+      .footer-inner { flex-direction: column; text-align: center; }
+      .footer-socials { justify-content: center; }
+      .cta-actions { flex-direction: column; align-items: center; }
+      .formule-pills { flex-direction: column; align-items: center; }
+    }
+    @media (max-width: 480px) {
+      .atouts-grid { grid-template-columns: 1fr; }
+      #menu, #horaires, #cta { padding: 4rem 0; }
+      #formule, #atouts { padding: 3rem 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header id="site-header">
+    <div class="container nav-inner">
+      <a href="#" class="nav-logo">
+        <span class="le">Le</span>
+        <span class="cosy">Cosy</span>
+      </a>
+      <nav class="nav-links">
+        <a href="#menu">La carte</a>
+        <a href="#atouts">Le restaurant</a>
+        <a href="#horaires">Horaires</a>
+      </nav>
+      <div class="nav-right">
+        <a href="tel:+33474097752" class="nav-phone">04 74 09 77 52</a>
+        <a href="tel:+33474097752" class="btn btn-primary">Réserver</a>
+      </div>
+      <button class="hamburger" id="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- MOBILE MENU -->
+  <div class="mobile-menu" id="mobile-menu">
+    <a href="#menu">La carte</a>
+    <a href="#atouts">Le restaurant</a>
+    <a href="#horaires">Horaires</a>
+    <a href="tel:+33474097752" class="btn btn-primary" style="font-size:1rem;padding:0.9rem 2rem;">📞 04 74 09 77 52</a>
+  </div>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-orb-1"></div>
+    <div class="hero-orb-2"></div>
+    <div class="container">
+      <div class="hero-inner">
+
+        <div class="hero-content">
+          <div class="hero-badge">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="#9B3322"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            4,5 / 5 sur Google &nbsp;·&nbsp; +315 avis vérifiés
+          </div>
+          <span class="hero-label">Restaurant &amp; Pizzeria depuis 2009</span>
+          <h1 class="hero-title">
+            Une cuisine <em>maison</em>,<br>une ambiance unique
+          </h1>
+          <p class="hero-sub">
+            Face à l'église de Saint-Georges-de-Reneins, Édouard et Carole vous accueillent
+            dans un cadre chaleureux pour déjeuner ou dîner en bonne compagnie.
+          </p>
+          <div class="hero-actions">
+            <a href="tel:+33474097752" class="btn btn-primary">
+              <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+              Réserver une table
+            </a>
+            <a href="#menu" class="btn btn-outline">Voir la carte</a>
+          </div>
+          <div class="hero-tags">
+            <span class="hero-tag">🍕 Pizzas artisanales</span>
+            <span class="hero-tag">👨‍🍳 Cuisine maison</span>
+            <span class="hero-tag">🌿 Terrasse</span>
+            <span class="hero-tag">🅿️ Parking gratuit</span>
+          </div>
+        </div>
+
+        <div class="hero-visual">
+          <div class="food-card">
+            <div class="food-emoji">🍕</div>
+            <div class="food-name">Pizzas</div>
+            <div class="food-label">25 recettes</div>
+          </div>
+          <div class="food-card">
+            <div class="food-emoji">🍝</div>
+            <div class="food-name">Pâtes Maison</div>
+            <div class="food-label">Fraîches du jour</div>
+          </div>
+          <div class="food-card">
+            <div class="food-emoji">🥗</div>
+            <div class="food-name">Formule Midi</div>
+            <div class="food-label">Dès 8,50 €</div>
+          </div>
+          <div class="food-card">
+            <div class="food-emoji">🍮</div>
+            <div class="food-name">Desserts</div>
+            <div class="food-label">Faits maison</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- FORMULE MIDI BAND -->
+  <section id="formule">
+    <div class="container formule-inner">
+      <h2>La formule du midi — du lundi au vendredi</h2>
+      <p>Plat du jour, dessert maison et café : une pause déjeuner complète à prix doux.</p>
+      <div class="formule-pills">
+        <span class="formule-pill">🍽️ Plat du jour · <strong>8,50 €</strong></span>
+        <span class="formule-pill">✨ Formule complète · <strong>~12 à 14 €</strong></span>
+        <span class="formule-pill">☕ Café inclus</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- MENU -->
+  <section id="menu">
+    <div class="container">
+      <span class="section-label reveal">Notre carte</span>
+      <h2 class="section-title reveal">Fait maison, avec passion</h2>
+      <p class="section-sub reveal" style="margin-bottom:3rem;">Des pizzas artisanales plébiscitées, des pâtes fraîches, des viandes soignées et des desserts dont on se souvient.</p>
+
+      <div class="menu-grid">
+
+        <div class="menu-card star reveal">
+          <div class="menu-emoji">🍕</div>
+          <span class="menu-badge">⭐ Spécialité</span>
+          <div class="menu-top">
+            <span class="menu-name">La Charolaise</span>
+            <span class="menu-price">11 €</span>
+          </div>
+          <p class="menu-desc">Notre pizza signature, généreuse et savoureuse. Pâte soignée, garniture généreuse — "des pizzas démoniaques tellement elles sont bonnes" selon nos habitués.</p>
+        </div>
+
+        <div class="menu-card reveal d1">
+          <div class="menu-emoji">🍕</div>
+          <div class="menu-top">
+            <span class="menu-name">La Bressane</span>
+            <span class="menu-price">13 €</span>
+          </div>
+          <p class="menu-desc">Inspirée de la région voisine, cette pizza généreuse allie saveurs locales et pâte croustillante. L'un de nos bestsellers du soir.</p>
+        </div>
+
+        <div class="menu-card reveal d2">
+          <div class="menu-emoji">🍕</div>
+          <div class="menu-top">
+            <span class="menu-name">Nos Pizzas</span>
+            <span class="menu-price">dès 11 €</span>
+          </div>
+          <p class="menu-desc">25 recettes disponibles, dont des options végétariennes. Suppléments au choix à 1 €. À commander à l'avance pour l'emporter.</p>
+        </div>
+
+        <div class="menu-card reveal d3">
+          <div class="menu-emoji">🍝</div>
+          <span class="menu-badge maison">🏡 Maison</span>
+          <div class="menu-top">
+            <span class="menu-name">Pâtes Fraîches</span>
+          </div>
+          <p class="menu-desc">Préparées sur place chaque jour. Les pâtes fraîches maison sont la seconde grande spécialité de la maison.</p>
+        </div>
+
+        <div class="menu-card reveal">
+          <div class="menu-emoji">🥩</div>
+          <div class="menu-top">
+            <span class="menu-name">Grillades &amp; Viandes</span>
+          </div>
+          <p class="menu-desc">Entrecôte, escalope milanaise, schnitzels... Le chef est réputé pour ses cuissons précises. Les carnivores sont choyés.</p>
+        </div>
+
+        <div class="menu-card reveal d1">
+          <div class="menu-emoji">🍔</div>
+          <div class="menu-top">
+            <span class="menu-name">Burger Dombes</span>
+            <span class="menu-price">12 €</span>
+          </div>
+          <p class="menu-desc">Notre burger signature aux saveurs locales. Également disponible : le Chéret à 10 € et le Tacos Cosy à 12 €.</p>
+        </div>
+
+        <div class="menu-card reveal d2">
+          <div class="menu-emoji">🥗</div>
+          <div class="menu-top">
+            <span class="menu-name">Salade Gourmande</span>
+          </div>
+          <p class="menu-desc">Généreuse, fraîche et copieuse. "La moitié aurait suffi" — c'est le genre de compliment qu'on reçoit souvent pour nos salades.</p>
+        </div>
+
+        <div class="menu-card reveal d3">
+          <div class="menu-emoji">🍮</div>
+          <span class="menu-badge maison">🏡 Maison</span>
+          <div class="menu-top">
+            <span class="menu-name">Desserts Maison</span>
+          </div>
+          <p class="menu-desc">Tiramisu framboise, panna cotta, crème brûlée, coupes glacées. Tous préparés sur place. Le café est délicieux aussi.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ATOUTS -->
+  <section id="atouts">
+    <div class="container">
+      <span class="section-label reveal">Le restaurant</span>
+      <h2 class="section-title reveal">Ce qui nous rend uniques</h2>
+      <p class="section-sub reveal" style="margin-bottom:3rem;">Seize ans d'expérience, une famille passionnée et un cadre comme on en trouve peu.</p>
+
+      <div class="atouts-grid">
+        <div class="atout-card reveal">
+          <div class="atout-icon">🏡</div>
+          <h3>Ambiance chalet</h3>
+          <p>Décoration bois chaleureuse, salle cosy et terrasse face à l'église. Un endroit calme, convivial, différent des fast-foods du coin.</p>
+        </div>
+        <div class="atout-card reveal d1">
+          <div class="atout-icon">🍕</div>
+          <h3>Pizzas artisanales</h3>
+          <p>"Des pizzas démoniaques tellement elles sont bonnes et énormes." 25 recettes, généreuses, avec une pâte travaillée avec soin.</p>
+        </div>
+        <div class="atout-card reveal d2">
+          <div class="atout-icon">👨‍🍳</div>
+          <h3>Tout fait maison</h3>
+          <p>Pain, pâtes fraîches, desserts — rien de surgelé. Édouard et Carole tiennent les rênes depuis 2009 avec la même exigence.</p>
+        </div>
+        <div class="atout-card reveal d3">
+          <div class="atout-icon">⭐</div>
+          <h3>4,5/5 sur Google</h3>
+          <p>Plus de 315 avis, classé #3 sur TripAdvisor à Saint-Georges-de-Reneins. La confiance de nos clients depuis 16 ans.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HORAIRES -->
+  <section id="horaires">
+    <div class="container">
+      <div class="horaires-inner">
+
+        <div>
+          <span class="section-label reveal">Horaires</span>
+          <h2 class="section-title reveal">Nous trouver</h2>
+
+          <div class="hours-table" id="hours-table">
+            <div class="hours-row" data-day="1">
+              <span class="hours-day">Lundi</span>
+              <span class="hours-time">12h00 – 14h00</span>
+            </div>
+            <div class="hours-row" data-day="2">
+              <span class="hours-day">Mardi</span>
+              <span class="hours-time">12h00 – 14h00</span>
+            </div>
+            <div class="hours-row" data-day="3">
+              <span class="hours-day">Mercredi</span>
+              <span class="hours-time">12h00 – 14h00</span>
+            </div>
+            <div class="hours-row" data-day="4">
+              <span class="hours-day">Jeudi</span>
+              <span class="hours-time">12h00 – 14h00 · 19h00 – 21h00</span>
+            </div>
+            <div class="hours-row" data-day="5">
+              <span class="hours-day">Vendredi</span>
+              <span class="hours-time">12h00 – 14h00 · 19h00 – 21h00</span>
+            </div>
+            <div class="hours-row" data-day="6">
+              <span class="hours-day">Samedi</span>
+              <span class="hours-time">19h00 – 21h00</span>
+            </div>
+            <div class="hours-row" data-day="0">
+              <span class="hours-day">Dimanche</span>
+              <span class="hours-time closed">Fermé</span>
+            </div>
+          </div>
+          <p style="margin-top:1.25rem;font-size:0.82rem;color:var(--faint);">Pizzas disponibles midi et soir, commande à l'avance recommandée pour l'emporter.</p>
+        </div>
+
+        <div>
+          <span class="section-label reveal">Infos pratiques</span>
+          <h2 class="section-title reveal">On vous accueille</h2>
+
+          <div class="info-cards">
+            <div class="info-card reveal">
+              <div class="info-icon">📍</div>
+              <div>
+                <h4>Adresse</h4>
+                <p>130 Place de l'Église<br>69830 Saint-Georges-de-Reneins</p>
+              </div>
+            </div>
+            <div class="info-card reveal d1">
+              <div class="info-icon">📞</div>
+              <div>
+                <h4>Téléphone &amp; Email</h4>
+                <p><a href="tel:+33474097752">04 74 09 77 52</a><br><a href="mailto:lecosy69@orange.fr">lecosy69@orange.fr</a></p>
+              </div>
+            </div>
+            <div class="info-card reveal d2">
+              <div class="info-icon">🅿️</div>
+              <div>
+                <h4>Accès &amp; Services</h4>
+                <p>Parking public gratuit face à l'église · Terrasse extérieure · Accès PMR · Chiens acceptés en terrasse</p>
+              </div>
+            </div>
+            <div class="info-card reveal d3">
+              <div class="info-icon">💳</div>
+              <div>
+                <h4>Paiement</h4>
+                <p>CB, espèces, chèque, Visa, Mastercard, tickets-restaurant · Menu enfant disponible</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section id="cta">
+    <div class="container">
+      <h2>Une <em>table</em> ce soir ?</h2>
+      <p>Réservez par téléphone ou par email. La terrasse face à l'église vous attend les soirs de jeudi à samedi.</p>
+      <div class="cta-actions">
+        <a href="tel:+33474097752" class="cta-phone-big">
+          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+          04 74 09 77 52
+        </a>
+        <a href="mailto:lecosy69@orange.fr" class="cta-email">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          lecosy69@orange.fr
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container footer-inner">
+      <span class="footer-logo">Le <span>Cosy</span></span>
+      <p class="footer-text">130 Place de l'Église, 69830 Saint-Georges-de-Reneins</p>
+      <div class="footer-socials">
+        <a href="https://www.facebook.com/Le-cosy-101480854878268/" target="_blank" rel="noopener" class="soc-btn" aria-label="Facebook">
+          <svg width="17" height="17" fill="currentColor" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="./js/cosy.js"></script>
+</body>
+</html>
