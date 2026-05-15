@@ -176,9 +176,11 @@ function addMagneticTilt(selector, deg = 7) {
   });
 }
 
-addMagneticTilt('.service-card', 6);
-addMagneticTilt('.why-small-card', 5);
-addMagneticTilt('.stat-card', 4);
+if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+  addMagneticTilt('.service-card', 6);
+  addMagneticTilt('.why-small-card', 5);
+  addMagneticTilt('.stat-card', 4);
+}
 
 /* ─── Nav — section active au scroll ────────────────────────────── */
 const navLinks = document.querySelectorAll('.nav-links a[href^="#"]');

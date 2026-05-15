@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Démos — WebCraft</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --blue:   #2B6EF5;
+      --violet: #7040E8;
+      --grad:   linear-gradient(135deg, #2B6EF5 0%, #7040E8 100%);
+      --bg:     #F1F4FC;
+      --surface:#FFFFFF;
+      --border: rgba(10,14,36,0.08);
+      --text:   #090E21;
+      --muted:  #4E597A;
+      --faint:  #8795B5;
+      --radius: 16px;
+      --shadow: 0 8px 32px rgba(10,14,36,0.11);
+    }
+    body {
+      background: var(--bg);
+      font-family: 'Inter', sans-serif;
+      color: var(--text);
+      min-height: 100svh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── Header ── */
+    header {
+      padding: 1.4rem 0;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+    }
+    .nav-inner {
+      width: min(1100px, 92%);
+      margin-inline: auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .logo {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 800;
+      font-size: 1.15rem;
+      background: var(--grad);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-decoration: none;
+    }
+    .back-link {
+      font-size: 0.85rem;
+      color: var(--muted);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: color 0.2s;
+    }
+    .back-link:hover { color: var(--blue); }
+
+    /* ── Main ── */
+    main {
+      flex: 1;
+      width: min(1100px, 92%);
+      margin-inline: auto;
+      padding: 4rem 0 6rem;
+    }
+    .page-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      background: var(--grad);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 0.75rem;
+    }
+    .page-title {
+      font-family: 'Poppins', sans-serif;
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: 0.75rem;
+    }
+    .page-sub {
+      color: var(--muted);
+      font-size: 1rem;
+      font-weight: 300;
+      max-width: 50ch;
+      line-height: 1.7;
+      margin-bottom: 3rem;
+    }
+
+    /* ── Grille projets ── */
+    .demos-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+    .demo-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      text-decoration: none;
+      color: inherit;
+      overflow: hidden;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      display: flex;
+      flex-direction: column;
+    }
+    .demo-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 16px 48px rgba(10,14,36,0.15);
+    }
+    .demo-card-thumb {
+      height: 160px;
+      background: linear-gradient(135deg, #2B6EF5 0%, #7040E8 55%, #9A3FF8 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+    }
+    .demo-card-body {
+      padding: 1.5rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+    .demo-card-category {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--faint);
+    }
+    .demo-card-name {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--text);
+    }
+    .demo-card-desc {
+      font-size: 0.85rem;
+      color: var(--muted);
+      font-weight: 300;
+      line-height: 1.55;
+      margin-top: 0.2rem;
+      flex: 1;
+    }
+    .demo-card-cta {
+      margin-top: 1.25rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.875rem;
+      font-weight: 600;
+      background: var(--grad);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* ── Footer ── */
+    footer {
+      padding: 1.5rem 0;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--faint);
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="nav-inner">
+      <a href="/" class="logo">WebCraft</a>
+      <a href="/" class="back-link">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+        Retour au site
+      </a>
+    </div>
+  </header>
+
+  <main>
+    <p class="page-label">Aperçus clients</p>
+    <h1 class="page-title">Nos démos</h1>
+    <p class="page-sub">Cliquez sur un projet pour voir l'aperçu du site.</p>
+
+    <div class="demos-grid">
+
+      <a href="/demo/tacos-classfood" class="demo-card">
+        <div class="demo-card-thumb">🌮</div>
+        <div class="demo-card-body">
+          <span class="demo-card-category">Restauration rapide</span>
+          <span class="demo-card-name">Tacos ClassFood</span>
+          <p class="demo-card-desc">Site vitrine pour une enseigne de tacos : menu, commande en ligne et ambiance moderne.</p>
+          <span class="demo-card-cta">
+            Voir la démo
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </span>
+        </div>
+      </a>
+
+    </div>
+  </main>
+
+  <footer>
+    Espace démo — usage interne WebCraft
+  </footer>
+
+</body>
+</html>

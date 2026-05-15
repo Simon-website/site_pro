@@ -1018,24 +1018,74 @@ footer {
 .footer-links a:hover { color: var(--text-muted); }
 
 /* ─── Responsive ────────────────────────────────────────────────── */
+
+/* Portfolio overlay toujours visible sur touch */
+@media (hover: none) {
+  .portfolio-card .portfolio-overlay { opacity: 1; }
+  .portfolio-card img { transform: scale(1.03); }
+}
+
 @media (max-width: 1024px) {
   #hero { grid-template-columns: 1fr; min-height: auto; padding-top: 7rem; padding-bottom: 5rem; }
   .hero-visual { display: none; }
   .stats-grid { grid-template-columns: repeat(2, 1fr); }
 }
+
 @media (max-width: 900px) {
   .why-inner,
   .contact-inner  { grid-template-columns: 1fr; gap: 3rem; }
   .portfolio-grid { grid-template-columns: repeat(2, 1fr); }
   .why-visual     { order: -1; }
 }
+
 @media (max-width: 700px) {
   .nav-links, .nav-cta { display: none; }
   .hamburger            { display: flex; }
+
   .portfolio-grid       { grid-template-columns: 1fr; }
   .hero-actions         { flex-direction: column; align-items: flex-start; }
   .portfolio-header     { flex-direction: column; align-items: flex-start; }
   .footer-inner         { flex-direction: column; text-align: center; }
   .stats-grid           { grid-template-columns: repeat(2, 1fr); }
   .why-small-row        { grid-template-columns: 1fr; }
+  .hero-scroll          { display: none; }
+
+  #services,
+  #portfolio-preview,
+  #why,
+  #contact           { padding: 5rem 0; }
+  #stats             { padding: 5rem 0; }
+  #cta-band          { padding: 4rem 0; }
+
+  .contact-inner     { gap: 2.5rem; }
+  .contact-form      { padding: 1.75rem; }
+  .service-card      { padding: 1.75rem; }
+  .footer-links      { gap: 1.25rem; }
+
+  /* Empêche le zoom automatique iOS sur les inputs */
+  .form-group input,
+  .form-group textarea { font-size: 1rem; }
+}
+
+@media (max-width: 480px) {
+  .hero-title    { font-size: clamp(1.9rem, 8vw, 2.8rem); }
+  .section-title { font-size: clamp(1.6rem, 6.5vw, 2rem); }
+
+  #services,
+  #portfolio-preview,
+  #why,
+  #contact       { padding: 4rem 0; }
+  #stats         { padding: 4rem 0; }
+  #cta-band      { padding: 3rem 0; }
+
+  .stat-card     { padding: 1.5rem 1rem; }
+  .stat-number   { font-size: 2.2rem; }
+  .contact-form  { padding: 1.25rem; }
+  .contact-inner { gap: 2rem; }
+  .footer-links  { gap: 1rem; }
+
+  .btn { padding: 0.75rem 1.4rem; font-size: 0.9rem; }
+
+  .hero-badge    { margin-bottom: 1.25rem; }
+  .hero-subtitle { margin-bottom: 2rem; }
 }
