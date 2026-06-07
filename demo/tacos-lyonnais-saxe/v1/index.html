@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Le Tacos Lyonnais Saxe — Borneo</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --orange:    #E85425;
+      --orange-bg: #FEF3EE;
+      --bg:        #F5F5F5;
+      --white:     #FFFFFF;
+      --text:      #1A1A1A;
+      --muted:     #6B6B6B;
+      --light:     #D8D8D8;
+      --border:    #EBEBEB;
+      --rad:       10px;
+    }
+    html { font-size: 16px; scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; overflow-x: hidden; }
+    a { text-decoration: none; color: inherit; }
+    ul { list-style: none; }
+    button { font-family: inherit; cursor: pointer; }
+    img { display: block; }
+
+    /* ── TOAST ── */
+    .toast-wrap { position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 9999; display: flex; flex-direction: column; gap: 0.5rem; pointer-events: none; }
+    .toast {
+      background: #111; color: #fff; padding: 0.7rem 1.1rem; border-radius: var(--rad);
+      font-size: 0.82rem; font-weight: 500; display: flex; align-items: center; gap: 0.5rem;
+      transform: translateX(120%); opacity: 0;
+      transition: transform 0.3s cubic-bezier(.34,1.56,.64,1), opacity 0.3s ease;
+      pointer-events: none; box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+    }
+    .toast.show { transform: translateX(0); opacity: 1; }
+
+    /* ── HEADER ── */
+    .header {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      height: 56px; background: var(--white); border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; padding: 0 2rem; transition: box-shadow 0.2s;
+    }
+    .header.shadow { box-shadow: 0 1px 12px rgba(0,0,0,0.08); }
+    .header-inner { width: 100%; max-width: 1400px; margin: 0 auto; display: flex; align-items: center; }
+    .borneo-logo {
+      display: flex; align-items: center; gap: 0.4rem;
+      font-size: 1.15rem; font-weight: 700; color: var(--text);
+      margin-right: 3.5rem; flex-shrink: 0;
+    }
+    .nav-links { flex: 1; display: flex; align-items: center; justify-content: center; gap: 0.2rem; }
+    .nav-item {
+      display: flex; align-items: center; gap: 0.4rem;
+      padding: 0.42rem 0.75rem; border-radius: 8px;
+      font-size: 0.875rem; font-weight: 500; color: var(--muted);
+      transition: color 0.15s, background 0.15s; cursor: pointer;
+    }
+    .nav-item:hover { color: var(--text); background: var(--bg); }
+    .nav-item.active { color: var(--text); font-weight: 600; }
+    .nav-item svg { width: 15px; height: 15px; flex-shrink: 0; }
+    .nav-resto-avatar { width: 20px; height: 20px; border-radius: 50%; background: #111; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 9px; font-weight: 900; color: #FFD700; }
+    .cart-btn {
+      margin-left: auto; display: flex; align-items: center; gap: 0.45rem;
+      background: var(--orange); color: #fff; padding: 0.45rem 0.9rem; border-radius: 100px; border: none;
+      font-size: 0.8rem; font-weight: 600; transition: transform 0.15s, filter 0.15s; flex-shrink: 0;
+    }
+    .cart-btn:hover { filter: brightness(1.1); transform: translateY(-1px); }
+    .cart-btn svg { width: 15px; height: 15px; }
+    .cart-count {
+      background: #fff; color: var(--orange); width: 18px; height: 18px; border-radius: 50%;
+      font-size: 0.7rem; font-weight: 700; display: flex; align-items: center; justify-content: center;
+    }
+    .cart-count.pop { animation: popBadge 0.35s cubic-bezier(.34,1.56,.64,1); }
+    @keyframes popBadge { 0%{transform:scale(1)} 50%{transform:scale(1.5)} 100%{transform:scale(1)} }
+
+    /* ── LAYOUT ── */
+    .page { display: flex; padding-top: 56px; min-height: 100vh; }
+
+    /* ── SIDEBAR ── */
+    .sidebar {
+      width: 285px; flex-shrink: 0; position: sticky; top: 56px;
+      height: calc(100vh - 56px); overflow-y: auto; overflow-x: hidden;
+      background: var(--white); border-right: 1px solid var(--border);
+      display: flex; flex-direction: column;
+      scrollbar-width: thin; scrollbar-color: var(--light) transparent;
+    }
+    .sidebar::-webkit-scrollbar { width: 3px; }
+    .sidebar::-webkit-scrollbar-thumb { background: var(--light); border-radius: 3px; }
+
+    .sb-banner { position: relative; width: 100%; height: 152px; flex-shrink: 0; overflow: hidden; }
+    .sb-banner img { width: 100%; height: 100%; object-fit: cover; }
+    .sb-logo-wrap {
+      position: absolute; bottom: -24px; left: 14px;
+      width: 52px; height: 52px; border-radius: 50%;
+      background: #0D0D0D; border: 3px solid var(--white); z-index: 2; overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .sb-logo-svg { width: 100%; height: 100%; }
+    .badge-status {
+      position: absolute; bottom: 10px; right: 10px;
+      font-size: 0.68rem; font-weight: 700;
+      padding: 0.22rem 0.55rem; border-radius: 100px;
+      display: flex; align-items: center; gap: 0.25rem; cursor: pointer;
+    }
+    .badge-status.ouvert { background: #16A34A; color: #fff; }
+    .badge-status.ferme  { background: #DC2626; color: #fff; }
+    .badge-status svg { width: 9px; height: 9px; }
+
+    /* Horaires */
+    .sb-hours { margin-top: 0.85rem; }
+    .sb-hours-title {
+      font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.1em; color: var(--muted); margin-bottom: 0.5rem;
+    }
+    .hours-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 0.3rem 0; border-bottom: 1px solid var(--border); font-size: 0.74rem;
+    }
+    .hours-row:last-child { border-bottom: none; }
+    .hours-day { color: var(--muted); }
+    .hours-time { font-weight: 600; text-align: right; color: var(--text); }
+    .hours-time.closed { color: var(--light); font-weight: 400; font-style: italic; }
+    .hours-row.today .hours-day { color: var(--orange); font-weight: 700; }
+    .hours-row.today .hours-time { color: var(--orange); }
+
+    .sb-body { padding: 2rem 1.15rem 0.75rem; }
+    .sb-opening { font-size: 0.75rem; color: var(--muted); margin-bottom: 0.45rem; display: flex; align-items: center; gap: 0.35rem; }
+    .opening-dot { width: 7px; height: 7px; border-radius: 50%; background: #16A34A; animation: pulse-dot 2s ease-in-out infinite; }
+    @keyframes pulse-dot { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(1.5)} }
+    .sb-services { display: flex; gap: 0.85rem; margin-bottom: 1rem; flex-wrap: wrap; }
+    .sb-service { display: flex; align-items: center; gap: 0.22rem; font-size: 0.72rem; color: var(--muted); }
+    .sb-name { font-size: 1.12rem; font-weight: 700; line-height: 1.2; margin-bottom: 0.28rem; }
+    .sb-addr-link { font-size: 0.76rem; color: var(--orange); text-decoration: underline; display: block; margin-bottom: 0.8rem; line-height: 1.4; }
+    .sb-addr-link:hover { opacity: 0.75; }
+    .sb-features { display: flex; flex-direction: column; gap: 0.12rem; margin-bottom: 0.35rem; }
+    .sb-feature { font-size: 0.76rem; color: var(--muted); }
+    .sb-divider { height: 1px; background: var(--border); margin: 0.7rem 0; }
+    .sb-addr2 { font-size: 0.74rem; color: var(--muted); margin-bottom: 0.85rem; line-height: 1.4; }
+    .sb-cats { display: flex; gap: 0.35rem; flex-wrap: wrap; margin-bottom: 0.9rem; }
+    .sb-cat {
+      background: var(--bg); border: 1px solid var(--border); border-radius: 100px;
+      padding: 0.2rem 0.55rem; font-size: 0.71rem; font-weight: 500;
+      cursor: pointer; transition: border-color 0.15s, background 0.15s;
+    }
+    .sb-cat:hover { border-color: var(--orange); background: var(--orange-bg); }
+    .sb-more {
+      width: 100%; display: flex; align-items: center; gap: 0.45rem;
+      padding: 0.55rem 0.9rem; border-radius: var(--rad);
+      border: 1px solid var(--border); background: var(--white);
+      font-size: 0.78rem; font-weight: 500; color: var(--text); transition: background 0.15s;
+    }
+    .sb-more:hover { background: var(--bg); }
+    .sb-more svg { width: 14px; height: 14px; color: var(--orange); }
+    .sb-footer { padding: 0.85rem 1.15rem; border-top: 1px solid var(--border); margin-top: auto; }
+    .sb-footer-links { display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center; margin-bottom: 0.3rem; }
+    .sb-footer-links a { font-size: 0.67rem; color: var(--orange); }
+    .sb-footer-links a:hover { text-decoration: underline; }
+    .sb-footer-copy { text-align: center; font-size: 0.62rem; color: var(--muted); }
+
+    /* ── MAIN ── */
+    .main { flex: 1; padding: 1.4rem 2.25rem 3rem; min-width: 0; }
+    .order-bar { display: flex; gap: 1.75rem; margin-bottom: 1.75rem; }
+    .order-opt { display: flex; flex-direction: column; gap: 0.04rem; }
+    .opt-label { font-size: 0.68rem; color: var(--muted); }
+    .opt-value { font-size: 0.875rem; font-weight: 600; color: var(--orange); display: flex; align-items: center; gap: 0.25rem; cursor: pointer; transition: opacity 0.2s; }
+    .opt-value:hover { opacity: 0.75; }
+    .opt-value svg { width: 11px; height: 11px; }
+
+    .cat-nav { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
+    .cat-nav-btn {
+      background: var(--white); border: 1px solid var(--border); border-radius: 100px;
+      padding: 0.3rem 0.75rem; font-size: 0.78rem; font-weight: 500; color: var(--muted);
+      transition: all 0.15s; cursor: pointer;
+    }
+    .cat-nav-btn:hover { border-color: var(--orange); color: var(--orange); background: var(--orange-bg); }
+
+    .products-title { font-size: 1.65rem; font-weight: 700; margin-bottom: 1rem; }
+
+    /* ── ACCORDION ── */
+    .accordion { border-radius: 12px; overflow: hidden; border: 1px solid var(--border); background: var(--white); }
+    .acc-item { border-bottom: 1px solid var(--border); }
+    .acc-item:last-child { border-bottom: none; }
+    .acc-trigger {
+      width: 100%; display: flex; align-items: center; justify-content: space-between;
+      padding: 1.05rem 1.25rem; background: none; border: none;
+      cursor: pointer; text-align: left; transition: background 0.15s;
+    }
+    .acc-trigger:hover, .acc-item.open > .acc-trigger { background: #FAFAFA; }
+    .acc-left { display: flex; align-items: center; gap: 0.42rem; font-size: 0.93rem; font-weight: 600; }
+    .acc-right { display: flex; align-items: center; gap: 0.65rem; color: var(--muted); font-size: 0.79rem; white-space: nowrap; }
+    .acc-chevron {
+      width: 21px; height: 21px; border-radius: 50%; border: 1.5px solid var(--light);
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+      transition: transform 0.28s cubic-bezier(.4,0,.2,1), border-color 0.2s; color: var(--muted);
+    }
+    .acc-chevron svg { width: 10px; height: 10px; }
+    .acc-item.open .acc-chevron { transform: rotate(180deg); border-color: var(--orange); color: var(--orange); }
+
+    /* Smooth height via CSS grid */
+    .acc-body { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.32s cubic-bezier(.4,0,.2,1); }
+    .acc-item.open .acc-body { grid-template-rows: 1fr; }
+    .acc-body-inner { overflow: hidden; }
+    .acc-body-pad { padding: 0.25rem 1.25rem 1.25rem; }
+
+    /* ── PRODUCT GRID ── */
+    .prod-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.7rem; }
+
+    /* Card with photo */
+    .prod-card {
+      border: 1px solid var(--border); border-radius: var(--rad); background: var(--white);
+      display: flex; flex-direction: column; cursor: pointer;
+      transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+      overflow: hidden; position: relative;
+    }
+    .prod-card:hover { border-color: var(--orange); transform: translateY(-3px); box-shadow: 0 6px 20px rgba(232,84,37,0.12); }
+
+    .prod-img-wrap { position: relative; overflow: hidden; height: 108px; flex-shrink: 0; }
+    .prod-img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; background: var(--bg); }
+    .prod-card:hover .prod-img { transform: scale(1.06); }
+    .prod-add {
+      position: absolute; bottom: 0.5rem; right: 0.5rem;
+      width: 30px; height: 30px; border-radius: 50%;
+      background: var(--orange); color: #fff; border: none;
+      display: flex; align-items: center; justify-content: center; font-size: 1.15rem;
+      opacity: 0; transform: scale(0.7) translateY(6px);
+      transition: opacity 0.2s, transform 0.25s cubic-bezier(.34,1.56,.64,1);
+      pointer-events: none; box-shadow: 0 2px 8px rgba(232,84,37,0.4);
+    }
+    .prod-card:hover .prod-add { opacity: 1; transform: scale(1) translateY(0); pointer-events: auto; }
+    .prod-add:active { transform: scale(0.9) !important; }
+
+    /* Card without photo — compact row style */
+    .prod-card.no-photo {
+      flex-direction: row; align-items: center; gap: 0; min-height: 64px;
+    }
+    .prod-card.no-photo .prod-info { flex: 1; padding: 0.85rem 0.9rem; }
+    .prod-card.no-photo .prod-add-inline {
+      flex-shrink: 0; width: 32px; height: 32px; margin-right: 0.75rem;
+      border-radius: 50%; background: transparent; border: 1.5px solid var(--light);
+      color: var(--muted); display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem; transition: border-color 0.2s, color 0.2s, background 0.2s;
+    }
+    .prod-card.no-photo:hover .prod-add-inline { border-color: var(--orange); color: var(--orange); background: var(--orange-bg); }
+
+    .prod-info { padding: 0.8rem; display: flex; flex-direction: column; gap: 0.3rem; flex: 1; }
+    .prod-badge {
+      display: inline-flex; align-items: center; background: var(--orange-bg); color: var(--orange);
+      font-size: 0.62rem; font-weight: 700; padding: 0.1rem 0.4rem; border-radius: 4px; width: fit-content;
+    }
+    .prod-name { font-size: 0.83rem; font-weight: 600; line-height: 1.3; }
+    .prod-desc { font-size: 0.71rem; color: var(--muted); line-height: 1.5; flex: 1; }
+    .prod-price { font-size: 0.84rem; font-weight: 700; color: var(--text); margin-top: 0.2rem; }
+
+    /* Card entrance animation */
+    .prod-card { opacity: 0; transform: translateY(10px); }
+    .prod-card.visible { animation: fadeUp 0.35s ease forwards; }
+    @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 860px) { .sidebar { display: none; } .main { padding: 1rem 1.2rem 2rem; } }
+    @media (max-width: 600px) {
+      .header { padding: 0 1rem; } .borneo-logo { margin-right: 1rem; font-size: 1rem; }
+      .products-title { font-size: 1.3rem; } .prod-grid { grid-template-columns: 1fr 1fr; }
+      .nav-links .nav-item span { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="toast-wrap" id="toast-wrap"></div>
+
+  <!-- ══ HEADER ══ -->
+  <header class="header" id="site-header">
+    <div class="header-inner">
+      <div class="borneo-logo">
+        <svg width="28" height="20" viewBox="0 0 30 22" fill="none">
+          <path d="M2 11 C4 4,9 2,12 11"   stroke="#E85425" stroke-width="2.3" fill="none" stroke-linecap="round"/>
+          <path d="M7 11 C10 2,17 0,20 11"  stroke="#E85425" stroke-width="2.3" fill="none" stroke-linecap="round"/>
+          <path d="M13 11 C17 0,24-1,27 11" stroke="#E85425" stroke-width="2.3" fill="none" stroke-linecap="round"/>
+        </svg>
+        Borneo
+      </div>
+      <nav class="nav-links">
+        <a href="#" class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
+          <span>Accueil</span>
+        </a>
+        <a href="#" class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+          <span>Recherche</span>
+        </a>
+        <a href="#" class="nav-item active">
+          <div class="nav-resto-avatar">TL</div>
+          <span>Le Tacos Lyonnais Saxe</span>
+        </a>
+        <a href="#" class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+          <span>Commandes</span>
+        </a>
+        <a href="#" class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <span>Profil</span>
+        </a>
+      </nav>
+      <button class="cart-btn" id="cart-btn" onclick="openCart()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+        Panier
+        <span class="cart-count" id="cart-count">0</span>
+      </button>
+    </div>
+  </header>
+
+  <div class="page">
+
+    <!-- ══ SIDEBAR ══ -->
+    <aside class="sidebar">
+      <div class="sb-banner">
+        <img src="./Le_Tacos_Lyonnais_Saxe/Les_Tacos/Tacos_Classique.jpg" alt="Le Tacos Lyonnais Saxe" />
+        <div class="sb-logo-wrap">
+          <svg class="sb-logo-svg" viewBox="0 0 52 52" fill="none">
+            <circle cx="26" cy="26" r="26" fill="#0D0D0D"/>
+            <path d="M14 28 L26 14 L38 28 L34 28 L34 38 L18 38 L18 28 Z" fill="#1A3BCC" stroke="#FFD700" stroke-width="1.2"/>
+            <text x="26" y="35" text-anchor="middle" font-size="7" font-weight="900" fill="#FFD700" font-family="Inter,sans-serif">TL</text>
+            <text x="26" y="12" text-anchor="middle" font-size="5.5" font-weight="800" fill="#FF4444" font-family="Inter,sans-serif" letter-spacing="0.5">TACOS</text>
+            <text x="26" y="47" text-anchor="middle" font-size="4" font-weight="700" fill="#FFD700" font-family="Inter,sans-serif" letter-spacing="0.3">LYONNAIS</text>
+          </svg>
+        </div>
+        <div class="badge-status ouvert" id="status-badge">
+          Ouvert
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+      </div>
+
+      <div class="sb-body">
+        <p class="sb-opening" id="opening-text"><span class="opening-dot"></span> Ouvert · Ferme à 23h30</p>
+        <div class="sb-services">
+          <span class="sb-service">✅ Sur place</span>
+          <span class="sb-service">✅ À emporter</span>
+          <span class="sb-service">✅ Livraison</span>
+        </div>
+        <h1 class="sb-name">Le Tacos Lyonnais Saxe</h1>
+        <a href="https://maps.google.com/?q=107+Grande+Rue+de+la+Guillotière+Lyon" target="_blank" rel="noopener" class="sb-addr-link">
+          107 Gd Rue de la Guillotière, 69007 Lyon, France
+        </a>
+        <div class="sb-features">
+          <span class="sb-feature">Le Goût est Gourmet 🧑‍🍳</span>
+          <span class="sb-feature">Le Tacos est Lyonnais 🌮</span>
+          <span class="sb-feature">Fidélité récompensée 🤝</span>
+          <span class="sb-feature">Saxe 📍</span>
+        </div>
+        <div class="sb-divider"></div>
+        <p class="sb-addr2">107 Gd Rue de la Guillotière, 69007 Lyon, France</p>
+        <div class="sb-cats">
+          <span class="sb-cat">Halal 🏗️</span>
+          <span class="sb-cat">Pizzas 🍕</span>
+          <span class="sb-cat">Tacos 🌮</span>
+          <span class="sb-cat">Burgers 🍔</span>
+        </div>
+        <button class="sb-more">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          Plus d'infos sur le restaurant
+        </button>
+
+        <div class="sb-hours">
+          <p class="sb-hours-title">Horaires</p>
+          <div class="hours-row" data-day="1">
+            <span class="hours-day">Lundi</span>
+            <span class="hours-time">11h30 – 14h30 · 18h00 – 23h30</span>
+          </div>
+          <div class="hours-row" data-day="2">
+            <span class="hours-day">Mardi</span>
+            <span class="hours-time">11h30 – 14h30 · 18h00 – 23h30</span>
+          </div>
+          <div class="hours-row" data-day="3">
+            <span class="hours-day">Mercredi</span>
+            <span class="hours-time">11h30 – 14h30 · 18h00 – 23h30</span>
+          </div>
+          <div class="hours-row" data-day="4">
+            <span class="hours-day">Jeudi</span>
+            <span class="hours-time">11h30 – 14h30 · 18h00 – 23h30</span>
+          </div>
+          <div class="hours-row" data-day="5">
+            <span class="hours-day">Vendredi</span>
+            <span class="hours-time">11h30 – 14h30 · 18h00 – 23h30</span>
+          </div>
+          <div class="hours-row" data-day="6">
+            <span class="hours-day">Samedi</span>
+            <span class="hours-time">11h30 – 23h30</span>
+          </div>
+          <div class="hours-row" data-day="0">
+            <span class="hours-day">Dimanche</span>
+            <span class="hours-time">11h30 – 23h30</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="sb-footer">
+        <div class="sb-footer-links">
+          <a href="#">Accueil</a>
+          <a href="#">Tous les restaurants</a>
+          <a href="#">Mentions légales</a>
+          <a href="#">Confidentialité</a>
+          <a href="#">CGU</a>
+          <a href="#">CGV</a>
+        </div>
+        <p class="sb-footer-copy">v0.9.289 &nbsp;·&nbsp; Borneo © 2025</p>
+      </div>
+    </aside>
+
+    <!-- ══ MAIN ══ -->
+    <main class="main">
+      <div class="order-bar">
+        <div class="order-opt">
+          <span class="opt-label">Comment ?</span>
+          <span class="opt-value">À emporter <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="6 9 12 15 18 9"/></svg></span>
+        </div>
+        <div class="order-opt">
+          <span class="opt-label">Pour quand ?</span>
+          <span class="opt-value">Au plus vite <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="6 9 12 15 18 9"/></svg></span>
+        </div>
+      </div>
+
+      <div class="cat-nav">
+        <button class="cat-nav-btn" onclick="jumpTo('tacos')">🌮 Les Tacos</button>
+        <button class="cat-nav-btn" onclick="jumpTo('burgers')">🍔 Les Burgers</button>
+        <button class="cat-nav-btn" onclick="jumpTo('sandwicherie')">🥙 Sandwicherie</button>
+        <button class="cat-nav-btn" onclick="jumpTo('pizza-tomate')">🍕 Pizzas Tomate</button>
+        <button class="cat-nav-btn" onclick="jumpTo('pizza-creme')">🍕 Pizzas Crème</button>
+        <button class="cat-nav-btn" onclick="jumpTo('pizza-chef')">👨‍🍳 Du Chef</button>
+        <button class="cat-nav-btn" onclick="jumpTo('kids')">🧸 Kids</button>
+        <button class="cat-nav-btn" onclick="jumpTo('assiettes')">🔥 Assiettes</button>
+        <button class="cat-nav-btn" onclick="jumpTo('boissons')">🥤 Boissons</button>
+      </div>
+
+      <h2 class="products-title">Tous les produits</h2>
+
+      <div class="accordion" id="accordion">
+
+        <div class="acc-item open" id="acc-tacos">
+          <button class="acc-trigger" onclick="toggle('tacos')" aria-expanded="true">
+            <span class="acc-left">Les Tacos 🌮</span>
+            <span class="acc-right">14 produits <span class="acc-chevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></span></span>
+          </button>
+          <div class="acc-body"><div class="acc-body-inner"><div class="acc-body-pad">
+            <div class="prod-grid" id="grid-tacos"></div>
+          </div></div></div>
+        </div>
+
+        <div class="acc-item" id="acc-burgers">
+          <button class="acc-trigger" onclick="toggle('burgers')" aria-expanded="false">
+            <span class="acc-left">Les Burgers 🍔</span>
+            <span class="acc-right">6 produits <span class="acc-chevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></span></span>
+          </button>
+          <div class="acc-body"><div class="acc-body-inner"><div class="acc-body-pad">
+            <div class="prod-grid" id="grid-burgers"></div>
+          </div></div></div>
+        </div>
+
+        <div class="acc-item" id="acc-sandwicherie">
+          <button class="acc-trigger" onclick="toggle('sandwicherie')" aria-expanded="false">
+            <span class="acc-left">La Sandwicherie 🥙</span>
+            <span class="acc-right">5 produits <span class="acc-chevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></span></span>
+          </button>
+          <div class="acc-body"><div class="acc-body-inner"><div class="acc-body-pad">
+            <div class="prod-grid" id="grid-sandwicherie"></div>
+          </div></div></div>
+        </div>
+
+        <div class="acc-item" id="acc-pizza-tomate">
+          <button class="acc-trigger" onclick="toggle('pizza-tomate')" aria-expanded="false">
+            <span class="acc-left">Pizzas base Tomate 🍕</span>
+            <span class="acc-right">11 produits <span class="acc-chevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></span></span>
+          </button>
+          <div class="acc-body"><div class="acc-body-inner"><div class="acc-body-pad">
+            <div class="prod-grid" id="grid-pizza-tomate"></div>
+          </div></div></div>
+        </div>
+
+        <div class="acc-item" id="acc-pizza-creme">
+          <button class="acc-trigger" onclick="toggle('pizza-creme')" aria-expanded="false">
+            <span class="acc-left">Pizzas base Crème 🍕</span>
+            <span class="acc-right">8 produits <span class="acc-chevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></span></span>
+          </button>
+          <div class="acc-body"><div class="acc-body-inner"><div class="acc-body-pad">
+            <div class="prod-grid" id="grid-pizza-creme"></div>
+          </div></div></div>
+        </div>
+
+        <div class="acc-item" id="acc-pizza-chef">
+          <button class="acc-trigger" onclick="toggle('pizza-chef')" aria-expanded="false">
+            <span class="acc-left">Pizzas du Chef 👨‍🍳</span>
+            <span class="acc-right">3 produits <span class="acc-chevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></span></span>
+          </button>
+          <div class="acc-body"><div class="acc-body-inner"><div class="acc-body-pad">
+            <div class="prod-grid" id="grid-pizza-chef"></div>
+          </div></div></div>
+        </div>
+
+        <div class="acc-item" id="acc-kids">
+          <button class="acc-trigger" onclick="toggle('kids')" aria-expanded="false">
+            <span class="acc-left">Les Kids 🧸</span>
+            <span class="acc-right">2 produits <span class="acc-chevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></span></span>
+          </button>
+          <div class="acc-body"><div class="acc-body-inner"><div class="acc-body-pad">
+            <div class="prod-grid" id="grid-kids"></div>
+          </div></div></div>
+        </div>
+
+        <div class="acc-item" id="acc-assiettes">
+          <button class="acc-trigger" onclick="toggle('assiettes')" aria-expanded="false">
+            <span class="acc-left">Les Assiettes 🔥</span>
+            <span class="acc-right">1 produits <span class="acc-chevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></span></span>
+          </button>
+          <div class="acc-body"><div class="acc-body-inner"><div class="acc-body-pad">
+            <div class="prod-grid" id="grid-assiettes"></div>
+          </div></div></div>
+        </div>
+
+        <div class="acc-item" id="acc-boissons">
+          <button class="acc-trigger" onclick="toggle('boissons')" aria-expanded="false">
+            <span class="acc-left">Les Boissons 🥤</span>
+            <span class="acc-right">5 produits <span class="acc-chevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></span></span>
+          </button>
+          <div class="acc-body"><div class="acc-body-inner"><div class="acc-body-pad">
+            <div class="prod-grid" id="grid-boissons"></div>
+          </div></div></div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <script>
+  // ── CHEMINS LOCAUX ──────────────────────────────────────────────────────────
+  const T  = './Le_Tacos_Lyonnais_Saxe/Les_Tacos/';
+  const B  = './Le_Tacos_Lyonnais_Saxe/Les_Burgers/';
+  const S  = './Le_Tacos_Lyonnais_Saxe/La_Sandwicherie/';
+  const PT = './Le_Tacos_Lyonnais_Saxe/Pizzas_base_Tomate/';
+  const PC = './Le_Tacos_Lyonnais_Saxe/Pizzas_base_Crème/';
+  const DR = './Le_Tacos_Lyonnais_Saxe/Les_Boissons/';
+
+  // ── MENU DATA ──────────────────────────────────────────────────────────────
+  // img: null  →  pas de photo disponible, carte en mode ligne
+  const MENU = {
+    tacos: [
+      { name:'Maxi Tacos',             desc:'Notre tacos signature — généreux, garni de frites maison et sauce fromagère',        price:'9,50 €',  img: T+'Maxi_Tacos.jpg',           badge:'⭐ Signature' },
+      { name:'Tacos Classique',         desc:'Le tacos intemporel — galette, viande, frites maison, sauce au choix',              price:'8,50 €',  img: T+'Tacos_Classique.jpg' },
+      { name:'Le Lyonnais',             desc:'Poulet mariné, crème de champignons, raclette fondue, frites maison',               price:'12,90 €', img: T+'Tacos_Lyonnais.jpg',        badge:'🌟 Maison' },
+      { name:'Le Mumbaï',               desc:'Chicken tenders épicés, oignons frits, fromage fondu, sauce pili-pili',            price:'12,50 €', img: T+'Tacos_Mumbaï.jpg',     badge:'🌶️ Épicé' },
+      { name:'Le Mexicain',             desc:'Bœuf haché, chakchouka, maïs, œuf, sauce algérienne',                              price:'12,90 €', img: T+'Tacos_Méxicain.jpg' },
+      { name:'Le Boursin',              desc:'Bœuf haché, Boursin ail & fines herbes, frites, sauce poivre crémeuse',            price:'12,90 €', img: T+'Tacos_Boursin.jpg' },
+      { name:'Le Cheesy',               desc:'Poulet crémeux, bacon de dinde, sauce cheddar ultra généreuse',                    price:'12,90 €', img: T+'Tacos_Cheesy.jpg',          badge:'🧀 Cheesy' },
+      { name:'Le Savoyard',             desc:'Poulet, bacon de dinde, pommes de terre, raclette fondue',                         price:'12,90 €', img: T+'Tacos_Savoyard.jpg' },
+      { name:'Le Tropical',             desc:'Poulet curry, bacon fumé, sauce Brazil exotique',                                  price:'12,90 €', img: T+'Tacos_Tropical.jpg' },
+      { name:"L'Oriental",              desc:'Merguez fraîche, chakchouka, olives, œuf, sauce algérienne',                      price:'13,50 €', img: T+'Tacos_Oriental.jpg' },
+      { name:'Tacos Veggie Falafel',    desc:'Falafel maison, chakchouka, olives, frites — 100% végétarien',                    price:'12,50 €', img: T+'Tacos_Veggie_Falafel.jpg' },
+      { name:'Tacos Veggie Légumes',    desc:'Légumes grillés du marché, fromage frais, frites maison',                         price:'12,50 €', img: T+'Tacos_Veggie_Légumes.jpg' },
+      { name:'Bowl Classique',          desc:'Riz, viande au choix, légumes croquants, sauce maison — sans galette',            price:'11,90 €', img: T+'Bowl_Classique.jpg' },
+      { name:'Le Spicy',                desc:'Tenders hot, chakchouka, frites, sauce fire ultra épicée',                        price:'12,90 €', img: null,                          badge:'🔥 Très épicé' },
+    ],
+    burgers: [
+      { name:'Big Chef Burger',         desc:'Double steak, cheddar, oignons frits, sauce chef maison, pain brioché',            price:'12,90 €', img: B+'Big_Chef_burger.jpg',       badge:'🏆 Chef' },
+      { name:'Black Burger OB',         desc:'Steak haché, pain noir au charbon, cheddar fondu, sauce spéciale',                 price:'11,90 €', img: B+'Black_burger_OB.jpg' },
+      { name:'Chicken Beef Burger',     desc:'Escalope de poulet + steak haché, double cheddar, sauce secrète',                  price:'13,90 €', img: B+'Chicken_Beef_burger.jpg' },
+      { name:'Le Classic',              desc:'Steak haché, cheddar, salade, tomate, oignons, ketchup, mayo',                     price:'9,90 €',  img: null },
+      { name:'Le Spicy Burger',         desc:'Chicken tenders épicés, sauce sriracha, jalapeños, cheddar',                       price:'11,50 €', img: null,                          badge:'🌶️ Épicé' },
+      { name:'Le Veggy Burger',         desc:'Steak végétal, avocat frais, tomate, salade croquante, sauce verte',               price:'10,50 €', img: null },
+    ],
+    sandwicherie: [
+      { name:'Baguette Classique',      desc:'Baguette croustillante, viande au choix, crudités fraîches, sauce',                price:'7,50 €',  img: S+'Baguette_Classique.jpg' },
+      { name:'Le Freshly Classique',    desc:'Pain frais du jour, garniture généreuse, légumes croquants',                       price:'8,50 €',  img: S+'Le_Freshly_Classique.jpg',  badge:'🌿 Frais' },
+      { name:'Roulé Classique',         desc:'Wrap grillé, viande au choix, crudités, sauce blanche maison',                    price:'8,50 €',  img: S+'Roulé_Classique.jpg' },
+      { name:'Sandwich Classique',      desc:'Pain moelleux, viande tendre, fromage fondu, légumes, sauce',                     price:'8,00 €',  img: S+'Sandwich_Classique.jpg' },
+      { name:'Le Chawarma',             desc:'Poulet ou bœuf à la broche, sauce blanche, légumes frais, frites',                price:'9,50 €',  img: null,                          badge:'⭐ Signature' },
+    ],
+    'pizza-tomate': [
+      { name:'Pizza Orientale',         desc:'Tomate, merguez, poivrons colorés, oignons, mozzarella',                          price:'13,50 €', img: PT+'Pizza_Orientale.jpg' },
+      { name:'Pizza Regina',            desc:'Tomate, jambon, champignons de Paris, mozzarella',                                price:'12,50 €', img: PT+'Pizza_Regina.jpg' },
+      { name:'Margherita',              desc:'Tomate, mozzarella fior di latte, basilic frais',                                 price:'10,50 €', img: null },
+      { name:'Pepperoni',               desc:'Tomate, pepperoni croustillant, mozzarella fondante',                             price:'12,90 €', img: null,                          badge:'🔥 Populaire' },
+      { name:'La 4 Saisons',            desc:'Tomate, jambon, champignons, olives, poivrons, mozzarella',                       price:'13,50 €', img: null },
+      { name:'La Poulet-Tomate',        desc:'Tomate, poulet grillé, poivrons, mozzarella, herbes fraîches',                   price:'13,00 €', img: null },
+      { name:'La Mexicaine',            desc:'Tomate, bœuf haché, jalapeños, maïs, cheddar',                                   price:'13,90 €', img: null },
+      { name:'La Spicy',                desc:'Tomate, tenders épicés, pili-pili, mozzarella, piments rouges',                  price:'13,50 €', img: null,                          badge:'🌶️ Épicé' },
+      { name:'La Napolitaine',          desc:'Tomate, anchois, olives noires, câpres, mozzarella',                             price:'13,00 €', img: null },
+      { name:'La Campagnarde',          desc:'Tomate, lardons de dinde, œuf, champignons, mozzarella',                         price:'13,50 €', img: null },
+      { name:'La Tunisienne',           desc:'Tomate, merguez, harissa, olives, œuf, mozzarella',                              price:'13,90 €', img: null },
+    ],
+    'pizza-creme': [
+      { name:'Pizza 5 Fromages',        desc:'Crème fraîche, mozzarella, gorgonzola, chèvre, emmental, raclette',              price:'13,90 €', img: PC+'Pizza_5_Fromages.jpg',     badge:'🧀 Cheesy' },
+      { name:'Pizza Boisée',            desc:'Crème fraîche, champignons sauvages, lardons, gruyère, herbes',                   price:'13,50 €', img: PC+'Pizza_Boisée.jpg' },
+      { name:'La Lyonnaise',            desc:'Crème fraîche, lardons, oignons confits, reblochon fondant',                     price:'13,50 €', img: null,                          badge:'⭐ Spécialité' },
+      { name:'La Savoyarde',            desc:'Crème fraîche, poulet, raclette fondue, pommes de terre',                        price:'14,00 €', img: null },
+      { name:'La Forestière',           desc:'Crème fraîche, champignons sauvages, jambon, gruyère',                           price:'12,90 €', img: null },
+      { name:'La Saumon',               desc:'Crème fraîche, saumon fumé, câpres, aneth, mozzarella',                         price:'14,50 €', img: null },
+      { name:'La 4 Fromages',           desc:'Crème fraîche, mozzarella, gorgonzola, chèvre, emmental gratiné',               price:'13,90 €', img: null },
+      { name:'La Raclette',             desc:'Crème fraîche, raclette généreuse, lardons, pommes de terre',                    price:'14,00 €', img: null },
+    ],
+    'pizza-chef': [
+      { name:'La Tacos Pizza',          desc:'Crème fromagère, viande à la broche, frites intégrées, sauce secrète',           price:'15,90 €', img: null,                          badge:'🌟 Exclusivité' },
+      { name:'La Royale',               desc:'Crème américaine, crevettes, champignons, mozzarella, herbes fraîches',          price:'16,90 €', img: null },
+      { name:'La Supreme',              desc:'Double base, 4 viandes sélectionnées, 3 fromages, légumes grillés',             price:'17,90 €', img: null },
+    ],
+    kids: [
+      { name:'Menu Kids Tacos',         desc:'Petit tacos + frites maison + boisson au choix',                                 price:'7,50 €',  img: null },
+      { name:'Menu Kids Pizza',         desc:'Pizza 4 fromages taille enfant + boisson au choix',                             price:'7,50 €',  img: null },
+    ],
+    assiettes: [
+      { name:"L'Assiette Tacos",        desc:'Viande à la broche, frites maison croustillantes, salade, sauces au choix',     price:'14,50 €', img: null,                          badge:'⭐ Coup de cœur' },
+    ],
+    boissons: [
+      { name:'Coca-Cola 33 cl',              desc:'La boisson emblématique, fraîche et pétillante',                           price:'2,50 €', img: DR+'Coca-Cola_33_cl.jpg' },
+      { name:'Coca-Cola Zéro Sucres 33 cl',  desc:'Le goût du Coca sans les sucres',                                         price:'2,50 €', img: DR+'Coca-Cola_zéro_sucres_33cl.jpg' },
+      { name:'Fanta Citron Frappé 33 cl',    desc:'Pétillant, fruité et rafraîchissant',                                     price:'2,50 €', img: DR+'Fanta_Citron_Frappé_33_cl.jpg' },
+      { name:'Fanta Orange 33 cl',           desc:'Le classique fruité et pétillant',                                        price:'2,50 €', img: DR+'Fanta_Orange_33_cl.jpg' },
+      { name:'Sprite Citron-Citron Vert 33 cl', desc:'Léger, pétillant, saveur citron et citron vert',                      price:'2,50 €', img: DR+'Sprite_Citron-Citron_vert_33cl.jpg' },
+    ],
+  };
+
+  // ── RENDU DES CARTES ────────────────────────────────────────────────────────
+  function makeCard(item, i) {
+    const safeName = item.name.replace(/'/g, "\\'");
+    if (item.img) {
+      // Carte avec photo
+      return `<div class="prod-card" style="animation-delay:${i*55}ms">
+        <div class="prod-img-wrap">
+          <img class="prod-img" src="${item.img}" alt="${item.name}" loading="lazy" />
+          <button class="prod-add" onclick="addToCart('${safeName}',event)" title="Ajouter">+</button>
+        </div>
+        <div class="prod-info">
+          ${item.badge ? `<span class="prod-badge">${item.badge}</span>` : ''}
+          <div class="prod-name">${item.name}</div>
+          <div class="prod-desc">${item.desc}</div>
+          <div class="prod-price">${item.price}</div>
+        </div>
+      </div>`;
+    } else {
+      // Carte sans photo — style ligne compacte
+      return `<div class="prod-card no-photo" style="animation-delay:${i*55}ms">
+        <div class="prod-info">
+          ${item.badge ? `<span class="prod-badge">${item.badge}</span>` : ''}
+          <div class="prod-name">${item.name}</div>
+          <div class="prod-desc">${item.desc}</div>
+          <div class="prod-price">${item.price}</div>
+        </div>
+        <button class="prod-add-inline" onclick="addToCart('${safeName}',event)" title="Ajouter">+</button>
+      </div>`;
+    }
+  }
+
+  function renderGrid(id, items) {
+    const el = document.getElementById('grid-' + id);
+    if (el) el.innerHTML = items.map((item, i) => makeCard(item, i)).join('');
+  }
+
+  Object.keys(MENU).forEach(k => renderGrid(k, MENU[k]));
+  setTimeout(animateVisible, 50);
+
+  // ── ACCORDION ──────────────────────────────────────────────────────────────
+  function toggle(id) {
+    const item = document.getElementById('acc-' + id);
+    const open = item.classList.toggle('open');
+    item.querySelector('.acc-trigger').setAttribute('aria-expanded', String(open));
+    if (open) setTimeout(() => animateCards('grid-' + id), 50);
+  }
+
+  function jumpTo(id) {
+    const item = document.getElementById('acc-' + id);
+    if (!item.classList.contains('open')) toggle(id);
+    setTimeout(() => item.scrollIntoView({ behavior: 'smooth', block: 'start' }), 80);
+  }
+
+  // ── ANIMATIONS ─────────────────────────────────────────────────────────────
+  function animateCards(gridId) {
+    document.querySelectorAll('#' + gridId + ' .prod-card').forEach((c, i) => {
+      c.classList.remove('visible');
+      setTimeout(() => c.classList.add('visible'), i * 55);
+    });
+  }
+  function animateVisible() {
+    document.querySelectorAll('.acc-item.open .prod-card').forEach((c, i) => {
+      setTimeout(() => c.classList.add('visible'), i * 40);
+    });
+  }
+
+  // ── PANIER ─────────────────────────────────────────────────────────────────
+  let cartCount = 0;
+  function addToCart(name, e) {
+    e.stopPropagation();
+    cartCount++;
+    const badge = document.getElementById('cart-count');
+    badge.textContent = cartCount;
+    badge.classList.remove('pop');
+    void badge.offsetWidth;
+    badge.classList.add('pop');
+    showToast('🛒', `${name} ajouté !`);
+  }
+  function openCart() {
+    showToast('🛒', cartCount === 0 ? 'Votre panier est vide' : `${cartCount} article${cartCount > 1 ? 's' : ''} dans le panier`);
+  }
+
+  // ── TOAST ──────────────────────────────────────────────────────────────────
+  function showToast(icon, msg) {
+    const wrap = document.getElementById('toast-wrap');
+    const t = document.createElement('div');
+    t.className = 'toast';
+    t.innerHTML = `<span>${icon}</span>${msg}`;
+    wrap.appendChild(t);
+    requestAnimationFrame(() => requestAnimationFrame(() => t.classList.add('show')));
+    setTimeout(() => { t.classList.remove('show'); setTimeout(() => t.remove(), 350); }, 2400);
+  }
+
+  // ── HORAIRES ───────────────────────────────────────────────────────────────
+  (function() {
+    const now  = new Date();
+    const day  = now.getDay();   // 0=dim … 6=sam
+    const h    = now.getHours();
+    const m    = now.getMinutes();
+    const mins = h * 60 + m;
+
+    // Plages d'ouverture par jour (0=dim)
+    const HOURS = {
+      0: [[11*60+30, 23*60+30]],
+      1: [[11*60+30, 14*60+30],[18*60, 23*60+30]],
+      2: [[11*60+30, 14*60+30],[18*60, 23*60+30]],
+      3: [[11*60+30, 14*60+30],[18*60, 23*60+30]],
+      4: [[11*60+30, 14*60+30],[18*60, 23*60+30]],
+      5: [[11*60+30, 14*60+30],[18*60, 23*60+30]],
+      6: [[11*60+30, 23*60+30]],
+    };
+
+    const ranges   = HOURS[day] || [];
+    const isOpen   = ranges.some(([s, e]) => mins >= s && mins < e);
+    const nextOpen = ranges.find(([s]) => mins < s);
+    const closing  = ranges.find(([s, e]) => mins >= s && mins < e);
+
+    const badge   = document.getElementById('status-badge');
+    const openTxt = document.getElementById('opening-text');
+    const dot     = openTxt.querySelector('.opening-dot');
+
+    if (isOpen && closing) {
+      const closeH = Math.floor(closing[1] / 60);
+      const closeM = closing[1] % 60;
+      const closeStr = closeM ? `${closeH}h${String(closeM).padStart(2,'0')}` : `${closeH}h00`;
+      badge.className   = 'badge-status ouvert';
+      badge.childNodes[0].textContent = 'Ouvert ';
+      dot.style.background = '#16A34A';
+      openTxt.innerHTML = `<span class="opening-dot" style="background:#16A34A"></span> Ouvert · Ferme à ${closeStr}`;
+    } else {
+      badge.className = 'badge-status ferme';
+      badge.childNodes[0].textContent = 'Fermé ';
+      if (nextOpen) {
+        const openH = Math.floor(nextOpen[0] / 60);
+        const openM = nextOpen[0] % 60;
+        const openStr = openM ? `${openH}h${String(openM).padStart(2,'0')}` : `${openH}h00`;
+        openTxt.innerHTML = `<span class="opening-dot" style="background:#F59E0B"></span> Ouvre à ${openStr}`;
+      } else {
+        openTxt.innerHTML = `<span class="opening-dot" style="background:#F59E0B"></span> Fermé aujourd'hui`;
+      }
+    }
+
+    // Surligner le jour courant dans la table
+    document.querySelectorAll('.hours-row[data-day]').forEach(row => {
+      if (parseInt(row.dataset.day) === day) row.classList.add('today');
+    });
+  })();
+
+  // ── HEADER ─────────────────────────────────────────────────────────────────
+  window.addEventListener('scroll', () => {
+    document.getElementById('site-header').classList.toggle('shadow', scrollY > 4);
+  }, { passive: true });
+  </script>
+</body>
+</html>
