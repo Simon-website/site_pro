@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Le Tacos Lyonnais Saxe — Versions de démo</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --blue:   #2B6EF5;
+      --violet: #7040E8;
+      --grad:   linear-gradient(135deg, #2B6EF5 0%, #7040E8 100%);
+      --bg:     #F1F4FC;
+      --surface:#FFFFFF;
+      --border: rgba(10,14,36,0.08);
+      --text:   #090E21;
+      --muted:  #4E597A;
+      --faint:  #8795B5;
+      --radius: 16px;
+      --shadow: 0 8px 32px rgba(10,14,36,0.11);
+    }
+    body {
+      background: var(--bg);
+      font-family: 'Inter', sans-serif;
+      color: var(--text);
+      min-height: 100svh;
+      display: flex;
+      flex-direction: column;
+      -webkit-text-size-adjust: 100%;
+    }
+    img { display: block; }
+
+    /* ── Header ── */
+    header { padding: 1.4rem 0; border-bottom: 1px solid var(--border); background: var(--surface); }
+    .nav-inner {
+      width: min(1100px, 92%); margin-inline: auto;
+      display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    }
+    .logo {
+      font-family: 'Poppins', sans-serif; font-weight: 800; font-size: 1.15rem;
+      background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text; text-decoration: none;
+    }
+    .back-link {
+      font-size: 0.85rem; color: var(--muted); text-decoration: none;
+      display: flex; align-items: center; gap: 0.4rem; transition: color 0.2s; flex-shrink: 0;
+    }
+    .back-link:hover { color: var(--blue); }
+
+    /* ── Main ── */
+    main { flex: 1; width: min(1100px, 92%); margin-inline: auto; padding: 3.5rem 0 5rem; }
+    .page-label {
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase;
+      background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text; margin-bottom: 0.75rem;
+    }
+    .page-title {
+      font-family: 'Poppins', sans-serif; font-size: clamp(1.7rem, 5.5vw, 2.8rem);
+      font-weight: 800; line-height: 1.1; margin-bottom: 0.75rem;
+    }
+    .page-sub { color: var(--muted); font-size: 1rem; font-weight: 300; max-width: 56ch; line-height: 1.7; margin-bottom: 2.75rem; }
+
+    /* ── Grille versions ── */
+    .versions-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 1.5rem; }
+    .ver-card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+      box-shadow: var(--shadow); text-decoration: none; color: inherit; overflow: hidden;
+      transition: transform 0.25s ease, box-shadow 0.25s ease; display: flex; flex-direction: column;
+    }
+    .ver-card:hover { transform: translateY(-5px); box-shadow: 0 16px 48px rgba(10,14,36,0.15); }
+    .ver-thumb { position: relative; aspect-ratio: 16 / 10; overflow: hidden; }
+    .ver-thumb img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+    .ver-card:hover .ver-thumb img { transform: scale(1.06); }
+    .ver-thumb-overlay { position: absolute; inset: 0; }
+    .ver-tag {
+      position: absolute; top: 0.85rem; left: 0.85rem; z-index: 2;
+      font-size: 0.68rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+      color: #fff; padding: 0.3rem 0.7rem; border-radius: 100px; backdrop-filter: blur(4px);
+    }
+    .ver-style { position: absolute; bottom: 0.85rem; left: 0.85rem; z-index: 2; color: #fff; font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 1.1rem; text-shadow: 0 2px 12px rgba(0,0,0,0.55); }
+    .ver-body { padding: 1.35rem; flex: 1; display: flex; flex-direction: column; gap: 0.45rem; }
+    .ver-name { font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 1.02rem; }
+    .ver-desc { font-size: 0.85rem; color: var(--muted); font-weight: 300; line-height: 1.55; flex: 1; }
+    .ver-features { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 0.2rem; }
+    .ver-feat { font-size: 0.68rem; font-weight: 500; color: var(--muted); background: var(--bg); border: 1px solid var(--border); border-radius: 100px; padding: 0.22rem 0.6rem; }
+    .ver-cta {
+      margin-top: 1rem; display: inline-flex; align-items: center; gap: 0.4rem;
+      font-size: 0.88rem; font-weight: 600; color: #fff; background: var(--grad);
+      padding: 0.7rem 1.1rem; border-radius: 100px; align-self: flex-start;
+      transition: filter 0.2s, transform 0.15s;
+    }
+    .ver-card:hover .ver-cta { filter: brightness(1.06); }
+
+    /* themes */
+    .t-v1 .ver-tag { background: rgba(232,84,37,0.85); }
+    .t-v1 .ver-thumb-overlay { background: linear-gradient(180deg, rgba(232,84,37,0.15) 0%, rgba(0,0,0,0.55) 100%); }
+    .t-v2 .ver-tag { background: rgba(153,27,27,0.85); }
+    .t-v2 .ver-thumb-overlay { background: linear-gradient(180deg, rgba(120,20,20,0.15) 0%, rgba(0,0,0,0.6) 100%); }
+    .t-v3 .ver-tag { background: rgba(255,107,0,0.9); }
+    .t-v3 .ver-thumb-overlay { background: linear-gradient(180deg, rgba(0,0,0,0.25) 0%, rgba(10,10,10,0.78) 100%); }
+
+    /* ── Footer ── */
+    footer { padding: 1.5rem 0; border-top: 1px solid var(--border); text-align: center; font-size: 0.8rem; color: var(--faint); }
+
+    /* ── Mobile ── */
+    @media (max-width: 600px) {
+      main { padding: 2.25rem 0 3.5rem; }
+      .page-sub { margin-bottom: 2rem; }
+      .versions-grid { grid-template-columns: 1fr; gap: 1.1rem; }
+      .back-link span { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="nav-inner">
+      <a href="/" class="logo">WebCraft</a>
+      <a href="/demo" class="back-link">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+        <span>Retour aux démos</span>
+      </a>
+    </div>
+  </header>
+
+  <main>
+    <p class="page-label">Restauration rapide · Lyon 7e</p>
+    <h1 class="page-title">Le Tacos Lyonnais Saxe</h1>
+    <p class="page-sub">Trois directions artistiques pour le même restaurant. Chaque version est entièrement fonctionnelle — menu, panier et configurateur de tacos. Choisissez celle qui vous parle le plus.</p>
+
+    <div class="versions-grid">
+
+      <a href="/demo/tacos-lyonnais-saxe/v1/" class="ver-card t-v1">
+        <div class="ver-thumb">
+          <img src="./v1/Le_Tacos_Lyonnais_Saxe/Les_Tacos/Tacos_Classique.jpg" alt="Aperçu version 1" loading="lazy" />
+          <div class="ver-thumb-overlay"></div>
+          <span class="ver-tag">Version 1</span>
+          <span class="ver-style">La Carte</span>
+        </div>
+        <div class="ver-body">
+          <span class="ver-name">Style « carte de commande »</span>
+          <p class="ver-desc">Interface claire et efficace : barre latérale infos resto, menu en accordéon par catégorie, panier coulissant.</p>
+          <div class="ver-features"><span class="ver-feat">🛒 Panier + quantités</span><span class="ver-feat">🕒 Horaires en direct</span><span class="ver-feat">📂 Accordéon</span></div>
+          <span class="ver-cta">Voir la démo
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </span>
+        </div>
+      </a>
+
+      <a href="/demo/tacos-lyonnais-saxe/v2/" class="ver-card t-v2">
+        <div class="ver-thumb">
+          <img src="./v1/Le_Tacos_Lyonnais_Saxe/Les_Tacos/Maxi_Tacos.jpg" alt="Aperçu version 2" loading="lazy" />
+          <div class="ver-thumb-overlay"></div>
+          <span class="ver-tag">Version 2</span>
+          <span class="ver-style">Classique</span>
+        </div>
+        <div class="ver-body">
+          <span class="ver-name">Restaurant élégant blanc &amp; bordeaux</span>
+          <p class="ver-desc">Ambiance soignée et chaleureuse, grande photo hero. Configurateur de tacos sur mesure en 5 étapes.</p>
+          <div class="ver-features"><span class="ver-feat">🌮 Compose ton tacos</span><span class="ver-feat">🛒 Panier + quantités</span><span class="ver-feat">✨ Hero photo</span></div>
+          <span class="ver-cta">Voir la démo
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </span>
+        </div>
+      </a>
+
+      <a href="/demo/tacos-lyonnais-saxe/v3/" class="ver-card t-v3">
+        <div class="ver-thumb">
+          <img src="./v1/Le_Tacos_Lyonnais_Saxe/Les_Tacos/Tacos_Cheesy.jpg" alt="Aperçu version 3" loading="lazy" />
+          <div class="ver-thumb-overlay"></div>
+          <span class="ver-tag">Version 3</span>
+          <span class="ver-style">Streetfood</span>
+        </div>
+        <div class="ver-body">
+          <span class="ver-name">Dark mode néon urbain</span>
+          <p class="ver-desc">Look immersif et impactant, ambiance street food. Configurateur gamifié avec prix dynamique en temps réel.</p>
+          <div class="ver-features"><span class="ver-feat">🔥 Dark mode</span><span class="ver-feat">🌮 Builder gamifié</span><span class="ver-feat">💸 Prix dynamique</span></div>
+          <span class="ver-cta">Voir la démo
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </span>
+        </div>
+      </a>
+
+    </div>
+  </main>
+
+  <footer>
+    Espace démo — usage interne WebCraft
+  </footer>
+
+</body>
+</html>

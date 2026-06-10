@@ -85,7 +85,8 @@
       "Bash(powershell *)",
       "Bash(dir C:\\\\site_pro\\\\demo\\\\tacos-lyonnais-saxe *)",
       "Bash(echo \"exit:$?\")",
-      "Bash(node *)"
+      "Bash(node *)",
+      "Bash(taskkill //F //IM node.exe)"
     ]
   }
 }
