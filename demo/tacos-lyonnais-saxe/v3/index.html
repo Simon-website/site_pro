@@ -1,0 +1,1051 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Le Tacos Lyonnais Saxe — Streetfood</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --orange:    #FF6B00;
+      --orange2:   #FF8C2A;
+      --gold:      #FFD700;
+      --red:       #FF2D2D;
+      --bg:        #0A0A0A;
+      --bg2:       #111111;
+      --bg3:       #1A1A1A;
+      --border:    #2A2A2A;
+      --text:      #FFFFFF;
+      --muted:     #9CA3AF;
+      --rad:       10px;
+    }
+    html { font-size: 16px; scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; }
+    a { text-decoration: none; color: inherit; }
+    ul { list-style: none; }
+    button { font-family: inherit; cursor: pointer; }
+    img { display: block; }
+
+    /* ── HEADER ── */
+    .header {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 300; height: 60px;
+      background: rgba(10,10,10,0.85); backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; padding: 0 2rem;
+      transition: background 0.3s;
+    }
+    .header-inner { width: 100%; max-width: 1400px; margin: 0 auto; display: flex; align-items: center; gap: 1.5rem; }
+    .logo { display: flex; align-items: center; gap: 0.6rem; flex-shrink: 0; }
+    .logo-flame { font-size: 1.5rem; filter: drop-shadow(0 0 8px #FF6B00); }
+    .logo-name { font-family: 'Oswald', sans-serif; font-size: 1.2rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; }
+    .logo-name span { color: var(--orange); }
+    .nav { flex: 1; display: flex; gap: 0.15rem; justify-content: center; }
+    .nav a { padding: 0.4rem 0.85rem; font-size: 0.82rem; font-weight: 500; color: var(--muted); border-radius: 6px; transition: color 0.2s, background 0.2s; }
+    .nav a:hover { color: var(--text); background: var(--bg3); }
+    .nav a.active { color: var(--orange); }
+    .header-right { margin-left: auto; display: flex; align-items: center; gap: 0.65rem; }
+    .status-tag { display: flex; align-items: center; gap: 0.35rem; padding: 0.3rem 0.75rem; border-radius: 100px; font-size: 0.72rem; font-weight: 600; }
+    .status-tag.open { background: rgba(34,197,94,0.12); border: 1px solid rgba(34,197,94,0.25); color: #22C55E; }
+    .status-tag.closed { background: rgba(239,68,68,0.12); border: 1px solid rgba(239,68,68,0.25); color: #EF4444; }
+    .status-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+    .status-tag.open .status-dot { animation: blink 1.8s infinite; }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+    .btn-compose {
+      padding: 0.45rem 1rem; background: linear-gradient(135deg, var(--orange), var(--orange2));
+      color: #fff; border: none; border-radius: 100px; font-size: 0.78rem; font-weight: 700;
+      box-shadow: 0 0 16px rgba(255,107,0,0.35); transition: box-shadow 0.2s, transform 0.15s;
+    }
+    .btn-compose:hover { box-shadow: 0 0 28px rgba(255,107,0,0.6); transform: translateY(-1px); }
+    .btn-cart {
+      display: flex; align-items: center; gap: 0.45rem;
+      padding: 0.45rem 1rem; background: var(--bg3); color: var(--text);
+      border: 1px solid var(--border); border-radius: 100px; font-size: 0.78rem; font-weight: 600;
+      transition: border-color 0.2s;
+    }
+    .btn-cart:hover { border-color: var(--orange); }
+    .cart-count { background: var(--orange); color: #fff; width: 18px; height: 18px; border-radius: 50%; font-size: 0.68rem; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+    .cart-count.pop { animation: pop 0.35s cubic-bezier(.34,1.56,.64,1); }
+    @keyframes pop { 0%{transform:scale(1)} 50%{transform:scale(1.55)} 100%{transform:scale(1)} }
+
+    /* ── HERO ── */
+    .hero { margin-top: 60px; height: 520px; position: relative; overflow: hidden; display: flex; align-items: center; }
+    .hero-video-bg { position: absolute; inset: 0; }
+    .hero-bg { width: 100%; height: 100%; object-fit: cover; transform: scale(1.05); animation: slow-zoom 20s ease-in-out infinite alternate; }
+    @keyframes slow-zoom { from{transform:scale(1.05)} to{transform:scale(1.12)} }
+    .hero-grad {
+      position: absolute; inset: 0;
+      background: linear-gradient(90deg, rgba(10,10,10,0.95) 0%, rgba(10,10,10,0.6) 50%, rgba(10,10,10,0.1) 100%);
+    }
+    .hero-noise { position: absolute; inset: 0; opacity: 0.03; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); background-size: 120px; }
+    .hero-content { position: relative; z-index: 2; padding: 0 3rem; max-width: 700px; }
+    .hero-eyebrow { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem; }
+    .eyebrow-line { width: 32px; height: 2px; background: var(--orange); }
+    .eyebrow-text { font-family: 'Oswald', sans-serif; font-size: 0.72rem; font-weight: 600; color: var(--orange); letter-spacing: 0.2em; text-transform: uppercase; }
+    .hero h1 { font-family: 'Oswald', sans-serif; font-size: 5rem; font-weight: 700; line-height: 0.95; text-transform: uppercase; margin-bottom: 1rem; }
+    .hero h1 .line-orange { color: var(--orange); display: block; text-shadow: 0 0 40px rgba(255,107,0,0.5); }
+    .hero p { font-size: 0.95rem; color: var(--muted); line-height: 1.7; max-width: 420px; margin-bottom: 2rem; }
+    .hero-actions { display: flex; gap: 0.85rem; flex-wrap: wrap; }
+    .btn-hero-primary {
+      display: flex; align-items: center; gap: 0.6rem;
+      padding: 0.9rem 2rem; background: var(--orange); color: #fff; border: none;
+      border-radius: var(--rad); font-family: 'Oswald', sans-serif;
+      font-size: 1rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em;
+      box-shadow: 0 4px 24px rgba(255,107,0,0.45); transition: box-shadow 0.2s, transform 0.2s; cursor: pointer;
+    }
+    .btn-hero-primary:hover { box-shadow: 0 8px 40px rgba(255,107,0,0.65); transform: translateY(-2px); }
+    .btn-hero-ghost {
+      padding: 0.9rem 2rem; background: transparent; color: #fff;
+      border: 1.5px solid rgba(255,255,255,0.25); border-radius: var(--rad);
+      font-family: 'Oswald', sans-serif; font-size: 1rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em;
+      transition: border-color 0.2s, background 0.2s; cursor: pointer;
+    }
+    .btn-hero-ghost:hover { border-color: var(--orange); background: rgba(255,107,0,0.08); color: var(--orange); }
+    .hero-counter-strip {
+      position: absolute; bottom: 0; left: 0; right: 0; z-index: 3;
+      background: var(--orange); display: flex; justify-content: center;
+    }
+    .hero-counter-inner { max-width: 1400px; width: 100%; padding: 0.85rem 3rem; display: flex; justify-content: space-around; flex-wrap: wrap; gap: 1rem; }
+    .hc-item { display: flex; align-items: center; gap: 0.65rem; color: #fff; }
+    .hc-num { font-family: 'Oswald', sans-serif; font-size: 1.3rem; font-weight: 700; }
+    .hc-lbl { font-size: 0.75rem; font-weight: 500; opacity: 0.85; }
+
+    /* ── CAT NAV ── */
+    .cat-bar { position: sticky; top: 60px; z-index: 200; background: var(--bg2); border-bottom: 1px solid var(--border); }
+    .cat-inner { max-width: 1400px; margin: 0 auto; padding: 0 2rem; display: flex; align-items: center; gap: 0; overflow-x: auto; scrollbar-width: none; }
+    .cat-inner::-webkit-scrollbar { display: none; }
+    .cat-btn {
+      flex-shrink: 0; padding: 0.95rem 1.1rem; font-family: 'Oswald', sans-serif;
+      font-size: 0.82rem; font-weight: 500; color: var(--muted); letter-spacing: 0.06em;
+      text-transform: uppercase; background: none; border: none;
+      border-bottom: 2.5px solid transparent; white-space: nowrap;
+      transition: color 0.2s, border-color 0.2s; cursor: pointer;
+    }
+    .cat-btn:hover { color: var(--text); }
+    .cat-btn.active { color: var(--orange); border-bottom-color: var(--orange); }
+
+    /* ── MAIN ── */
+    .main { max-width: 1400px; margin: 0 auto; padding: 2.5rem 2rem 5rem; }
+
+    /* ── BUILDER BLOCK ── */
+    .builder-block {
+      position: relative; border-radius: 18px; overflow: hidden; margin-bottom: 3.5rem;
+      background: var(--bg3); border: 1px solid var(--border);
+    }
+    .bb-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.18; }
+    .bb-content { position: relative; z-index: 1; display: flex; align-items: center; justify-content: space-between; gap: 2rem; padding: 2.5rem 3rem; flex-wrap: wrap; }
+    .bb-left { display: flex; align-items: center; gap: 1.5rem; }
+    .bb-icon { font-size: 4rem; filter: drop-shadow(0 0 16px rgba(255,107,0,0.6)); }
+    .bb-text {}
+    .bb-tag { font-family: 'Oswald', sans-serif; font-size: 0.7rem; font-weight: 600; color: var(--orange); letter-spacing: 0.18em; text-transform: uppercase; margin-bottom: 0.35rem; }
+    .bb-title { font-family: 'Oswald', sans-serif; font-size: 2rem; font-weight: 700; text-transform: uppercase; margin-bottom: 0.35rem; }
+    .bb-sub { font-size: 0.85rem; color: var(--muted); }
+    .bb-btn {
+      flex-shrink: 0; padding: 1rem 2.25rem; background: var(--orange); color: #fff; border: none;
+      border-radius: var(--rad); font-family: 'Oswald', sans-serif; font-size: 1.05rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.08em; cursor: pointer;
+      box-shadow: 0 4px 20px rgba(255,107,0,0.4); transition: box-shadow 0.2s, transform 0.2s;
+    }
+    .bb-btn:hover { box-shadow: 0 8px 36px rgba(255,107,0,0.65); transform: translateY(-2px); }
+
+    /* ── SECTION ── */
+    .menu-section { margin-bottom: 3rem; }
+    .section-head { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border); }
+    .section-icon { font-size: 1.5rem; }
+    .section-title { font-family: 'Oswald', sans-serif; font-size: 1.4rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; }
+    .section-line { flex: 1; height: 1px; background: var(--border); }
+    .section-count { font-size: 0.7rem; font-weight: 600; color: var(--muted); background: var(--bg3); padding: 0.2rem 0.6rem; border-radius: 100px; border: 1px solid var(--border); }
+
+    /* ── PRODUCT GRID ── */
+    .prod-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
+
+    .prod-card {
+      background: var(--bg2); cursor: pointer; position: relative; overflow: hidden;
+      transition: background 0.2s;
+    }
+    .prod-card:hover { background: var(--bg3); }
+
+    .prod-img-wrap { height: 150px; overflow: hidden; position: relative; background: var(--bg3); }
+    .prod-img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+    .prod-card:hover .prod-img { transform: scale(1.08); }
+    .prod-img-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.5) 0%, transparent 50%); }
+    .prod-badge-wrap { position: absolute; top: 0.5rem; left: 0.5rem; display: flex; flex-direction: column; gap: 0.25rem; }
+    .prod-badge { font-size: 0.6rem; font-weight: 700; padding: 0.15rem 0.5rem; border-radius: 100px; }
+    .prod-badge.orange { background: var(--orange); color: #fff; }
+    .prod-badge.gold { background: var(--gold); color: #000; }
+    .prod-badge.green { background: #22C55E; color: #fff; }
+    .prod-badge.red { background: var(--red); color: #fff; }
+
+    .prod-body { padding: 0.95rem 1rem; }
+    .prod-name { font-family: 'Oswald', sans-serif; font-size: 1rem; font-weight: 600; letter-spacing: 0.02em; margin-bottom: 0.3rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .prod-desc { font-size: 0.72rem; color: var(--muted); line-height: 1.55; margin-bottom: 0.7rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .prod-foot { display: flex; align-items: center; justify-content: space-between; }
+    .prod-price { font-family: 'Oswald', sans-serif; font-size: 1.15rem; font-weight: 700; color: var(--orange); }
+    .prod-add {
+      width: 32px; height: 32px; border-radius: 50%; background: var(--orange); color: #fff; border: none;
+      font-size: 1.1rem; display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 2px 12px rgba(255,107,0,0.4); transition: box-shadow 0.2s, transform 0.2s;
+    }
+    .prod-add:hover { box-shadow: 0 4px 20px rgba(255,107,0,0.7); transform: scale(1.1); }
+    .prod-add:active { transform: scale(0.95); }
+
+    /* Sans photo — row */
+    .prod-card.flat { display: flex; align-items: center; }
+    .prod-card.flat .prod-body { display: flex; align-items: center; flex: 1; padding: 1rem; gap: 0; }
+    .prod-card.flat .prod-body-main { flex: 1; margin-right: 1rem; }
+    .prod-card.flat .prod-price { font-size: 0.95rem; flex-shrink: 0; margin-right: 0.75rem; }
+    .prod-card.flat .prod-add { width: 28px; height: 28px; flex-shrink: 0; }
+
+    /* ── CART DRAWER ── */
+    .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 500; opacity: 0; pointer-events: none; transition: opacity 0.3s; backdrop-filter: blur(4px); }
+    .overlay.open { opacity: 1; pointer-events: auto; }
+    .drawer {
+      position: fixed; top: 0; right: 0; bottom: 0; width: 400px; max-width: 100vw;
+      background: var(--bg2); border-left: 1px solid var(--border); z-index: 501;
+      display: flex; flex-direction: column;
+      transform: translateX(100%); transition: transform 0.35s cubic-bezier(.4,0,.2,1);
+    }
+    .drawer.open { transform: translateX(0); }
+    .drawer-head { padding: 1.5rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+    .drawer-head h3 { font-family: 'Oswald', sans-serif; font-size: 1.1rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; }
+    .drawer-close { width: 32px; height: 32px; border: 1px solid var(--border); border-radius: 50%; background: none; color: var(--muted); font-size: 1.1rem; display: flex; align-items: center; justify-content: center; }
+    .drawer-close:hover { border-color: var(--orange); color: var(--orange); }
+    .drawer-body { flex: 1; overflow-y: auto; padding: 1.25rem; display: flex; flex-direction: column; gap: 0.75rem; }
+    .cart-empty { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.75rem; color: var(--muted); text-align: center; }
+    .cart-empty-emoji { font-size: 3rem; opacity: 0.4; }
+    .cart-item { display: flex; align-items: flex-start; gap: 0.75rem; background: var(--bg3); border: 1px solid var(--border); border-radius: var(--rad); padding: 0.9rem; }
+    .ci-emoji { font-size: 1.4rem; flex-shrink: 0; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; background: rgba(255,107,0,0.1); border-radius: 8px; }
+    .ci-info { flex: 1; min-width: 0; }
+    .ci-name { font-family: 'Oswald', sans-serif; font-size: 0.9rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 0.2rem; }
+    .ci-detail { font-size: 0.7rem; color: var(--muted); line-height: 1.4; }
+    .ci-right { display: flex; flex-direction: column; align-items: flex-end; gap: 0.4rem; flex-shrink: 0; }
+    .ci-price { font-family: 'Oswald', sans-serif; font-size: 0.9rem; font-weight: 700; color: var(--orange); }
+    .ci-rm { width: 22px; height: 22px; border-radius: 50%; background: none; border: 1px solid var(--border); color: var(--muted); font-size: 0.7rem; display: flex; align-items: center; justify-content: center; }
+    .ci-rm:hover { border-color: var(--red); color: var(--red); }
+    .ci-qty { display: flex; align-items: center; gap: 0.4rem; }
+    .ci-qty button { width: 24px; height: 24px; border-radius: 50%; background: #252525; border: 1px solid #3A3A3A; color: var(--orange); font-size: 1rem; line-height: 1; display: flex; align-items: center; justify-content: center; transition: border-color 0.15s; }
+    .ci-qty button:hover { border-color: var(--orange); }
+    .ci-qty span { min-width: 16px; text-align: center; font-family: 'Oswald', sans-serif; font-size: 0.85rem; font-weight: 700; }
+    .drawer-foot { padding: 1.25rem; border-top: 1px solid var(--border); }
+    .drawer-total { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+    .drawer-total-label { font-size: 0.82rem; color: var(--muted); }
+    .drawer-total-val { font-family: 'Oswald', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--orange); }
+    .btn-order {
+      width: 100%; padding: 1rem; background: var(--orange); color: #fff; border: none;
+      border-radius: var(--rad); font-family: 'Oswald', sans-serif; font-size: 1rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.08em;
+      box-shadow: 0 4px 20px rgba(255,107,0,0.35); transition: box-shadow 0.2s;
+    }
+    .btn-order:hover { box-shadow: 0 8px 36px rgba(255,107,0,0.6); }
+    .drawer-note { text-align: center; font-size: 0.68rem; color: var(--muted); margin-top: 0.6rem; }
+
+    /* ── CONFIGURATEUR ── */
+    .conf-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 600;
+      opacity: 0; pointer-events: none; transition: opacity 0.3s;
+      display: flex; align-items: center; justify-content: center; padding: 1rem;
+      backdrop-filter: blur(6px);
+    }
+    .conf-overlay.open { opacity: 1; pointer-events: auto; }
+    .conf-modal {
+      background: #161616; border: 1px solid #333; border-radius: 20px;
+      width: 100%; max-width: 580px; max-height: 92vh; display: flex; flex-direction: column; overflow: hidden;
+      transform: translateY(30px) scale(0.96); opacity: 0;
+      transition: transform 0.4s cubic-bezier(.34,1.46,.64,1), opacity 0.35s ease;
+      box-shadow: 0 40px 100px rgba(0,0,0,0.6), 0 0 80px rgba(255,107,0,0.08);
+    }
+    .conf-overlay.open .conf-modal { transform: translateY(0) scale(1); opacity: 1; }
+
+    /* Header modal */
+    .conf-head {
+      padding: 1.5rem 1.75rem 1.25rem; border-bottom: 1px solid var(--border);
+      background: linear-gradient(135deg, #1A0800, #2A1200);
+      display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; flex-shrink: 0;
+    }
+    .conf-title { font-family: 'Oswald', sans-serif; font-size: 1.3rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.2rem; }
+    .conf-title span { color: var(--orange); }
+    .conf-sub { font-size: 0.75rem; color: var(--muted); }
+    .conf-close { width: 34px; height: 34px; border: 1px solid rgba(255,255,255,0.15); border-radius: 50%; background: rgba(255,255,255,0.05); color: var(--muted); font-size: 1rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .conf-close:hover { border-color: var(--orange); color: var(--orange); }
+
+    /* Progress */
+    .conf-progress { padding: 1rem 1.75rem 0; flex-shrink: 0; background: #161616; }
+    .prog-bar-wrap { background: #333; border-radius: 100px; height: 3px; overflow: hidden; }
+    .prog-bar-fill { height: 100%; background: linear-gradient(90deg, var(--orange), var(--orange2)); border-radius: 100px; transition: width 0.4s ease; }
+    .prog-steps { display: flex; justify-content: space-between; margin-top: 0.6rem; }
+    .prog-step { font-size: 0.62rem; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; transition: color 0.2s; }
+    .prog-step.active { color: var(--orange); }
+    .prog-step.done { color: #22C55E; }
+
+    /* Body */
+    .conf-body { flex: 1; overflow-y: auto; padding: 1.5rem 1.75rem; background: #161616; }
+    .step { display: none; }
+    .step.active { display: block; animation: slideIn 0.3s ease; }
+    @keyframes slideIn { from{opacity:0;transform:translateX(10px)} to{opacity:1;transform:translateX(0)} }
+    .step-q { font-family: 'Oswald', sans-serif; font-size: 1.15rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 0.3rem; }
+    .step-note { font-size: 0.72rem; color: var(--muted); margin-bottom: 1.25rem; }
+
+    /* Taille */
+    .size-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+    .size-card {
+      background: #252525; border: 2px solid #3A3A3A; border-radius: 14px; padding: 1.1rem;
+      cursor: pointer; transition: border-color 0.2s, background 0.2s; text-align: left; position: relative; overflow: hidden;
+    }
+    .size-card:hover { border-color: rgba(255,107,0,0.5); background: #2A1A0A; }
+    .size-card.selected { border-color: var(--orange); background: #2A1A0A; }
+    .size-card.selected::after { content:'✓'; position:absolute; top:0.5rem; right:0.65rem; color:var(--orange); font-size:0.9rem; font-weight:700; }
+    .sc-icon { font-size: 2rem; margin-bottom: 0.4rem; }
+    .sc-name { font-family: 'Oswald', sans-serif; font-size: 0.95rem; font-weight: 700; text-transform: uppercase; margin-bottom: 0.2rem; }
+    .sc-desc { font-size: 0.68rem; color: var(--muted); line-height: 1.4; margin-bottom: 0.6rem; }
+    .sc-price { font-family: 'Oswald', sans-serif; font-size: 1.2rem; font-weight: 700; color: var(--orange); }
+
+    /* Viande */
+    .viande-opts { display: flex; flex-direction: column; gap: 0.5rem; }
+    .vo {
+      display: flex; align-items: center; gap: 0.85rem; padding: 0.85rem 1rem;
+      background: #252525; border: 2px solid #3A3A3A; border-radius: 12px;
+      cursor: pointer; transition: border-color 0.2s, background 0.2s;
+    }
+    .vo:hover { border-color: rgba(255,107,0,0.5); background: #2A1A0A; }
+    .vo.selected { border-color: var(--orange); background: #2A1A0A; }
+    .vo-emoji { font-size: 1.3rem; flex-shrink: 0; }
+    .vo-info { flex: 1; }
+    .vo-name { font-family: 'Oswald', sans-serif; font-size: 0.9rem; font-weight: 600; }
+    .vo-sub { font-size: 0.68rem; color: var(--muted); }
+    .vo-price { font-size: 0.75rem; font-weight: 700; color: var(--gold); flex-shrink: 0; }
+    .vo-check { width: 18px; height: 18px; border-radius: 50%; border: 2px solid #555; flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
+    .vo.selected .vo-check { border-color: var(--orange); background: var(--orange); }
+    .vo.selected .vo-check::after { content:''; width:6px; height:6px; border-radius:50%; background:#fff; }
+
+    /* Sauce */
+    .sauce-wrap { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .sauce-pill {
+      padding: 0.5rem 1rem; background: #252525; border: 2px solid #3A3A3A; border-radius: 100px;
+      font-size: 0.78rem; font-weight: 600; cursor: pointer; transition: all 0.2s; color: #CCC;
+    }
+    .sauce-pill:hover { border-color: rgba(255,107,0,0.5); color: var(--text); }
+    .sauce-pill.selected { border-color: var(--orange); background: var(--orange); color: #fff; }
+
+    /* Extras */
+    .extras-list { display: flex; flex-direction: column; gap: 0.5rem; }
+    .eo {
+      display: flex; align-items: center; gap: 0.85rem; padding: 0.8rem 1rem;
+      background: #252525; border: 2px solid #3A3A3A; border-radius: 12px;
+      cursor: pointer; transition: border-color 0.2s, background 0.2s;
+    }
+    .eo:hover { border-color: rgba(255,107,0,0.5); background: #2A1A0A; }
+    .eo.selected { border-color: var(--orange); background: #2A1A0A; }
+    .eo-check { width: 18px; height: 18px; border-radius: 4px; border: 2px solid #555; flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
+    .eo.selected .eo-check { border-color: var(--orange); background: var(--orange); }
+    .eo.selected .eo-check::after { content:'✓'; font-size:0.6rem; color:#fff; font-weight:700; }
+    .eo-icon { font-size: 1.1rem; flex-shrink: 0; }
+    .eo-info { flex: 1; }
+    .eo-name { font-family: 'Oswald', sans-serif; font-size: 0.85rem; font-weight: 600; }
+    .eo-sub { font-size: 0.68rem; color: var(--muted); }
+    .eo-price { font-size: 0.75rem; font-weight: 700; color: var(--gold); flex-shrink: 0; }
+
+    /* Récap */
+    .recap-box { background: #252525; border: 1px solid #3A3A3A; border-radius: 14px; padding: 1.25rem; margin-bottom: 1rem; }
+    .recap-row { display: flex; justify-content: space-between; align-items: flex-start; padding: 0.55rem 0; border-bottom: 1px solid #3A3A3A; font-size: 0.83rem; }
+    .recap-row:last-child { border-bottom: none; }
+    .recap-key { color: var(--muted); }
+    .recap-val { font-weight: 600; text-align: right; max-width: 60%; }
+    .recap-total { display: flex; justify-content: space-between; align-items: center; margin-top: 1rem; padding: 1rem; background: rgba(255,107,0,0.08); border: 1px solid rgba(255,107,0,0.2); border-radius: 10px; }
+    .rt-label { font-family: 'Oswald', sans-serif; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+    .rt-price { font-family: 'Oswald', sans-serif; font-size: 1.6rem; font-weight: 700; color: var(--orange); }
+
+    /* Footer modal */
+    .conf-foot { padding: 1.25rem 1.75rem; border-top: 1px solid #333; display: flex; gap: 0.75rem; flex-shrink: 0; background: #161616; }
+    .btn-cf-back { padding: 0.8rem 1.2rem; border: 1px solid #444; border-radius: var(--rad); background: #252525; color: #CCC; font-size: 0.82rem; font-weight: 600; flex-shrink: 0; }
+    .btn-cf-back:hover { border-color: var(--orange); color: var(--orange); }
+    .btn-cf-next { flex: 1; padding: 0.85rem; background: linear-gradient(135deg, var(--orange), var(--orange2)); color: #fff; border: none; border-radius: var(--rad); font-family: 'Oswald', sans-serif; font-size: 0.95rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; box-shadow: 0 4px 20px rgba(255,107,0,0.3); transition: box-shadow 0.2s; }
+    .btn-cf-next:hover { box-shadow: 0 8px 36px rgba(255,107,0,0.55); }
+    .btn-cf-next:disabled { background: var(--bg3); color: var(--muted); box-shadow: none; cursor: not-allowed; }
+
+    /* Prix flottant dans modal */
+    .conf-price-badge { display: flex; align-items: center; gap: 0.35rem; padding: 0.35rem 0.85rem; background: rgba(255,107,0,0.12); border: 1px solid rgba(255,107,0,0.25); border-radius: 100px; font-family: 'Oswald', sans-serif; font-size: 0.9rem; font-weight: 700; color: var(--orange); }
+
+    /* ── TOAST ── */
+    .toasts { position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 9999; display: flex; flex-direction: column; gap: 0.5rem; pointer-events: none; }
+    .toast {
+      background: var(--bg3); border: 1px solid var(--border); color: var(--text); padding: 0.75rem 1.1rem;
+      border-radius: var(--rad); font-size: 0.82rem; font-weight: 500; display: flex; align-items: center; gap: 0.5rem;
+      transform: translateX(120%); opacity: 0; transition: transform 0.3s cubic-bezier(.34,1.56,.64,1), opacity 0.3s;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+    }
+    .toast.show { transform: translateX(0); opacity: 1; }
+
+    /* ── FOOTER ── */
+    footer { background: #050505; border-top: 1px solid var(--border); padding: 3rem 2rem 2rem; }
+    .footer-inner { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 3rem; flex-wrap: wrap; }
+    .footer-brand h4 { font-family: 'Oswald', sans-serif; font-size: 1.1rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text); margin-bottom: 0.75rem; }
+    .footer-brand h4 span { color: var(--orange); }
+    .footer-brand p { font-size: 0.78rem; color: var(--muted); line-height: 1.7; }
+    .footer-col h5 { font-family: 'Oswald', sans-serif; font-size: 0.72rem; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 0.85rem; }
+    .footer-col li { font-size: 0.78rem; color: var(--muted); padding: 0.2rem 0; }
+    .footer-col a:hover { color: var(--orange); }
+    .footer-bottom { max-width: 1400px; margin: 2rem auto 0; padding-top: 1.5rem; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; }
+    .footer-bottom p { font-size: 0.7rem; color: var(--muted); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 860px) {
+      .nav { display: none; } .hero h1 { font-size: 3.5rem; }
+      .footer-inner { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 600px) {
+      .header { padding: 0 1rem; } .hero h1 { font-size: 2.6rem; }
+      .hero-content { padding: 0 1.5rem; } .hero-counter-inner { padding: 0.75rem 1.5rem; }
+      .main { padding: 1.5rem 1rem 3rem; } .bb-content { padding: 1.5rem 1.5rem; }
+      .bb-title { font-size: 1.4rem; } .size-cards { grid-template-columns: 1fr; }
+      .footer-inner { grid-template-columns: 1fr; gap: 2rem; }
+      .prod-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="toasts" id="toasts"></div>
+
+<!-- Cart -->
+<div class="overlay" id="cart-overlay" onclick="closeCart()"></div>
+<div class="drawer" id="cart-drawer">
+  <div class="drawer-head">
+    <h3>🛒 Panier</h3>
+    <button class="drawer-close" onclick="closeCart()">✕</button>
+  </div>
+  <div class="drawer-body" id="drawer-body">
+    <div class="cart-empty"><div class="cart-empty-emoji">🛒</div><p>Panier vide</p><small>Ajoutez des produits depuis le menu</small></div>
+  </div>
+  <div class="drawer-foot" id="drawer-foot" style="display:none">
+    <div class="drawer-total">
+      <span class="drawer-total-label">Total estimé</span>
+      <span class="drawer-total-val" id="drawer-total">0,00 €</span>
+    </div>
+    <button class="btn-order" onclick="toast('✅','Commande envoyée — on vous recontacte !')">Passer la commande</button>
+    <p class="drawer-note">Simulation — aucun paiement requis</p>
+  </div>
+</div>
+
+<!-- Configurateur -->
+<div class="conf-overlay" id="conf-overlay" onclick="confOverlayClick(event)">
+  <div class="conf-modal">
+    <div class="conf-head">
+      <div>
+        <div class="conf-title">🌮 Build ton <span>Tacos</span></div>
+        <div class="conf-sub" id="conf-sub">Personnalise chaque ingrédient</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:0.75rem">
+        <div class="conf-price-badge" id="conf-price-badge">0,00 €</div>
+        <button class="conf-close" onclick="closeConf()">✕</button>
+      </div>
+    </div>
+    <div class="conf-progress">
+      <div class="prog-bar-wrap"><div class="prog-bar-fill" id="prog-fill" style="width:0%"></div></div>
+      <div class="prog-steps">
+        <span class="prog-step active" id="ps-0">Taille</span>
+        <span class="prog-step" id="ps-1">Viande</span>
+        <span class="prog-step" id="ps-2">Sauce</span>
+        <span class="prog-step" id="ps-3">Extras</span>
+        <span class="prog-step" id="ps-4">Récap</span>
+      </div>
+    </div>
+    <div class="conf-body">
+      <!-- Step 0 Taille -->
+      <div class="step active" id="cstep-0">
+        <div class="step-q">Quelle taille ?</div>
+        <div class="step-note">Plus grand = plus gourmand 🔥</div>
+        <div class="size-cards">
+          <button class="size-card" onclick="chooseSize(this,'S',6.50)">
+            <div class="sc-icon">🌮</div>
+            <div class="sc-name">Petit (S)</div>
+            <div class="sc-desc">1 viande · 1 sauce</div>
+            <div class="sc-price">6,50 €</div>
+          </button>
+          <button class="size-card" onclick="chooseSize(this,'M',8.50)">
+            <div class="sc-icon">🌮🌮</div>
+            <div class="sc-name">Classique (M)</div>
+            <div class="sc-desc">1 viande · 2 sauces</div>
+            <div class="sc-price">8,50 €</div>
+          </button>
+          <button class="size-card" onclick="chooseSize(this,'L',10.50)">
+            <div class="sc-icon">🌮🌮🌮</div>
+            <div class="sc-name">Maxi (L)</div>
+            <div class="sc-desc">2 viandes · 2 sauces</div>
+            <div class="sc-price">10,50 €</div>
+          </button>
+          <button class="size-card" onclick="chooseSize(this,'XL',12.50)">
+            <div class="sc-icon">🔥🔥</div>
+            <div class="sc-name">XXL</div>
+            <div class="sc-desc">2 viandes · 3 sauces</div>
+            <div class="sc-price">12,50 €</div>
+          </button>
+        </div>
+      </div>
+      <!-- Step 1 Viande -->
+      <div class="step" id="cstep-1">
+        <div class="step-q">Ta viande</div>
+        <div class="step-note" id="cnote-viande">Choisis ta viande</div>
+        <div class="viande-opts">
+          <button class="vo" onclick="chooseViande(this,'Poulet grillé',0,'🍗')">
+            <span class="vo-emoji">🍗</span>
+            <div class="vo-info"><div class="vo-name">Poulet grillé</div><div class="vo-sub">Mariné aux épices maison · halal</div></div>
+            <span class="vo-price">Inclus</span><span class="vo-check"></span>
+          </button>
+          <button class="vo" onclick="chooseViande(this,'Bœuf haché',0,'🥩')">
+            <span class="vo-emoji">🥩</span>
+            <div class="vo-info"><div class="vo-name">Bœuf haché</div><div class="vo-sub">Savoureux · halal certifié</div></div>
+            <span class="vo-price">Inclus</span><span class="vo-check"></span>
+          </button>
+          <button class="vo" onclick="chooseViande(this,'Merguez',1,'🌶️')">
+            <span class="vo-emoji">🌶️</span>
+            <div class="vo-info"><div class="vo-name">Merguez fraîche</div><div class="vo-sub">Relevée et juteuse · halal</div></div>
+            <span class="vo-price">+1,00 €</span><span class="vo-check"></span>
+          </button>
+          <button class="vo" onclick="chooseViande(this,'Mixte poulet-bœuf',1,'🍖')">
+            <span class="vo-emoji">🍖</span>
+            <div class="vo-info"><div class="vo-name">Mixte poulet + bœuf</div><div class="vo-sub">Le combo imbattable</div></div>
+            <span class="vo-price">+1,00 €</span><span class="vo-check"></span>
+          </button>
+          <button class="vo" onclick="chooseViande(this,'Falafel véggie',0,'🧆')">
+            <span class="vo-emoji">🧆</span>
+            <div class="vo-info"><div class="vo-name">Falafel véggie</div><div class="vo-sub">100% végétarien · fait maison</div></div>
+            <span class="vo-price">Inclus</span><span class="vo-check"></span>
+          </button>
+        </div>
+      </div>
+      <!-- Step 2 Sauce -->
+      <div class="step" id="cstep-2">
+        <div class="step-q">Ta sauce</div>
+        <div class="step-note" id="cnote-sauce">Choisis jusqu'à 2 sauces</div>
+        <div class="sauce-wrap">
+          <button class="sauce-pill" onclick="toggleSauce(this,'🥛 Blanche')">🥛 Blanche</button>
+          <button class="sauce-pill" onclick="toggleSauce(this,'🟡 Algérienne')">🟡 Algérienne</button>
+          <button class="sauce-pill" onclick="toggleSauce(this,'🧀 Fromagère')">🧀 Fromagère</button>
+          <button class="sauce-pill" onclick="toggleSauce(this,'🍖 Barbecue')">🍖 Barbecue</button>
+          <button class="sauce-pill" onclick="toggleSauce(this,'🌶️ Samurai')">🌶️ Samurai</button>
+          <button class="sauce-pill" onclick="toggleSauce(this,'🔥 Harissa')">🔥 Harissa</button>
+          <button class="sauce-pill" onclick="toggleSauce(this,'🍅 Ketchup')">🍅 Ketchup</button>
+          <button class="sauce-pill" onclick="toggleSauce(this,'🥄 Mayonnaise')">🥄 Mayonnaise</button>
+        </div>
+      </div>
+      <!-- Step 3 Extras -->
+      <div class="step" id="cstep-3">
+        <div class="step-q">Des extras ?</div>
+        <div class="step-note">Optionnel — personnalise encore plus ton tacos</div>
+        <div class="extras-list">
+          <button class="eo" onclick="toggleExtra(this,'Raclette fondue',1.00,'🧀')">
+            <span class="eo-check"></span><span class="eo-icon">🧀</span>
+            <div class="eo-info"><div class="eo-name">Raclette fondue</div><div class="eo-sub">Généreuse et fondante</div></div>
+            <span class="eo-price">+1,00 €</span>
+          </button>
+          <button class="eo" onclick="toggleExtra(this,'Bacon de dinde',0.80,'🥓')">
+            <span class="eo-check"></span><span class="eo-icon">🥓</span>
+            <div class="eo-info"><div class="eo-name">Bacon de dinde</div><div class="eo-sub">Grillé, croustillant</div></div>
+            <span class="eo-price">+0,80 €</span>
+          </button>
+          <button class="eo" onclick="toggleExtra(this,'Œuf',0.50,'🍳')">
+            <span class="eo-check"></span><span class="eo-icon">🍳</span>
+            <div class="eo-info"><div class="eo-name">Œuf</div><div class="eo-sub">Miroir ou brouillé</div></div>
+            <span class="eo-price">+0,50 €</span>
+          </button>
+          <button class="eo" onclick="toggleExtra(this,'Double portion viande',1.50,'💪')">
+            <span class="eo-check"></span><span class="eo-icon">💪</span>
+            <div class="eo-info"><div class="eo-name">Double portion viande</div><div class="eo-sub">Pour les vrais affamés</div></div>
+            <span class="eo-price">+1,50 €</span>
+          </button>
+          <button class="eo" onclick="toggleExtra(this,'Piments frais',0,'🌶️')">
+            <span class="eo-check"></span><span class="eo-icon">🌶️</span>
+            <div class="eo-info"><div class="eo-name">Piments frais</div><div class="eo-sub">Pour les temeraires</div></div>
+            <span class="eo-price">Gratuit</span>
+          </button>
+          <button class="eo" onclick="toggleExtra(this,'Extra fromage',0.50,'🫕')">
+            <span class="eo-check"></span><span class="eo-icon">🫕</span>
+            <div class="eo-info"><div class="eo-name">Extra fromage</div><div class="eo-sub">Cheddar fondu supplémentaire</div></div>
+            <span class="eo-price">+0,50 €</span>
+          </button>
+        </div>
+      </div>
+      <!-- Step 4 Récap -->
+      <div class="step" id="cstep-4">
+        <div class="step-q">Résumé</div>
+        <div class="step-note">Vérifie ta commande avant d'ajouter au panier</div>
+        <div class="recap-box" id="recap-content"></div>
+        <div class="recap-total" id="recap-total-row">
+          <span class="rt-label">Total</span>
+          <span class="rt-price" id="recap-total-price">0,00 €</span>
+        </div>
+      </div>
+    </div>
+    <div class="conf-foot">
+      <button class="btn-cf-back" id="cf-back" onclick="cprev()" style="display:none">← Retour</button>
+      <button class="btn-cf-next" id="cf-next" onclick="cnext()">Suivant →</button>
+    </div>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header-inner">
+    <div class="logo">
+      <span class="logo-flame">🌮</span>
+      <span class="logo-name">Tacos <span>Lyonnais</span></span>
+    </div>
+    <nav class="nav">
+      <a href="#menu" class="active">Menu</a>
+      <a href="#about">À propos</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <div class="header-right">
+      <div class="status-tag open" id="status-tag"><span class="status-dot"></span><span id="status-label">Ouvert</span></div>
+      <button class="btn-compose" onclick="openConf()">🌮 Composer</button>
+      <button class="btn-cart" onclick="openCart()">🛒 <span class="cart-count" id="cart-count">0</span></button>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-video-bg">
+    <img class="hero-bg" src="../v1/Le_Tacos_Lyonnais_Saxe/Les_Tacos/Maxi_Tacos.jpg" alt="Tacos" />
+  </div>
+  <div class="hero-grad"></div>
+  <div class="hero-noise"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">
+      <div class="eyebrow-line"></div>
+      <div class="eyebrow-text">Lyon 7e · Saxe · Halal</div>
+    </div>
+    <h1>Le Tacos<br><span class="line-orange">Lyonnais</span></h1>
+    <p>Les meilleurs tacos de Lyon, préparés à la commande. Ingrédients frais, recettes maison depuis 2015.</p>
+    <div class="hero-actions">
+      <button class="btn-hero-primary" onclick="document.getElementById('menu').scrollIntoView({behavior:'smooth'})">Voir le menu</button>
+      <button class="btn-hero-ghost" onclick="openConf()">🌮 Build ton tacos</button>
+    </div>
+  </div>
+  <div class="hero-counter-strip">
+    <div class="hero-counter-inner">
+      <div class="hc-item"><div class="hc-num">4,8⭐</div><div class="hc-lbl">Note Google</div></div>
+      <div class="hc-item"><div class="hc-num">1 200+</div><div class="hc-lbl">Avis clients</div></div>
+      <div class="hc-item"><div class="hc-num">Halal</div><div class="hc-lbl">Certifié</div></div>
+      <div class="hc-item"><div class="hc-num">107</div><div class="hc-lbl">Grande Rue Guillotière</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CAT NAV -->
+<div class="cat-bar" id="menu">
+  <div class="cat-inner">
+    <button class="cat-btn active" onclick="scrollToSec(this,'tacos')">🌮 Tacos</button>
+    <button class="cat-btn" onclick="scrollToSec(this,'burgers')">🍔 Burgers</button>
+    <button class="cat-btn" onclick="scrollToSec(this,'sandwicherie')">🥙 Sandwicherie</button>
+    <button class="cat-btn" onclick="scrollToSec(this,'pizza-tomate')">🍕 Pizza Tomate</button>
+    <button class="cat-btn" onclick="scrollToSec(this,'pizza-creme')">🍕 Pizza Crème</button>
+    <button class="cat-btn" onclick="scrollToSec(this,'boissons')">🥤 Boissons</button>
+  </div>
+</div>
+
+<!-- MAIN -->
+<main class="main">
+  <div class="builder-block">
+    <img class="bb-img" src="../v1/Le_Tacos_Lyonnais_Saxe/Les_Tacos/Tacos_Classique.jpg" alt="" />
+    <div class="bb-content">
+      <div class="bb-left">
+        <div class="bb-icon">🌮</div>
+        <div class="bb-text">
+          <div class="bb-tag">Exclusif</div>
+          <div class="bb-title">Build ton tacos</div>
+          <div class="bb-sub">Taille · Viande · Sauce · Extras — 4 étapes, résultat parfait</div>
+        </div>
+      </div>
+      <button class="bb-btn" onclick="openConf()">Start →</button>
+    </div>
+  </div>
+
+  <section class="menu-section" id="sec-tacos">
+    <div class="section-head"><span class="section-icon">🌮</span><span class="section-title">Les Tacos</span><div class="section-line"></div><span class="section-count">14</span></div>
+    <div class="prod-grid" id="grid-tacos"></div>
+  </section>
+
+  <section class="menu-section" id="sec-burgers">
+    <div class="section-head"><span class="section-icon">🍔</span><span class="section-title">Les Burgers</span><div class="section-line"></div><span class="section-count">6</span></div>
+    <div class="prod-grid" id="grid-burgers"></div>
+  </section>
+
+  <section class="menu-section" id="sec-sandwicherie">
+    <div class="section-head"><span class="section-icon">🥙</span><span class="section-title">Sandwicherie</span><div class="section-line"></div><span class="section-count">5</span></div>
+    <div class="prod-grid" id="grid-sandwicherie"></div>
+  </section>
+
+  <section class="menu-section" id="sec-pizza-tomate">
+    <div class="section-head"><span class="section-icon">🍕</span><span class="section-title">Pizzas Tomate</span><div class="section-line"></div><span class="section-count">11</span></div>
+    <div class="prod-grid" id="grid-pizza-tomate"></div>
+  </section>
+
+  <section class="menu-section" id="sec-pizza-creme">
+    <div class="section-head"><span class="section-icon">🍕</span><span class="section-title">Pizzas Crème</span><div class="section-line"></div><span class="section-count">8</span></div>
+    <div class="prod-grid" id="grid-pizza-creme"></div>
+  </section>
+
+  <section class="menu-section" id="sec-boissons">
+    <div class="section-head"><span class="section-icon">🥤</span><span class="section-title">Boissons</span><div class="section-line"></div><span class="section-count">5</span></div>
+    <div class="prod-grid" id="grid-boissons"></div>
+  </section>
+</main>
+
+<!-- FOOTER -->
+<footer id="contact">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <h4>Tacos <span>Lyonnais</span> Saxe</h4>
+      <p>Depuis 2015, on cuisine les meilleurs tacos de Lyon. Ingrédients frais, recettes maison, halal certifié.</p>
+      <p style="margin-top:0.75rem">📍 107 Gd Rue de la Guillotière, 69007 Lyon</p>
+    </div>
+    <div class="footer-col">
+      <h5>Horaires</h5>
+      <ul>
+        <li>Lun–Ven : 11h30–14h30</li>
+        <li>Lun–Ven : 18h00–23h30</li>
+        <li>Sam–Dim : 11h30–23h30</li>
+      </ul>
+    </div>
+    <div class="footer-col" id="about">
+      <h5>Services</h5>
+      <ul>
+        <li>Sur place</li>
+        <li>À emporter</li>
+        <li>Livraison</li>
+        <li>✅ Halal certifié</li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Légal</h5>
+      <ul>
+        <li><a href="#">Mentions légales</a></li>
+        <li><a href="#">Confidentialité</a></li>
+        <li><a href="#">CGV</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 Le Tacos Lyonnais Saxe</p>
+    <p>Site démo WebCraft</p>
+  </div>
+</footer>
+
+<script>
+const T  = '../v1/Le_Tacos_Lyonnais_Saxe/Les_Tacos/';
+const B  = '../v1/Le_Tacos_Lyonnais_Saxe/Les_Burgers/';
+const S  = '../v1/Le_Tacos_Lyonnais_Saxe/La_Sandwicherie/';
+const PT = '../v1/Le_Tacos_Lyonnais_Saxe/Pizzas_base_Tomate/';
+const PC = '../v1/Le_Tacos_Lyonnais_Saxe/Pizzas_base_Crème/';
+const DR = '../v1/Le_Tacos_Lyonnais_Saxe/Les_Boissons/';
+
+const MENU = {
+  tacos: [
+    {name:'Maxi Tacos',desc:'Notre tacos signature — généreux, garni de frites maison et sauce fromagère',price:'9,50',num:9.50,img:T+'Maxi_Tacos.jpg',badge:'⭐ Signature',bc:'orange'},
+    {name:'Tacos Classique',desc:'Le tacos intemporel — galette, viande, frites maison, sauce au choix',price:'8,50',num:8.50,img:T+'Tacos_Classique.jpg'},
+    {name:'Le Lyonnais',desc:'Poulet mariné, crème de champignons, raclette fondue, frites maison',price:'12,90',num:12.90,img:T+'Tacos_Lyonnais.jpg',badge:'🌟 Maison',bc:'gold'},
+    {name:'Le Mumbaï',desc:'Chicken tenders épicés, oignons frits, fromage fondu, sauce pili-pili',price:'12,50',num:12.50,img:T+'Tacos_Mumbaï.jpg',badge:'🌶️ Épicé',bc:'red'},
+    {name:'Le Mexicain',desc:'Bœuf haché, chakchouka, maïs, œuf, sauce algérienne',price:'12,90',num:12.90,img:T+'Tacos_Méxicain.jpg'},
+    {name:'Le Boursin',desc:'Bœuf haché, Boursin ail & fines herbes, frites, sauce poivre',price:'12,90',num:12.90,img:T+'Tacos_Boursin.jpg'},
+    {name:'Le Cheesy',desc:'Poulet crémeux, bacon de dinde, sauce cheddar ultra généreuse',price:'12,90',num:12.90,img:T+'Tacos_Cheesy.jpg',badge:'🧀 Cheesy',bc:'gold'},
+    {name:'Le Savoyard',desc:'Poulet, bacon de dinde, pommes de terre, raclette fondue',price:'12,90',num:12.90,img:T+'Tacos_Savoyard.jpg'},
+    {name:'Le Tropical',desc:'Poulet curry, bacon fumé, sauce Brazil exotique',price:'12,90',num:12.90,img:T+'Tacos_Tropical.jpg'},
+    {name:"L'Oriental",desc:'Merguez fraîche, chakchouka, olives, œuf, sauce algérienne',price:'13,50',num:13.50,img:T+'Tacos_Oriental.jpg'},
+    {name:'Veggie Falafel',desc:'Falafel maison, chakchouka, olives, frites — 100% végétarien',price:'12,50',num:12.50,img:T+'Tacos_Veggie_Falafel.jpg',badge:'🌿 Veggie',bc:'green'},
+    {name:'Veggie Légumes',desc:'Légumes grillés du marché, fromage frais, frites maison',price:'12,50',num:12.50,img:T+'Tacos_Veggie_Légumes.jpg',badge:'🌿 Veggie',bc:'green'},
+    {name:'Bowl Classique',desc:'Riz, viande au choix, légumes croquants, sauce maison',price:'11,90',num:11.90,img:T+'Bowl_Classique.jpg'},
+    {name:'Le Spicy',desc:'Tenders hot, chakchouka, frites, sauce fire ultra épicée',price:'12,90',num:12.90,img:null,badge:'🔥 Fire',bc:'red'},
+  ],
+  burgers:[
+    {name:'Big Chef Burger',desc:'Double steak, cheddar, oignons frits, sauce chef maison, pain brioché',price:'12,90',num:12.90,img:B+'Big_Chef_burger.jpg',badge:'🏆 Chef',bc:'gold'},
+    {name:'Black Burger OB',desc:'Steak haché, pain noir au charbon, cheddar fondu, sauce spéciale',price:'11,90',num:11.90,img:B+'Black_burger_OB.jpg'},
+    {name:'Chicken Beef Burger',desc:'Escalope de poulet + steak haché, double cheddar, sauce secrète',price:'13,90',num:13.90,img:B+'Chicken_Beef_burger.jpg'},
+    {name:'Le Classic',desc:'Steak haché, cheddar, salade, tomate, oignons, ketchup, mayo',price:'9,90',num:9.90,img:null},
+    {name:'Le Spicy Burger',desc:'Chicken tenders épicés, sauce sriracha, jalapeños, cheddar',price:'11,50',num:11.50,img:null,badge:'🌶️ Épicé',bc:'red'},
+    {name:'Le Veggy Burger',desc:'Steak végétal, avocat frais, tomate, salade croquante, sauce verte',price:'10,50',num:10.50,img:null,badge:'🌿 Veggie',bc:'green'},
+  ],
+  sandwicherie:[
+    {name:'Baguette Classique',desc:'Baguette croustillante, viande au choix, crudités fraîches, sauce',price:'7,50',num:7.50,img:S+'Baguette_Classique.jpg'},
+    {name:'Le Freshly Classique',desc:'Pain frais du jour, garniture généreuse, légumes croquants',price:'8,50',num:8.50,img:S+'Le_Freshly_Classique.jpg',badge:'🌿 Frais',bc:'green'},
+    {name:'Roulé Classique',desc:'Wrap grillé, viande au choix, crudités, sauce blanche maison',price:'8,50',num:8.50,img:S+'Roulé_Classique.jpg'},
+    {name:'Sandwich Classique',desc:'Pain moelleux, viande tendre, fromage fondu, légumes, sauce',price:'8,00',num:8.00,img:S+'Sandwich_Classique.jpg'},
+    {name:'Le Chawarma',desc:'Poulet ou bœuf à la broche, sauce blanche, légumes frais, frites',price:'9,50',num:9.50,img:null,badge:'⭐ Signature',bc:'orange'},
+  ],
+  'pizza-tomate':[
+    {name:'Pizza Orientale',desc:'Tomate, merguez, poivrons colorés, oignons, mozzarella',price:'13,50',num:13.50,img:PT+'Pizza_Orientale.jpg'},
+    {name:'Pizza Regina',desc:'Tomate, jambon, champignons de Paris, mozzarella',price:'12,50',num:12.50,img:PT+'Pizza_Regina.jpg'},
+    {name:'Margherita',desc:'Tomate, mozzarella fior di latte, basilic frais',price:'10,50',num:10.50,img:null},
+    {name:'Pepperoni',desc:'Tomate, pepperoni croustillant, mozzarella fondante',price:'12,90',num:12.90,img:null,badge:'🔥 Populaire',bc:'orange'},
+    {name:'La 4 Saisons',desc:'Tomate, jambon, champignons, olives, poivrons, mozzarella',price:'13,50',num:13.50,img:null},
+    {name:'La Mexicaine',desc:'Tomate, bœuf haché, jalapeños, maïs, cheddar',price:'13,90',num:13.90,img:null},
+    {name:'La Spicy',desc:'Tomate, tenders épicés, pili-pili, mozzarella',price:'13,50',num:13.50,img:null,badge:'🌶️ Épicé',bc:'red'},
+    {name:'La Tunisienne',desc:'Tomate, merguez, harissa, olives, œuf, mozzarella',price:'13,90',num:13.90,img:null},
+  ],
+  'pizza-creme':[
+    {name:'Pizza 5 Fromages',desc:'Crème fraîche, mozzarella, gorgonzola, chèvre, emmental, raclette',price:'13,90',num:13.90,img:PC+'Pizza_5_Fromages.jpg',badge:'🧀 Cheesy',bc:'gold'},
+    {name:'Pizza Boisée',desc:'Crème fraîche, champignons sauvages, lardons, gruyère',price:'13,50',num:13.50,img:PC+'Pizza_Boisée.jpg'},
+    {name:'La Lyonnaise',desc:'Crème fraîche, lardons, oignons confits, reblochon fondant',price:'13,50',num:13.50,img:null,badge:'⭐ Spécialité',bc:'orange'},
+    {name:'La Savoyarde',desc:'Crème fraîche, poulet, raclette fondue, pommes de terre',price:'14,00',num:14.00,img:null},
+    {name:'La Raclette',desc:'Crème fraîche, raclette généreuse, lardons, pommes de terre',price:'14,00',num:14.00,img:null},
+  ],
+  boissons:[
+    {name:'Coca-Cola 33 cl',desc:'La boisson emblématique, fraîche et pétillante',price:'2,50',num:2.50,img:DR+'Coca-Cola_33_cl.jpg'},
+    {name:'Coca-Cola Zéro 33 cl',desc:'Le goût du Coca sans les sucres',price:'2,50',num:2.50,img:DR+'Coca-Cola_zéro_sucres_33cl.jpg'},
+    {name:'Fanta Citron Frappé',desc:'Pétillant, fruité et rafraîchissant',price:'2,50',num:2.50,img:DR+'Fanta_Citron_Frappé_33_cl.jpg'},
+    {name:'Fanta Orange 33 cl',desc:'Le classique fruité et pétillant',price:'2,50',num:2.50,img:DR+'Fanta_Orange_33_cl.jpg'},
+    {name:'Sprite Citron-Vert',desc:'Léger, pétillant, saveur citron',price:'2,50',num:2.50,img:DR+'Sprite_Citron-Citron_vert_33cl.jpg'},
+  ],
+};
+
+// Render
+function makeCard(item) {
+  const esc = item.name.replace(/'/g,"\\'");
+  if (item.img) {
+    return `<div class="prod-card">
+      <div class="prod-img-wrap">
+        <img class="prod-img" src="${item.img}" alt="${item.name}" loading="lazy"/>
+        <div class="prod-img-overlay"></div>
+        ${item.badge ? `<div class="prod-badge-wrap"><span class="prod-badge ${item.bc||'orange'}">${item.badge}</span></div>` : ''}
+      </div>
+      <div class="prod-body">
+        <div class="prod-name">${item.name}</div>
+        <div class="prod-desc">${item.desc}</div>
+        <div class="prod-foot">
+          <div class="prod-price">${item.price} €</div>
+          <button class="prod-add" onclick="addItem('${esc}',${item.num},event)">+</button>
+        </div>
+      </div>
+    </div>`;
+  }
+  return `<div class="prod-card flat">
+    <div class="prod-body">
+      <div class="prod-body-main">
+        ${item.badge ? `<div style="font-size:0.6rem;font-weight:700;color:var(--orange);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:0.2rem">${item.badge}</div>` : ''}
+        <div class="prod-name">${item.name}</div>
+        <div class="prod-desc">${item.desc}</div>
+      </div>
+      <div class="prod-price">${item.price} €</div>
+      <button class="prod-add" onclick="addItem('${esc}',${item.num},event)">+</button>
+    </div>
+  </div>`;
+}
+
+Object.keys(MENU).forEach(k => {
+  const el = document.getElementById('grid-'+k);
+  if (el) el.innerHTML = MENU[k].map(makeCard).join('');
+});
+
+// Cart
+let cart = [];   // { name, price (unit), emoji, details, qty }
+function addItem(name, price, e) {
+  if(e) e.stopPropagation();
+  const line = cart.find(l => l.name === name && !l.details);
+  if (line) line.qty++;
+  else cart.push({name, price, emoji:'🌮', qty:1});
+  refreshCart();
+  toast('🛒', `${name} ajouté !`);
+}
+function changeQty(i, delta) {
+  cart[i].qty += delta;
+  if (cart[i].qty <= 0) cart.splice(i,1);
+  refreshCart();
+}
+function removeItem(i) { cart.splice(i,1); refreshCart(); }
+function refreshCart() {
+  const cnt = document.getElementById('cart-count');
+  cnt.textContent = cart.reduce((s,i)=>s+i.qty,0);
+  cnt.classList.remove('pop'); void cnt.offsetWidth; cnt.classList.add('pop');
+  const body = document.getElementById('drawer-body');
+  const foot = document.getElementById('drawer-foot');
+  const total = cart.reduce((s,i)=>s+i.price*i.qty,0);
+  if (!cart.length) {
+    body.innerHTML = `<div class="cart-empty"><div class="cart-empty-emoji">🛒</div><p>Panier vide</p><small>Ajoutez des produits depuis le menu</small></div>`;
+    foot.style.display='none';
+  } else {
+    body.innerHTML = cart.map((item,i) => `<div class="cart-item">
+      <div class="ci-emoji">${item.emoji}</div>
+      <div class="ci-info"><div class="ci-name">${item.name}</div>${item.details?`<div class="ci-detail">${item.details}</div>`:''}</div>
+      <div class="ci-right"><div class="ci-price">${(item.price*item.qty).toFixed(2).replace('.',',')} €</div>
+        <div class="ci-qty"><button onclick="changeQty(${i},-1)" aria-label="Retirer">−</button><span>${item.qty}</span><button onclick="changeQty(${i},1)" aria-label="Ajouter">+</button></div>
+      </div>
+    </div>`).join('');
+    document.getElementById('drawer-total').textContent = total.toFixed(2).replace('.',',') + ' €';
+    foot.style.display='block';
+  }
+}
+function openCart() { document.getElementById('cart-overlay').classList.add('open'); document.getElementById('cart-drawer').classList.add('open'); document.body.style.overflow='hidden'; }
+function closeCart() { document.getElementById('cart-overlay').classList.remove('open'); document.getElementById('cart-drawer').classList.remove('open'); document.body.style.overflow=''; }
+
+// Configurateur
+let cfg = { step:0, size:null, sizePrice:0, maxV:1, maxS:2, viande:null, vExtra:0, sauces:[], extras:[] };
+const STEPS = 5;
+const STEP_LABELS = ['Taille','Viande','Sauce','Extras','Récap'];
+
+function openConf() {
+  cfg = { step:0, size:null, sizePrice:0, maxV:1, maxS:2, viande:null, vExtra:0, sauces:[], extras:[] };
+  document.querySelectorAll('.size-card').forEach(c=>c.classList.remove('selected'));
+  document.querySelectorAll('.vo').forEach(c=>c.classList.remove('selected'));
+  document.querySelectorAll('.sauce-pill').forEach(c=>c.classList.remove('selected'));
+  document.querySelectorAll('.eo').forEach(c=>c.classList.remove('selected'));
+  showCStep(0);
+  document.getElementById('conf-overlay').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeConf() { document.getElementById('conf-overlay').classList.remove('open'); document.body.style.overflow=''; }
+function confOverlayClick(e) { if(e.target===document.getElementById('conf-overlay')) closeConf(); }
+
+function showCStep(n) {
+  cfg.step = n;
+  document.querySelectorAll('.step').forEach((s,i) => s.classList.toggle('active', i===n));
+  STEP_LABELS.forEach((_, i) => {
+    const el = document.getElementById('ps-'+i);
+    el.classList.toggle('active', i===n);
+    el.classList.toggle('done', i<n);
+  });
+  document.getElementById('prog-fill').style.width = ((n/(STEPS-1))*100) + '%';
+  document.getElementById('cf-back').style.display = n>0 ? 'block' : 'none';
+  document.getElementById('conf-sub').textContent = STEP_LABELS[n] + ' — étape ' + (n+1) + '/5';
+  const btn = document.getElementById('cf-next');
+  if (n === STEPS-1) {
+    buildRecap();
+    btn.textContent = '🛒 Ajouter au panier';
+    btn.disabled = false;
+  } else {
+    btn.textContent = 'Suivant →';
+    btn.disabled = (n===0 && !cfg.size) || (n===1 && !cfg.viande);
+  }
+  updatePriceBadge();
+}
+
+function cnext() {
+  if (cfg.step === STEPS-1) { addTacosToCart(); } else { showCStep(cfg.step+1); }
+}
+function cprev() { showCStep(cfg.step-1); }
+
+function chooseSize(el, name, price) {
+  document.querySelectorAll('.size-card').forEach(c=>c.classList.remove('selected'));
+  el.classList.add('selected');
+  cfg.size=name; cfg.sizePrice=price;
+  cfg.maxV = (name==='L'||name==='XL') ? 2 : 1;
+  cfg.maxS = name==='XL' ? 3 : (name==='M'||name==='L') ? 2 : 1;
+  document.getElementById('cnote-viande').textContent = `Choisis jusqu'à ${cfg.maxV} viande${cfg.maxV>1?'s':''}`;
+  document.getElementById('cnote-sauce').textContent = `Choisis jusqu'à ${cfg.maxS} sauce${cfg.maxS>1?'s':''}`;
+  document.getElementById('cf-next').disabled = false;
+  updatePriceBadge();
+}
+
+function chooseViande(el, name, extra) {
+  const sel = document.querySelectorAll('.vo.selected');
+  if (!el.classList.contains('selected') && sel.length >= cfg.maxV) sel[0].classList.remove('selected');
+  el.classList.toggle('selected');
+  const chosen = document.querySelectorAll('.vo.selected');
+  cfg.viande = Array.from(chosen).map(s=>s.querySelector('.vo-name').textContent).join(' + ');
+  cfg.vExtra = Array.from(chosen).reduce((sum,s) => {
+    const t=s.querySelector('.vo-price').textContent.replace('+','').replace('€','').replace(',','.').replace('Inclus','0').trim();
+    return sum + (parseFloat(t)||0);
+  }, 0);
+  document.getElementById('cf-next').disabled = chosen.length===0;
+  updatePriceBadge();
+}
+
+function toggleSauce(el, name) {
+  if (!el.classList.contains('selected')) {
+    if (document.querySelectorAll('.sauce-pill.selected').length >= cfg.maxS) {
+      toast('⚠️', `Max ${cfg.maxS} sauce${cfg.maxS>1?'s':''} pour ce format`);
+      return;
+    }
+  }
+  el.classList.toggle('selected');
+  cfg.sauces = Array.from(document.querySelectorAll('.sauce-pill.selected')).map(s=>s.textContent.trim());
+}
+
+function toggleExtra(el, name, price) {
+  el.classList.toggle('selected');
+  cfg.extras = Array.from(document.querySelectorAll('.eo.selected')).map(s => ({
+    name: s.querySelector('.eo-name').textContent,
+    price: parseFloat(s.querySelector('.eo-price').textContent.replace('+','').replace('€','').replace(',','.').replace('Gratuit','0').trim()||0)
+  }));
+  updatePriceBadge();
+}
+
+function getTotal() {
+  return cfg.sizePrice + cfg.vExtra + cfg.extras.reduce((s,e)=>s+e.price,0);
+}
+function updatePriceBadge() {
+  document.getElementById('conf-price-badge').textContent = getTotal().toFixed(2).replace('.',',') + ' €';
+}
+
+function buildRecap() {
+  const rows = [
+    ['Taille', cfg.size ? `${cfg.size} — ${cfg.sizePrice.toFixed(2).replace('.',',')} €` : '—'],
+    ['Viande', cfg.viande || '—'],
+    ['Sauces', cfg.sauces.length ? cfg.sauces.join(', ') : 'Aucune sauce'],
+    ['Extras', cfg.extras.length ? cfg.extras.map(e=>e.name).join(', ') : 'Aucun extra'],
+  ];
+  document.getElementById('recap-content').innerHTML = rows.map(([k,v]) =>
+    `<div class="recap-row"><span class="recap-key">${k}</span><span class="recap-val">${v}</span></div>`
+  ).join('');
+  document.getElementById('recap-total-price').textContent = getTotal().toFixed(2).replace('.',',') + ' €';
+}
+
+function addTacosToCart() {
+  const details = [cfg.viande, cfg.sauces.join(', '), cfg.extras.map(e=>e.name).join(', ')].filter(Boolean).join(' · ');
+  cart.push({ name:`Tacos ${cfg.size} sur mesure`, price: getTotal(), emoji:'🌮', details, qty: 1 });
+  refreshCart();
+  closeConf();
+  openCart();
+  toast('✅','Tacos personnalisé ajouté au panier !');
+}
+
+// Nav scroll
+function scrollToSec(btn, id) {
+  document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  const sec = document.getElementById('sec-'+id);
+  if (sec) sec.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+// Scroll-spy — surligne la catégorie active au défilement
+const SPY_IDS = ['tacos','burgers','sandwicherie','pizza-tomate','pizza-creme','boissons'];
+const catBtns = Array.from(document.querySelectorAll('.cat-btn'));
+window.addEventListener('scroll', () => {
+  let current = 0;
+  SPY_IDS.forEach((id, i) => {
+    const sec = document.getElementById('sec-'+id);
+    if (sec && sec.getBoundingClientRect().top <= 150) current = i;
+  });
+  catBtns.forEach((b, i) => b.classList.toggle('active', i === current));
+}, { passive: true });
+
+// ESC ferme panier / configurateur
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Escape') return;
+  if (document.getElementById('conf-overlay').classList.contains('open')) closeConf();
+  else if (document.getElementById('cart-drawer').classList.contains('open')) closeCart();
+});
+
+// Toast
+function toast(icon, msg) {
+  const wrap = document.getElementById('toasts');
+  const el = document.createElement('div');
+  el.className = 'toast';
+  el.innerHTML = `<span>${icon}</span> ${msg}`;
+  wrap.appendChild(el);
+  requestAnimationFrame(()=>requestAnimationFrame(()=>el.classList.add('show')));
+  setTimeout(()=>{ el.classList.remove('show'); setTimeout(()=>el.remove(),350); }, 2600);
+}
+
+// Horaires
+(function(){
+  const day=new Date().getDay(), h=new Date().getHours(), m=new Date().getMinutes(), mins=h*60+m;
+  const HOURS = {0:[[690,1410]],1:[[690,870],[1080,1410]],2:[[690,870],[1080,1410]],3:[[690,870],[1080,1410]],4:[[690,870],[1080,1410]],5:[[690,870],[1080,1410]],6:[[690,1410]]};
+  const isOpen = (HOURS[day]||[]).some(([s,e])=>mins>=s&&mins<e);
+  if(!isOpen){ document.getElementById('status-tag').className='status-tag closed'; document.getElementById('status-label').textContent='Fermé'; }
+})();
+</script>
+</body>
+</html>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Le Tacos Lyonnais Saxe — Borneo</title>
+  <title>Le Tacos Lyonnais Saxe — Saxe, Lyon 7e</title>
   <meta name="robots" content="noindex, nofollow" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -47,11 +47,18 @@
     }
     .header.shadow { box-shadow: 0 1px 12px rgba(0,0,0,0.08); }
     .header-inner { width: 100%; max-width: 1400px; margin: 0 auto; display: flex; align-items: center; }
-    .borneo-logo {
-      display: flex; align-items: center; gap: 0.4rem;
-      font-size: 1.15rem; font-weight: 700; color: var(--text);
+    .brand-logo {
+      display: flex; align-items: center; gap: 0.55rem;
+      font-size: 1.1rem; font-weight: 700; color: var(--text);
       margin-right: 3.5rem; flex-shrink: 0;
     }
+    .brand-logo .brand-mark {
+      width: 34px; height: 34px; border-radius: 50%; flex-shrink: 0;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+    .brand-logo .brand-text { display: flex; flex-direction: column; line-height: 1.05; }
+    .brand-logo .brand-text b { font-size: 0.98rem; font-weight: 800; }
+    .brand-logo .brand-text small { font-size: 0.62rem; font-weight: 600; color: var(--orange); letter-spacing: 0.08em; text-transform: uppercase; }
     .nav-links { flex: 1; display: flex; align-items: center; justify-content: center; gap: 0.2rem; }
     .nav-item {
       display: flex; align-items: center; gap: 0.4rem;
@@ -260,10 +267,49 @@
     .prod-card.visible { animation: fadeUp 0.35s ease forwards; }
     @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
 
+    /* ── CART DRAWER ── */
+    .cart-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.42); z-index: 500; opacity: 0; pointer-events: none; transition: opacity 0.3s; backdrop-filter: blur(2px); }
+    .cart-overlay.open { opacity: 1; pointer-events: auto; }
+    .cart-drawer {
+      position: fixed; top: 0; right: 0; bottom: 0; width: 400px; max-width: 100vw; z-index: 501;
+      background: var(--white); display: flex; flex-direction: column;
+      transform: translateX(100%); transition: transform 0.35s cubic-bezier(.4,0,.2,1);
+      box-shadow: -8px 0 40px rgba(0,0,0,0.18);
+    }
+    .cart-drawer.open { transform: translateX(0); }
+    .cd-head { padding: 1.35rem 1.5rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+    .cd-head h3 { font-size: 1.1rem; font-weight: 700; }
+    .cd-close { width: 32px; height: 32px; border: 1px solid var(--border); border-radius: 50%; background: none; font-size: 1.05rem; display: flex; align-items: center; justify-content: center; color: var(--muted); }
+    .cd-close:hover { background: var(--bg); color: var(--text); }
+    .cd-body { flex: 1; overflow-y: auto; padding: 1.1rem 1.25rem; display: flex; flex-direction: column; gap: 0.7rem; }
+    .cd-empty { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.6rem; color: var(--muted); text-align: center; padding: 3rem 0; }
+    .cd-empty-icon { font-size: 2.8rem; opacity: 0.4; }
+    .cd-item { display: flex; align-items: center; gap: 0.8rem; background: var(--bg); border: 1px solid var(--border); border-radius: var(--rad); padding: 0.7rem 0.8rem; }
+    .cd-item-emoji { width: 38px; height: 38px; border-radius: 8px; background: var(--white); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
+    .cd-item-info { flex: 1; min-width: 0; }
+    .cd-item-name { font-size: 0.83rem; font-weight: 600; line-height: 1.25; }
+    .cd-item-price { font-size: 0.74rem; color: var(--muted); margin-top: 0.1rem; }
+    .cd-qty { display: flex; align-items: center; gap: 0.4rem; flex-shrink: 0; }
+    .cd-qty button {
+      width: 24px; height: 24px; border-radius: 50%; border: 1px solid var(--light); background: var(--white);
+      color: var(--orange); font-size: 1rem; line-height: 1; display: flex; align-items: center; justify-content: center;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .cd-qty button:hover { border-color: var(--orange); background: var(--orange-bg); }
+    .cd-qty span { min-width: 18px; text-align: center; font-size: 0.82rem; font-weight: 700; }
+    .cd-foot { padding: 1.25rem 1.5rem; border-top: 1px solid var(--border); }
+    .cd-total-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.9rem; }
+    .cd-total-row span:first-child { font-size: 0.85rem; color: var(--muted); }
+    .cd-total-val { font-size: 1.4rem; font-weight: 700; }
+    .cd-order { width: 100%; padding: 0.9rem; background: var(--orange); color: #fff; border: none; border-radius: var(--rad); font-size: 0.92rem; font-weight: 700; transition: filter 0.15s; }
+    .cd-order:hover { filter: brightness(1.08); }
+    .cd-note { text-align: center; font-size: 0.68rem; color: var(--muted); margin-top: 0.6rem; }
+
     /* ── RESPONSIVE ── */
     @media (max-width: 860px) { .sidebar { display: none; } .main { padding: 1rem 1.2rem 2rem; } }
     @media (max-width: 600px) {
-      .header { padding: 0 1rem; } .borneo-logo { margin-right: 1rem; font-size: 1rem; }
+      .header { padding: 0 1rem; } .brand-logo { margin-right: 1rem; }
+      .brand-logo .brand-text small { display: none; }
       .products-title { font-size: 1.3rem; } .prod-grid { grid-template-columns: 1fr 1fr; }
       .nav-links .nav-item span { display: none; }
     }
@@ -273,37 +319,48 @@
 
   <div class="toast-wrap" id="toast-wrap"></div>
 
+  <!-- ══ CART DRAWER ══ -->
+  <div class="cart-overlay" id="cart-overlay" onclick="closeCart()"></div>
+  <aside class="cart-drawer" id="cart-drawer" aria-label="Panier">
+    <div class="cd-head">
+      <h3>🛒 Mon panier</h3>
+      <button class="cd-close" onclick="closeCart()" aria-label="Fermer">✕</button>
+    </div>
+    <div class="cd-body" id="cd-body">
+      <div class="cd-empty"><div class="cd-empty-icon">🛒</div><p>Votre panier est vide</p><small>Ajoutez des produits depuis le menu</small></div>
+    </div>
+    <div class="cd-foot" id="cd-foot" style="display:none">
+      <div class="cd-total-row"><span>Total estimé</span><span class="cd-total-val" id="cd-total">0,00 €</span></div>
+      <button class="cd-order" onclick="placeOrder()">Passer la commande</button>
+      <p class="cd-note">Simulation — aucun paiement requis</p>
+    </div>
+  </aside>
+
   <!-- ══ HEADER ══ -->
   <header class="header" id="site-header">
     <div class="header-inner">
-      <div class="borneo-logo">
-        <svg width="28" height="20" viewBox="0 0 30 22" fill="none">
-          <path d="M2 11 C4 4,9 2,12 11"   stroke="#E85425" stroke-width="2.3" fill="none" stroke-linecap="round"/>
-          <path d="M7 11 C10 2,17 0,20 11"  stroke="#E85425" stroke-width="2.3" fill="none" stroke-linecap="round"/>
-          <path d="M13 11 C17 0,24-1,27 11" stroke="#E85425" stroke-width="2.3" fill="none" stroke-linecap="round"/>
+      <div class="brand-logo">
+        <svg class="brand-mark" viewBox="0 0 52 52" fill="none">
+          <circle cx="26" cy="26" r="26" fill="#0D0D0D"/>
+          <path d="M14 28 L26 14 L38 28 L34 28 L34 38 L18 38 L18 28 Z" fill="#1A3BCC" stroke="#FFD700" stroke-width="1.2"/>
+          <text x="26" y="35" text-anchor="middle" font-size="7" font-weight="900" fill="#FFD700" font-family="Inter,sans-serif">TL</text>
+          <text x="26" y="12" text-anchor="middle" font-size="5.5" font-weight="800" fill="#FF4444" font-family="Inter,sans-serif" letter-spacing="0.5">TACOS</text>
+          <text x="26" y="47" text-anchor="middle" font-size="4" font-weight="700" fill="#FFD700" font-family="Inter,sans-serif" letter-spacing="0.3">LYONNAIS</text>
         </svg>
-        Borneo
+        <span class="brand-text"><b>Le Tacos Lyonnais</b><small>Saxe · Lyon 7e</small></span>
       </div>
       <nav class="nav-links">
-        <a href="#" class="nav-item">
+        <a href="#" class="nav-item active" onclick="jumpTo('tacos');return false;">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
-          <span>Accueil</span>
+          <span>Le menu</span>
         </a>
-        <a href="#" class="nav-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-          <span>Recherche</span>
+        <a href="#infos" class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+          <span>Infos & horaires</span>
         </a>
-        <a href="#" class="nav-item active">
-          <div class="nav-resto-avatar">TL</div>
-          <span>Le Tacos Lyonnais Saxe</span>
-        </a>
-        <a href="#" class="nav-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
-          <span>Commandes</span>
-        </a>
-        <a href="#" class="nav-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-          <span>Profil</span>
+        <a href="https://maps.google.com/?q=107+Grande+Rue+de+la+Guillotière+Lyon" target="_blank" rel="noopener" class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          <span>Nous trouver</span>
         </a>
       </nav>
       <button class="cart-btn" id="cart-btn" onclick="openCart()">
@@ -335,7 +392,7 @@
         </div>
       </div>
 
-      <div class="sb-body">
+      <div class="sb-body" id="infos">
         <p class="sb-opening" id="opening-text"><span class="opening-dot"></span> Ouvert · Ferme à 23h30</p>
         <div class="sb-services">
           <span class="sb-service">✅ Sur place</span>
@@ -407,7 +464,7 @@
           <a href="#">CGU</a>
           <a href="#">CGV</a>
         </div>
-        <p class="sb-footer-copy">v0.9.289 &nbsp;·&nbsp; Borneo © 2025</p>
+        <p class="sb-footer-copy">Le Tacos Lyonnais Saxe © 2025 &nbsp;·&nbsp; Site démo WebCraft</p>
       </div>
     </aside>
 
@@ -629,7 +686,7 @@
       return `<div class="prod-card" style="animation-delay:${i*55}ms">
         <div class="prod-img-wrap">
           <img class="prod-img" src="${item.img}" alt="${item.name}" loading="lazy" />
-          <button class="prod-add" onclick="addToCart('${safeName}',event)" title="Ajouter">+</button>
+          <button class="prod-add" onclick="addToCart('${safeName}','${item.price}',event)" title="Ajouter">+</button>
         </div>
         <div class="prod-info">
           ${item.badge ? `<span class="prod-badge">${item.badge}</span>` : ''}
@@ -647,7 +704,7 @@
           <div class="prod-desc">${item.desc}</div>
           <div class="prod-price">${item.price}</div>
         </div>
-        <button class="prod-add-inline" onclick="addToCart('${safeName}',event)" title="Ajouter">+</button>
+        <button class="prod-add-inline" onclick="addToCart('${safeName}','${item.price}',event)" title="Ajouter">+</button>
       </div>`;
     }
   }
@@ -688,20 +745,76 @@
   }
 
   // ── PANIER ─────────────────────────────────────────────────────────────────
-  let cartCount = 0;
-  function addToCart(name, e) {
-    e.stopPropagation();
-    cartCount++;
+  const cart = [];   // { name, unit, qty }
+  const parsePrice = s => parseFloat(String(s).replace('€','').replace(',','.').trim()) || 0;
+  const fmt = n => n.toFixed(2).replace('.', ',') + ' €';
+
+  function addToCart(name, price, e) {
+    if (e) e.stopPropagation();
+    const unit = parsePrice(price);
+    const line = cart.find(l => l.name === name);
+    if (line) line.qty++;
+    else cart.push({ name, unit, qty: 1 });
+    renderCart();
+    bumpBadge();
+    showToast('🛒', `${name} ajouté !`);
+  }
+  function changeQty(i, delta) {
+    cart[i].qty += delta;
+    if (cart[i].qty <= 0) cart.splice(i, 1);
+    renderCart();
+    bumpBadge();
+  }
+  function bumpBadge() {
     const badge = document.getElementById('cart-count');
-    badge.textContent = cartCount;
+    badge.textContent = cart.reduce((s, l) => s + l.qty, 0);
     badge.classList.remove('pop');
     void badge.offsetWidth;
     badge.classList.add('pop');
-    showToast('🛒', `${name} ajouté !`);
+  }
+  function renderCart() {
+    const body = document.getElementById('cd-body');
+    const foot = document.getElementById('cd-foot');
+    if (cart.length === 0) {
+      body.innerHTML = `<div class="cd-empty"><div class="cd-empty-icon">🛒</div><p>Votre panier est vide</p><small>Ajoutez des produits depuis le menu</small></div>`;
+      foot.style.display = 'none';
+      return;
+    }
+    body.innerHTML = cart.map((l, i) => `
+      <div class="cd-item">
+        <div class="cd-item-emoji">🌮</div>
+        <div class="cd-item-info">
+          <div class="cd-item-name">${l.name}</div>
+          <div class="cd-item-price">${fmt(l.unit)} l'unité</div>
+        </div>
+        <div class="cd-qty">
+          <button onclick="changeQty(${i},-1)" aria-label="Retirer">−</button>
+          <span>${l.qty}</span>
+          <button onclick="changeQty(${i},1)" aria-label="Ajouter">+</button>
+        </div>
+      </div>`).join('');
+    document.getElementById('cd-total').textContent = fmt(cart.reduce((s, l) => s + l.unit * l.qty, 0));
+    foot.style.display = 'block';
   }
   function openCart() {
-    showToast('🛒', cartCount === 0 ? 'Votre panier est vide' : `${cartCount} article${cartCount > 1 ? 's' : ''} dans le panier`);
+    document.getElementById('cart-overlay').classList.add('open');
+    document.getElementById('cart-drawer').classList.add('open');
+    document.body.style.overflow = 'hidden';
   }
+  function closeCart() {
+    document.getElementById('cart-overlay').classList.remove('open');
+    document.getElementById('cart-drawer').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  function placeOrder() {
+    if (!cart.length) return;
+    showToast('✅', 'Commande envoyée ! Nous vous recontactons pour confirmer.');
+    cart.length = 0;
+    renderCart();
+    bumpBadge();
+    closeCart();
+  }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeCart(); });
 
   // ── TOAST ──────────────────────────────────────────────────────────────────
   function showToast(icon, msg) {
