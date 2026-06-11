@@ -396,13 +396,18 @@
       .footer-inner { grid-template-columns: 1fr 1fr; }
     }
     @media (max-width: 600px) {
-      .header { padding: 0 1rem; } .hero h1 { font-size: 2.6rem; }
+      .header { padding: 0 1rem; } .header-inner { gap: 0.75rem; }
+      .status-tag { display: none; }
+      .hero h1 { font-size: 2.6rem; }
       .hero-content { padding: 0 1.5rem; } .hero-counter-inner { padding: 0.75rem 1.5rem; }
       .main { padding: 1.5rem 1rem 3rem; } .bb-content { padding: 1.5rem 1.5rem; }
+      .bb-btn { width: 100%; }
       .bb-title { font-size: 1.4rem; } .size-cards { grid-template-columns: 1fr; }
       .footer-inner { grid-template-columns: 1fr; gap: 2rem; }
       .prod-grid { grid-template-columns: 1fr; }
+      .conf-body { padding: 1.25rem; } .conf-foot { padding: 1rem 1.25rem; }
     }
+    @media (max-width: 420px) { .btn-compose { display: none; } }
   </style>
 </head>
 <body>
@@ -413,18 +418,18 @@
 <div class="overlay" id="cart-overlay" onclick="closeCart()"></div>
 <div class="drawer" id="cart-drawer">
   <div class="drawer-head">
-    <h3>🛒 Panier</h3>
+    <h3>Panier</h3>
     <button class="drawer-close" onclick="closeCart()">✕</button>
   </div>
   <div class="drawer-body" id="drawer-body">
-    <div class="cart-empty"><div class="cart-empty-emoji">🛒</div><p>Panier vide</p><small>Ajoutez des produits depuis le menu</small></div>
+    <div class="cart-empty"><div class="cart-empty-emoji"><svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg></div><p>Panier vide</p><small>Ajoutez des produits depuis le menu</small></div>
   </div>
   <div class="drawer-foot" id="drawer-foot" style="display:none">
     <div class="drawer-total">
       <span class="drawer-total-label">Total estimé</span>
       <span class="drawer-total-val" id="drawer-total">0,00 €</span>
     </div>
-    <button class="btn-order" onclick="toast('✅','Commande envoyée — on vous recontacte !')">Passer la commande</button>
+    <button class="btn-order" onclick="toast('Commande envoyée — on vous recontacte !')">Passer la commande</button>
     <p class="drawer-note">Simulation — aucun paiement requis</p>
   </div>
 </div>
@@ -434,7 +439,7 @@
   <div class="conf-modal">
     <div class="conf-head">
       <div>
-        <div class="conf-title">🌮 Build ton <span>Tacos</span></div>
+        <div class="conf-title">Build ton <span>Tacos</span></div>
         <div class="conf-sub" id="conf-sub">Personnalise chaque ingrédient</div>
       </div>
       <div style="display:flex;align-items:center;gap:0.75rem">
@@ -456,28 +461,24 @@
       <!-- Step 0 Taille -->
       <div class="step active" id="cstep-0">
         <div class="step-q">Quelle taille ?</div>
-        <div class="step-note">Plus grand = plus gourmand 🔥</div>
+        <div class="step-note">Plus grand = plus gourmand</div>
         <div class="size-cards">
           <button class="size-card" onclick="chooseSize(this,'S',6.50)">
-            <div class="sc-icon">🌮</div>
             <div class="sc-name">Petit (S)</div>
             <div class="sc-desc">1 viande · 1 sauce</div>
             <div class="sc-price">6,50 €</div>
           </button>
           <button class="size-card" onclick="chooseSize(this,'M',8.50)">
-            <div class="sc-icon">🌮🌮</div>
             <div class="sc-name">Classique (M)</div>
             <div class="sc-desc">1 viande · 2 sauces</div>
             <div class="sc-price">8,50 €</div>
           </button>
           <button class="size-card" onclick="chooseSize(this,'L',10.50)">
-            <div class="sc-icon">🌮🌮🌮</div>
             <div class="sc-name">Maxi (L)</div>
             <div class="sc-desc">2 viandes · 2 sauces</div>
             <div class="sc-price">10,50 €</div>
           </button>
           <button class="size-card" onclick="chooseSize(this,'XL',12.50)">
-            <div class="sc-icon">🔥🔥</div>
             <div class="sc-name">XXL</div>
             <div class="sc-desc">2 viandes · 3 sauces</div>
             <div class="sc-price">12,50 €</div>
@@ -489,28 +490,23 @@
         <div class="step-q">Ta viande</div>
         <div class="step-note" id="cnote-viande">Choisis ta viande</div>
         <div class="viande-opts">
-          <button class="vo" onclick="chooseViande(this,'Poulet grillé',0,'🍗')">
-            <span class="vo-emoji">🍗</span>
+          <button class="vo" onclick="chooseViande(this,'Poulet grillé',0)">
             <div class="vo-info"><div class="vo-name">Poulet grillé</div><div class="vo-sub">Mariné aux épices maison · halal</div></div>
             <span class="vo-price">Inclus</span><span class="vo-check"></span>
           </button>
-          <button class="vo" onclick="chooseViande(this,'Bœuf haché',0,'🥩')">
-            <span class="vo-emoji">🥩</span>
+          <button class="vo" onclick="chooseViande(this,'Bœuf haché',0)">
             <div class="vo-info"><div class="vo-name">Bœuf haché</div><div class="vo-sub">Savoureux · halal certifié</div></div>
             <span class="vo-price">Inclus</span><span class="vo-check"></span>
           </button>
-          <button class="vo" onclick="chooseViande(this,'Merguez',1,'🌶️')">
-            <span class="vo-emoji">🌶️</span>
+          <button class="vo" onclick="chooseViande(this,'Merguez',1)">
             <div class="vo-info"><div class="vo-name">Merguez fraîche</div><div class="vo-sub">Relevée et juteuse · halal</div></div>
             <span class="vo-price">+1,00 €</span><span class="vo-check"></span>
           </button>
-          <button class="vo" onclick="chooseViande(this,'Mixte poulet-bœuf',1,'🍖')">
-            <span class="vo-emoji">🍖</span>
+          <button class="vo" onclick="chooseViande(this,'Mixte poulet-bœuf',1)">
             <div class="vo-info"><div class="vo-name">Mixte poulet + bœuf</div><div class="vo-sub">Le combo imbattable</div></div>
             <span class="vo-price">+1,00 €</span><span class="vo-check"></span>
           </button>
-          <button class="vo" onclick="chooseViande(this,'Falafel véggie',0,'🧆')">
-            <span class="vo-emoji">🧆</span>
+          <button class="vo" onclick="chooseViande(this,'Falafel véggie',0)">
             <div class="vo-info"><div class="vo-name">Falafel véggie</div><div class="vo-sub">100% végétarien · fait maison</div></div>
             <span class="vo-price">Inclus</span><span class="vo-check"></span>
           </button>
@@ -521,14 +517,14 @@
         <div class="step-q">Ta sauce</div>
         <div class="step-note" id="cnote-sauce">Choisis jusqu'à 2 sauces</div>
         <div class="sauce-wrap">
-          <button class="sauce-pill" onclick="toggleSauce(this,'🥛 Blanche')">🥛 Blanche</button>
-          <button class="sauce-pill" onclick="toggleSauce(this,'🟡 Algérienne')">🟡 Algérienne</button>
-          <button class="sauce-pill" onclick="toggleSauce(this,'🧀 Fromagère')">🧀 Fromagère</button>
-          <button class="sauce-pill" onclick="toggleSauce(this,'🍖 Barbecue')">🍖 Barbecue</button>
-          <button class="sauce-pill" onclick="toggleSauce(this,'🌶️ Samurai')">🌶️ Samurai</button>
-          <button class="sauce-pill" onclick="toggleSauce(this,'🔥 Harissa')">🔥 Harissa</button>
-          <button class="sauce-pill" onclick="toggleSauce(this,'🍅 Ketchup')">🍅 Ketchup</button>
-          <button class="sauce-pill" onclick="toggleSauce(this,'🥄 Mayonnaise')">🥄 Mayonnaise</button>
+          <button class="sauce-pill" onclick="toggleSauce(this,'Blanche')">Blanche</button>
+          <button class="sauce-pill" onclick="toggleSauce(this,'Algérienne')">Algérienne</button>
+          <button class="sauce-pill" onclick="toggleSauce(this,'Fromagère')">Fromagère</button>
+          <button class="sauce-pill" onclick="toggleSauce(this,'Barbecue')">Barbecue</button>
+          <button class="sauce-pill" onclick="toggleSauce(this,'Samurai')">Samurai</button>
+          <button class="sauce-pill" onclick="toggleSauce(this,'Harissa')">Harissa</button>
+          <button class="sauce-pill" onclick="toggleSauce(this,'Ketchup')">Ketchup</button>
+          <button class="sauce-pill" onclick="toggleSauce(this,'Mayonnaise')">Mayonnaise</button>
         </div>
       </div>
       <!-- Step 3 Extras -->
@@ -536,33 +532,33 @@
         <div class="step-q">Des extras ?</div>
         <div class="step-note">Optionnel — personnalise encore plus ton tacos</div>
         <div class="extras-list">
-          <button class="eo" onclick="toggleExtra(this,'Raclette fondue',1.00,'🧀')">
-            <span class="eo-check"></span><span class="eo-icon">🧀</span>
+          <button class="eo" onclick="toggleExtra(this,'Raclette fondue',1.00)">
+            <span class="eo-check"></span>
             <div class="eo-info"><div class="eo-name">Raclette fondue</div><div class="eo-sub">Généreuse et fondante</div></div>
             <span class="eo-price">+1,00 €</span>
           </button>
-          <button class="eo" onclick="toggleExtra(this,'Bacon de dinde',0.80,'🥓')">
-            <span class="eo-check"></span><span class="eo-icon">🥓</span>
+          <button class="eo" onclick="toggleExtra(this,'Bacon de dinde',0.80)">
+            <span class="eo-check"></span>
             <div class="eo-info"><div class="eo-name">Bacon de dinde</div><div class="eo-sub">Grillé, croustillant</div></div>
             <span class="eo-price">+0,80 €</span>
           </button>
-          <button class="eo" onclick="toggleExtra(this,'Œuf',0.50,'🍳')">
-            <span class="eo-check"></span><span class="eo-icon">🍳</span>
+          <button class="eo" onclick="toggleExtra(this,'Œuf',0.50)">
+            <span class="eo-check"></span>
             <div class="eo-info"><div class="eo-name">Œuf</div><div class="eo-sub">Miroir ou brouillé</div></div>
             <span class="eo-price">+0,50 €</span>
           </button>
-          <button class="eo" onclick="toggleExtra(this,'Double portion viande',1.50,'💪')">
-            <span class="eo-check"></span><span class="eo-icon">💪</span>
+          <button class="eo" onclick="toggleExtra(this,'Double portion viande',1.50)">
+            <span class="eo-check"></span>
             <div class="eo-info"><div class="eo-name">Double portion viande</div><div class="eo-sub">Pour les vrais affamés</div></div>
             <span class="eo-price">+1,50 €</span>
           </button>
-          <button class="eo" onclick="toggleExtra(this,'Piments frais',0,'🌶️')">
-            <span class="eo-check"></span><span class="eo-icon">🌶️</span>
+          <button class="eo" onclick="toggleExtra(this,'Piments frais',0)">
+            <span class="eo-check"></span>
             <div class="eo-info"><div class="eo-name">Piments frais</div><div class="eo-sub">Pour les temeraires</div></div>
             <span class="eo-price">Gratuit</span>
           </button>
-          <button class="eo" onclick="toggleExtra(this,'Extra fromage',0.50,'🫕')">
-            <span class="eo-check"></span><span class="eo-icon">🫕</span>
+          <button class="eo" onclick="toggleExtra(this,'Extra fromage',0.50)">
+            <span class="eo-check"></span>
             <div class="eo-info"><div class="eo-name">Extra fromage</div><div class="eo-sub">Cheddar fondu supplémentaire</div></div>
             <span class="eo-price">+0,50 €</span>
           </button>
@@ -590,7 +586,6 @@
 <header class="header">
   <div class="header-inner">
     <div class="logo">
-      <span class="logo-flame">🌮</span>
       <span class="logo-name">Tacos <span>Lyonnais</span></span>
     </div>
     <nav class="nav">
@@ -600,8 +595,10 @@
     </nav>
     <div class="header-right">
       <div class="status-tag open" id="status-tag"><span class="status-dot"></span><span id="status-label">Ouvert</span></div>
-      <button class="btn-compose" onclick="openConf()">🌮 Composer</button>
-      <button class="btn-cart" onclick="openCart()">🛒 <span class="cart-count" id="cart-count">0</span></button>
+      <button class="btn-compose" onclick="openConf()">Composer</button>
+      <button class="btn-cart" onclick="openCart()">
+        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+        <span class="cart-count" id="cart-count">0</span></button>
     </div>
   </div>
 </header>
@@ -622,12 +619,12 @@
     <p>Les meilleurs tacos de Lyon, préparés à la commande. Ingrédients frais, recettes maison depuis 2015.</p>
     <div class="hero-actions">
       <button class="btn-hero-primary" onclick="document.getElementById('menu').scrollIntoView({behavior:'smooth'})">Voir le menu</button>
-      <button class="btn-hero-ghost" onclick="openConf()">🌮 Build ton tacos</button>
+      <button class="btn-hero-ghost" onclick="openConf()">Composer mon tacos</button>
     </div>
   </div>
   <div class="hero-counter-strip">
     <div class="hero-counter-inner">
-      <div class="hc-item"><div class="hc-num">4,8⭐</div><div class="hc-lbl">Note Google</div></div>
+      <div class="hc-item"><div class="hc-num">4,8</div><div class="hc-lbl">Note Google</div></div>
       <div class="hc-item"><div class="hc-num">1 200+</div><div class="hc-lbl">Avis clients</div></div>
       <div class="hc-item"><div class="hc-num">Halal</div><div class="hc-lbl">Certifié</div></div>
       <div class="hc-item"><div class="hc-num">107</div><div class="hc-lbl">Grande Rue Guillotière</div></div>
@@ -638,12 +635,12 @@
 <!-- CAT NAV -->
 <div class="cat-bar" id="menu">
   <div class="cat-inner">
-    <button class="cat-btn active" onclick="scrollToSec(this,'tacos')">🌮 Tacos</button>
-    <button class="cat-btn" onclick="scrollToSec(this,'burgers')">🍔 Burgers</button>
-    <button class="cat-btn" onclick="scrollToSec(this,'sandwicherie')">🥙 Sandwicherie</button>
-    <button class="cat-btn" onclick="scrollToSec(this,'pizza-tomate')">🍕 Pizza Tomate</button>
-    <button class="cat-btn" onclick="scrollToSec(this,'pizza-creme')">🍕 Pizza Crème</button>
-    <button class="cat-btn" onclick="scrollToSec(this,'boissons')">🥤 Boissons</button>
+    <button class="cat-btn active" onclick="scrollToSec(this,'tacos')">Tacos</button>
+    <button class="cat-btn" onclick="scrollToSec(this,'burgers')">Burgers</button>
+    <button class="cat-btn" onclick="scrollToSec(this,'sandwicherie')">Sandwicherie</button>
+    <button class="cat-btn" onclick="scrollToSec(this,'pizza-tomate')">Pizza Tomate</button>
+    <button class="cat-btn" onclick="scrollToSec(this,'pizza-creme')">Pizza Crème</button>
+    <button class="cat-btn" onclick="scrollToSec(this,'boissons')">Boissons</button>
   </div>
 </div>
 
@@ -653,7 +650,6 @@
     <img class="bb-img" src="../v1/Le_Tacos_Lyonnais_Saxe/Les_Tacos/Tacos_Classique.jpg" alt="" />
     <div class="bb-content">
       <div class="bb-left">
-        <div class="bb-icon">🌮</div>
         <div class="bb-text">
           <div class="bb-tag">Exclusif</div>
           <div class="bb-title">Build ton tacos</div>
@@ -665,32 +661,32 @@
   </div>
 
   <section class="menu-section" id="sec-tacos">
-    <div class="section-head"><span class="section-icon">🌮</span><span class="section-title">Les Tacos</span><div class="section-line"></div><span class="section-count">14</span></div>
+    <div class="section-head"><span class="section-title">Les Tacos</span><div class="section-line"></div><span class="section-count">14</span></div>
     <div class="prod-grid" id="grid-tacos"></div>
   </section>
 
   <section class="menu-section" id="sec-burgers">
-    <div class="section-head"><span class="section-icon">🍔</span><span class="section-title">Les Burgers</span><div class="section-line"></div><span class="section-count">6</span></div>
+    <div class="section-head"><span class="section-title">Les Burgers</span><div class="section-line"></div><span class="section-count">6</span></div>
     <div class="prod-grid" id="grid-burgers"></div>
   </section>
 
   <section class="menu-section" id="sec-sandwicherie">
-    <div class="section-head"><span class="section-icon">🥙</span><span class="section-title">Sandwicherie</span><div class="section-line"></div><span class="section-count">5</span></div>
+    <div class="section-head"><span class="section-title">Sandwicherie</span><div class="section-line"></div><span class="section-count">5</span></div>
     <div class="prod-grid" id="grid-sandwicherie"></div>
   </section>
 
   <section class="menu-section" id="sec-pizza-tomate">
-    <div class="section-head"><span class="section-icon">🍕</span><span class="section-title">Pizzas Tomate</span><div class="section-line"></div><span class="section-count">11</span></div>
+    <div class="section-head"><span class="section-title">Pizzas Tomate</span><div class="section-line"></div><span class="section-count">11</span></div>
     <div class="prod-grid" id="grid-pizza-tomate"></div>
   </section>
 
   <section class="menu-section" id="sec-pizza-creme">
-    <div class="section-head"><span class="section-icon">🍕</span><span class="section-title">Pizzas Crème</span><div class="section-line"></div><span class="section-count">8</span></div>
+    <div class="section-head"><span class="section-title">Pizzas Crème</span><div class="section-line"></div><span class="section-count">8</span></div>
     <div class="prod-grid" id="grid-pizza-creme"></div>
   </section>
 
   <section class="menu-section" id="sec-boissons">
-    <div class="section-head"><span class="section-icon">🥤</span><span class="section-title">Boissons</span><div class="section-line"></div><span class="section-count">5</span></div>
+    <div class="section-head"><span class="section-title">Boissons</span><div class="section-line"></div><span class="section-count">5</span></div>
     <div class="prod-grid" id="grid-boissons"></div>
   </section>
 </main>
@@ -701,7 +697,7 @@
     <div class="footer-brand">
       <h4>Tacos <span>Lyonnais</span> Saxe</h4>
       <p>Depuis 2015, on cuisine les meilleurs tacos de Lyon. Ingrédients frais, recettes maison, halal certifié.</p>
-      <p style="margin-top:0.75rem">📍 107 Gd Rue de la Guillotière, 69007 Lyon</p>
+      <p style="margin-top:0.75rem">107 Gd Rue de la Guillotière, 69007 Lyon</p>
     </div>
     <div class="footer-col">
       <h5>Horaires</h5>
@@ -717,7 +713,7 @@
         <li>Sur place</li>
         <li>À emporter</li>
         <li>Livraison</li>
-        <li>✅ Halal certifié</li>
+        <li>Halal certifié</li>
       </ul>
     </div>
     <div class="footer-col">
@@ -745,50 +741,50 @@ const DR = '../v1/Le_Tacos_Lyonnais_Saxe/Les_Boissons/';
 
 const MENU = {
   tacos: [
-    {name:'Maxi Tacos',desc:'Notre tacos signature — généreux, garni de frites maison et sauce fromagère',price:'9,50',num:9.50,img:T+'Maxi_Tacos.jpg',badge:'⭐ Signature',bc:'orange'},
+    {name:'Maxi Tacos',desc:'Notre tacos signature — généreux, garni de frites maison et sauce fromagère',price:'9,50',num:9.50,img:T+'Maxi_Tacos.jpg',badge:'Signature',bc:'orange'},
     {name:'Tacos Classique',desc:'Le tacos intemporel — galette, viande, frites maison, sauce au choix',price:'8,50',num:8.50,img:T+'Tacos_Classique.jpg'},
-    {name:'Le Lyonnais',desc:'Poulet mariné, crème de champignons, raclette fondue, frites maison',price:'12,90',num:12.90,img:T+'Tacos_Lyonnais.jpg',badge:'🌟 Maison',bc:'gold'},
-    {name:'Le Mumbaï',desc:'Chicken tenders épicés, oignons frits, fromage fondu, sauce pili-pili',price:'12,50',num:12.50,img:T+'Tacos_Mumbaï.jpg',badge:'🌶️ Épicé',bc:'red'},
+    {name:'Le Lyonnais',desc:'Poulet mariné, crème de champignons, raclette fondue, frites maison',price:'12,90',num:12.90,img:T+'Tacos_Lyonnais.jpg',badge:'Maison',bc:'gold'},
+    {name:'Le Mumbaï',desc:'Chicken tenders épicés, oignons frits, fromage fondu, sauce pili-pili',price:'12,50',num:12.50,img:T+'Tacos_Mumbaï.jpg',badge:'Épicé',bc:'red'},
     {name:'Le Mexicain',desc:'Bœuf haché, chakchouka, maïs, œuf, sauce algérienne',price:'12,90',num:12.90,img:T+'Tacos_Méxicain.jpg'},
     {name:'Le Boursin',desc:'Bœuf haché, Boursin ail & fines herbes, frites, sauce poivre',price:'12,90',num:12.90,img:T+'Tacos_Boursin.jpg'},
-    {name:'Le Cheesy',desc:'Poulet crémeux, bacon de dinde, sauce cheddar ultra généreuse',price:'12,90',num:12.90,img:T+'Tacos_Cheesy.jpg',badge:'🧀 Cheesy',bc:'gold'},
+    {name:'Le Cheesy',desc:'Poulet crémeux, bacon de dinde, sauce cheddar ultra généreuse',price:'12,90',num:12.90,img:T+'Tacos_Cheesy.jpg',badge:'Cheesy',bc:'gold'},
     {name:'Le Savoyard',desc:'Poulet, bacon de dinde, pommes de terre, raclette fondue',price:'12,90',num:12.90,img:T+'Tacos_Savoyard.jpg'},
     {name:'Le Tropical',desc:'Poulet curry, bacon fumé, sauce Brazil exotique',price:'12,90',num:12.90,img:T+'Tacos_Tropical.jpg'},
     {name:"L'Oriental",desc:'Merguez fraîche, chakchouka, olives, œuf, sauce algérienne',price:'13,50',num:13.50,img:T+'Tacos_Oriental.jpg'},
-    {name:'Veggie Falafel',desc:'Falafel maison, chakchouka, olives, frites — 100% végétarien',price:'12,50',num:12.50,img:T+'Tacos_Veggie_Falafel.jpg',badge:'🌿 Veggie',bc:'green'},
-    {name:'Veggie Légumes',desc:'Légumes grillés du marché, fromage frais, frites maison',price:'12,50',num:12.50,img:T+'Tacos_Veggie_Légumes.jpg',badge:'🌿 Veggie',bc:'green'},
+    {name:'Veggie Falafel',desc:'Falafel maison, chakchouka, olives, frites — 100% végétarien',price:'12,50',num:12.50,img:T+'Tacos_Veggie_Falafel.jpg',badge:'Veggie',bc:'green'},
+    {name:'Veggie Légumes',desc:'Légumes grillés du marché, fromage frais, frites maison',price:'12,50',num:12.50,img:T+'Tacos_Veggie_Légumes.jpg',badge:'Veggie',bc:'green'},
     {name:'Bowl Classique',desc:'Riz, viande au choix, légumes croquants, sauce maison',price:'11,90',num:11.90,img:T+'Bowl_Classique.jpg'},
-    {name:'Le Spicy',desc:'Tenders hot, chakchouka, frites, sauce fire ultra épicée',price:'12,90',num:12.90,img:null,badge:'🔥 Fire',bc:'red'},
+    {name:'Le Spicy',desc:'Tenders hot, chakchouka, frites, sauce fire ultra épicée',price:'12,90',num:12.90,img:null,badge:'Fire',bc:'red'},
   ],
   burgers:[
-    {name:'Big Chef Burger',desc:'Double steak, cheddar, oignons frits, sauce chef maison, pain brioché',price:'12,90',num:12.90,img:B+'Big_Chef_burger.jpg',badge:'🏆 Chef',bc:'gold'},
+    {name:'Big Chef Burger',desc:'Double steak, cheddar, oignons frits, sauce chef maison, pain brioché',price:'12,90',num:12.90,img:B+'Big_Chef_burger.jpg',badge:'Chef',bc:'gold'},
     {name:'Black Burger OB',desc:'Steak haché, pain noir au charbon, cheddar fondu, sauce spéciale',price:'11,90',num:11.90,img:B+'Black_burger_OB.jpg'},
     {name:'Chicken Beef Burger',desc:'Escalope de poulet + steak haché, double cheddar, sauce secrète',price:'13,90',num:13.90,img:B+'Chicken_Beef_burger.jpg'},
     {name:'Le Classic',desc:'Steak haché, cheddar, salade, tomate, oignons, ketchup, mayo',price:'9,90',num:9.90,img:null},
-    {name:'Le Spicy Burger',desc:'Chicken tenders épicés, sauce sriracha, jalapeños, cheddar',price:'11,50',num:11.50,img:null,badge:'🌶️ Épicé',bc:'red'},
-    {name:'Le Veggy Burger',desc:'Steak végétal, avocat frais, tomate, salade croquante, sauce verte',price:'10,50',num:10.50,img:null,badge:'🌿 Veggie',bc:'green'},
+    {name:'Le Spicy Burger',desc:'Chicken tenders épicés, sauce sriracha, jalapeños, cheddar',price:'11,50',num:11.50,img:null,badge:'Épicé',bc:'red'},
+    {name:'Le Veggy Burger',desc:'Steak végétal, avocat frais, tomate, salade croquante, sauce verte',price:'10,50',num:10.50,img:null,badge:'Veggie',bc:'green'},
   ],
   sandwicherie:[
     {name:'Baguette Classique',desc:'Baguette croustillante, viande au choix, crudités fraîches, sauce',price:'7,50',num:7.50,img:S+'Baguette_Classique.jpg'},
-    {name:'Le Freshly Classique',desc:'Pain frais du jour, garniture généreuse, légumes croquants',price:'8,50',num:8.50,img:S+'Le_Freshly_Classique.jpg',badge:'🌿 Frais',bc:'green'},
+    {name:'Le Freshly Classique',desc:'Pain frais du jour, garniture généreuse, légumes croquants',price:'8,50',num:8.50,img:S+'Le_Freshly_Classique.jpg',badge:'Frais',bc:'green'},
     {name:'Roulé Classique',desc:'Wrap grillé, viande au choix, crudités, sauce blanche maison',price:'8,50',num:8.50,img:S+'Roulé_Classique.jpg'},
     {name:'Sandwich Classique',desc:'Pain moelleux, viande tendre, fromage fondu, légumes, sauce',price:'8,00',num:8.00,img:S+'Sandwich_Classique.jpg'},
-    {name:'Le Chawarma',desc:'Poulet ou bœuf à la broche, sauce blanche, légumes frais, frites',price:'9,50',num:9.50,img:null,badge:'⭐ Signature',bc:'orange'},
+    {name:'Le Chawarma',desc:'Poulet ou bœuf à la broche, sauce blanche, légumes frais, frites',price:'9,50',num:9.50,img:null,badge:'Signature',bc:'orange'},
   ],
   'pizza-tomate':[
     {name:'Pizza Orientale',desc:'Tomate, merguez, poivrons colorés, oignons, mozzarella',price:'13,50',num:13.50,img:PT+'Pizza_Orientale.jpg'},
     {name:'Pizza Regina',desc:'Tomate, jambon, champignons de Paris, mozzarella',price:'12,50',num:12.50,img:PT+'Pizza_Regina.jpg'},
     {name:'Margherita',desc:'Tomate, mozzarella fior di latte, basilic frais',price:'10,50',num:10.50,img:null},
-    {name:'Pepperoni',desc:'Tomate, pepperoni croustillant, mozzarella fondante',price:'12,90',num:12.90,img:null,badge:'🔥 Populaire',bc:'orange'},
+    {name:'Pepperoni',desc:'Tomate, pepperoni croustillant, mozzarella fondante',price:'12,90',num:12.90,img:null,badge:'Populaire',bc:'orange'},
     {name:'La 4 Saisons',desc:'Tomate, jambon, champignons, olives, poivrons, mozzarella',price:'13,50',num:13.50,img:null},
     {name:'La Mexicaine',desc:'Tomate, bœuf haché, jalapeños, maïs, cheddar',price:'13,90',num:13.90,img:null},
-    {name:'La Spicy',desc:'Tomate, tenders épicés, pili-pili, mozzarella',price:'13,50',num:13.50,img:null,badge:'🌶️ Épicé',bc:'red'},
+    {name:'La Spicy',desc:'Tomate, tenders épicés, pili-pili, mozzarella',price:'13,50',num:13.50,img:null,badge:'Épicé',bc:'red'},
     {name:'La Tunisienne',desc:'Tomate, merguez, harissa, olives, œuf, mozzarella',price:'13,90',num:13.90,img:null},
   ],
   'pizza-creme':[
-    {name:'Pizza 5 Fromages',desc:'Crème fraîche, mozzarella, gorgonzola, chèvre, emmental, raclette',price:'13,90',num:13.90,img:PC+'Pizza_5_Fromages.jpg',badge:'🧀 Cheesy',bc:'gold'},
+    {name:'Pizza 5 Fromages',desc:'Crème fraîche, mozzarella, gorgonzola, chèvre, emmental, raclette',price:'13,90',num:13.90,img:PC+'Pizza_5_Fromages.jpg',badge:'Cheesy',bc:'gold'},
     {name:'Pizza Boisée',desc:'Crème fraîche, champignons sauvages, lardons, gruyère',price:'13,50',num:13.50,img:PC+'Pizza_Boisée.jpg'},
-    {name:'La Lyonnaise',desc:'Crème fraîche, lardons, oignons confits, reblochon fondant',price:'13,50',num:13.50,img:null,badge:'⭐ Spécialité',bc:'orange'},
+    {name:'La Lyonnaise',desc:'Crème fraîche, lardons, oignons confits, reblochon fondant',price:'13,50',num:13.50,img:null,badge:'Spécialité',bc:'orange'},
     {name:'La Savoyarde',desc:'Crème fraîche, poulet, raclette fondue, pommes de terre',price:'14,00',num:14.00,img:null},
     {name:'La Raclette',desc:'Crème fraîche, raclette généreuse, lardons, pommes de terre',price:'14,00',num:14.00,img:null},
   ],
@@ -845,9 +841,9 @@ function addItem(name, price, e) {
   if(e) e.stopPropagation();
   const line = cart.find(l => l.name === name && !l.details);
   if (line) line.qty++;
-  else cart.push({name, price, emoji:'🌮', qty:1});
+  else cart.push({name, price, qty:1});
   refreshCart();
-  toast('🛒', `${name} ajouté !`);
+  toast(`${name} ajouté au panier`);
 }
 function changeQty(i, delta) {
   cart[i].qty += delta;
@@ -863,11 +859,10 @@ function refreshCart() {
   const foot = document.getElementById('drawer-foot');
   const total = cart.reduce((s,i)=>s+i.price*i.qty,0);
   if (!cart.length) {
-    body.innerHTML = `<div class="cart-empty"><div class="cart-empty-emoji">🛒</div><p>Panier vide</p><small>Ajoutez des produits depuis le menu</small></div>`;
+    body.innerHTML = `<div class="cart-empty"><div class="cart-empty-emoji"><svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg></div><p>Panier vide</p><small>Ajoutez des produits depuis le menu</small></div>`;
     foot.style.display='none';
   } else {
     body.innerHTML = cart.map((item,i) => `<div class="cart-item">
-      <div class="ci-emoji">${item.emoji}</div>
       <div class="ci-info"><div class="ci-name">${item.name}</div>${item.details?`<div class="ci-detail">${item.details}</div>`:''}</div>
       <div class="ci-right"><div class="ci-price">${(item.price*item.qty).toFixed(2).replace('.',',')} €</div>
         <div class="ci-qty"><button onclick="changeQty(${i},-1)" aria-label="Retirer">−</button><span>${item.qty}</span><button onclick="changeQty(${i},1)" aria-label="Ajouter">+</button></div>
@@ -912,7 +907,7 @@ function showCStep(n) {
   const btn = document.getElementById('cf-next');
   if (n === STEPS-1) {
     buildRecap();
-    btn.textContent = '🛒 Ajouter au panier';
+    btn.textContent = 'Ajouter au panier';
     btn.disabled = false;
   } else {
     btn.textContent = 'Suivant →';
@@ -955,7 +950,7 @@ function chooseViande(el, name, extra) {
 function toggleSauce(el, name) {
   if (!el.classList.contains('selected')) {
     if (document.querySelectorAll('.sauce-pill.selected').length >= cfg.maxS) {
-      toast('⚠️', `Max ${cfg.maxS} sauce${cfg.maxS>1?'s':''} pour ce format`);
+      toast(`Max ${cfg.maxS} sauce${cfg.maxS>1?'s':''} pour ce format`);
       return;
     }
   }
@@ -994,11 +989,11 @@ function buildRecap() {
 
 function addTacosToCart() {
   const details = [cfg.viande, cfg.sauces.join(', '), cfg.extras.map(e=>e.name).join(', ')].filter(Boolean).join(' · ');
-  cart.push({ name:`Tacos ${cfg.size} sur mesure`, price: getTotal(), emoji:'🌮', details, qty: 1 });
+  cart.push({ name:`Tacos ${cfg.size} sur mesure`, price: getTotal(), details, qty: 1 });
   refreshCart();
   closeConf();
   openCart();
-  toast('✅','Tacos personnalisé ajouté au panier !');
+  toast('Tacos personnalisé ajouté au panier !');
 }
 
 // Nav scroll
@@ -1029,11 +1024,11 @@ document.addEventListener('keydown', e => {
 });
 
 // Toast
-function toast(icon, msg) {
+function toast(msg) {
   const wrap = document.getElementById('toasts');
   const el = document.createElement('div');
   el.className = 'toast';
-  el.innerHTML = `<span>${icon}</span> ${msg}`;
+  el.textContent = msg;
   wrap.appendChild(el);
   requestAnimationFrame(()=>requestAnimationFrame(()=>el.classList.add('show')));
   setTimeout(()=>{ el.classList.remove('show'); setTimeout(()=>el.remove(),350); }, 2600);
